@@ -198,7 +198,7 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response
          */
-        public function UnLike($media_id = null, $token = null)
+        public function Unlike($media_id = null, $token = null)
         {
             if (empty($token))
                 trigger_error('Access token is required in ' . __METHOD__, E_USER_ERROR);
