@@ -187,27 +187,86 @@ namespace Instaphp\Instagram {
          * @param Array $token An associative array of key/value pairs to pass to the API
          * @return Instaphp\Response 
          */
-        public function SetRelationship($user_id = null, $action = null, $token = null)
+        protected function SetRelationship($user_id, $action, $token)
         {
-            if (empty($token))
-                trigger_error('Access token is required in ' . __METHOD__, E_USER_ERROR);
-
-            if (null === $action)
-                trigger_error('Action is required in ' . __METHOD__, E_USER_ERROR);
-
-            if (!preg_match('/(follow|unfollow|block|unblock|approve|deny)/i', $action))
-                trigger_error('Action should be one of follow/unfollow/block/unblock/approve/deny', E_USER_ERROR);
-
-            if (null === $user_id)
-                trigger_error('User ID is required in ' . __METHOD__, E_USER_ERROR);
-
             $this->access_token = $token;
 
             $this->api_params['action'] = $action;
 
             return $this->Post($this->buildUrl($user_id . '/relationship'));
         }
-
+        
+        /**
+         * Follow a user...
+         * @access public
+         * @param int $user_id A user ID
+         * @param type $token An access token
+         * @return type Instaphp\Response
+         */
+        public function Follow($user_id, $token)
+        {
+            return $this->SetRelationship($user_id, 'follow', $token);
+        }
+        
+        /**
+         * Unfollow a user...
+         * @access public
+         * @param int $user_id A user ID
+         * @param type $token An access token
+         * @return type Instaphp\Response
+         */
+        public function Unfollow($user_id, $token)
+        {
+            return $this->SetRelationship($user_id, 'unfollow', $token);
+        }
+        
+        /**
+         * Block a user...
+         * @access public
+         * @param int $user_id A user ID
+         * @param type $token An access token
+         * @return type Instaphp\Response
+         */
+        public function Block($user_id, $token)
+        {
+            return $this->SetRelationship($user_id, 'block', $token);
+        }
+        
+        /**
+         * Unblock a user...
+         * @access public
+         * @param int $user_id A user ID
+         * @param type $token An access token
+         * @return type Instaphp\Response
+         */
+        public function Unblock($user_id, $token)
+        {
+            $this->SetRelationship($user_id, 'unblock', $token);
+        }
+        
+        /**
+         * Approve a user request...
+         * @access public
+         * @param int $user_id A user ID
+         * @param type $token An access token
+         * @return type Instaphp\Response
+         */
+        public function Approve($user_id, $token)
+        {
+            $this->SetRelationship($user_id, 'approve', $token);
+        }
+        
+        /**
+         * Deny a user request...
+         * @access public
+         * @param int $user_id A user ID
+         * @param type $token An access token
+         * @return type Instaphp\Response
+         */
+        public function Deny($user_id, $token)
+        {
+            $this->SetRelationship($user_id, 'deny', $token);
+        }
     }
 
 }
