@@ -33,7 +33,7 @@ namespace Instaphp\Instagram {
          * @access public
          * @param string $tag A tag name
          * @param string $token An access token
-         * @return Instaphp\Response 
+         * @return Response 
          */
         public function Info($tag = mull, $token = null)
         {
@@ -54,7 +54,7 @@ namespace Instaphp\Instagram {
          * @param string $tag A tag name
          * @param string $token An access token
          * @param Array $params An associative array of key/value pairs to pass to the API
-         * @return Instaphp\Response 
+         * @return Response 
          */
         public function Recent($tag = null, $token = null, $params = array())
         {
@@ -73,7 +73,7 @@ namespace Instaphp\Instagram {
          * @access public
          * @param string $query
          * @param string $token
-         * @return Instaphp\Response 
+         * @return Response 
          */
         public function Search($query = '', $token = null)
         {

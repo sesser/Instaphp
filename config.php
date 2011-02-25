@@ -39,7 +39,7 @@ namespace Instaphp {
 
         /**
          * Singleton method since the SimpleXMLElement class is essentially "sealed"
-         * @return Instaphp\Config An instance of the Config class
+         * @return Config An instance of the Config object
          */
         public static function Instance()
         {
@@ -92,3 +92,4 @@ namespace Instaphp {
     }
 
 }
+

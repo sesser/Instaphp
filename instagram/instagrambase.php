@@ -53,16 +53,14 @@ namespace Instaphp\Instagram {
         protected $request;
 
         /**
-         * Constructor. If you inherit from this class, you must call
-         * the parent constructor
+         * Constructor. 
+         * If you inherit from this class, you must call the parent constructor
          * <code>
          * public function __construct() {
          *  parent::__construct();
          * }
          * </code>
          * @access public
-         * @return Instaphp\Instagram
-         * {@source}
          */
         public function __construct()
         {
@@ -78,8 +76,7 @@ namespace Instaphp\Instagram {
          * @access protected
          * @param string $url A url in which to make a request
          * @param Array $params An associative array of key/value pairs to pass to the API
-         * @return Instaphp\Response The response object
-         * {@source}
+         * @return Response
          */
         protected function Get($url = null, $params = array())
         {
@@ -94,8 +91,7 @@ namespace Instaphp\Instagram {
          * @access protected
          * @param string $url A url in which to make a POST request
          * @param Array $params An associative array of key/value pairs to POST to the API
-         * @return Instaphp\Response The {inline:
-         * {@source}
+         * @return Response
          */
         protected function Post($url = null, $params = array())
         {
@@ -110,7 +106,7 @@ namespace Instaphp\Instagram {
          * @access protected
          * @param string $url A url in which to make a DELETE request
          * @param Array $params An associative array of key/value pairs to pass to the API
-         * {@source}
+         * @return Response
          */
         protected function Delete($url = null, $params = array())
         {
@@ -128,7 +124,6 @@ namespace Instaphp\Instagram {
          * @param string $path The path to append to the base URL to create the endpoint
          * @param string $action The 'action' to append to the endpoint (not always used, but available)
          * @return string The Instagram API endpoint
-         * {@source}
          */
         protected function BuildUrl($path = null, $action = null)
         {

@@ -32,7 +32,7 @@ namespace Instaphp\Instagram {
          * @access public
          * @param int $media_id A media ID
          * @param string $token An access token
-         * @return Instaphp\Response 
+         * @return Response 
          */
         public function Info($media_id = null, $token = null)
         {
@@ -50,7 +50,7 @@ namespace Instaphp\Instagram {
          * @access public
          * @param string $token An access token
          * @param Array $params An associative array of key/value pairs to pass to the API
-         * @return Instaphp\Response 
+         * @return Response 
          */
         public function Search($token = null, $params = array())
         {
@@ -76,7 +76,7 @@ namespace Instaphp\Instagram {
          * Gets the recent popular media.
          * Note: This method does not appear to require authentication
          * @access public
-         * @return Instaphp\Response 
+         * @return Response 
          */
         public function Popular()
         {
@@ -88,7 +88,7 @@ namespace Instaphp\Instagram {
          * @access public
          * @param int $media_id A media ID
          * @param string $token An access token
-         * @return Instaphp\Response 
+         * @return Response 
          */
         public function Comments($media_id = null, $token = null)
         {
@@ -109,7 +109,7 @@ namespace Instaphp\Instagram {
          * @param int $media_id A media ID
          * @param string $comment The text of the comment
          * @param string $token An access token
-         * @return Instaphp\Response 
+         * @return Response 
          */
         public function AddComment($media_id = null, $comment = null, $token = null)
         {
@@ -135,7 +135,7 @@ namespace Instaphp\Instagram {
          * @param int $media_id A media ID
          * @param int $comment_id The comment ID to delete
          * @param string $token An access token
-         * @return Instaphp\Response 
+         * @return Response 
          */
         public function DeleteComment($media_id = null, $comment_id = null, $token = null)
         {
@@ -158,7 +158,7 @@ namespace Instaphp\Instagram {
          * @access public
          * @param int $media_id A media ID
          * @param string $token An access token
-         * @return Instaphp\Response 
+         * @return Response 
          */
         public function Likes($media_id = null, $token = null)
         {
@@ -177,7 +177,7 @@ namespace Instaphp\Instagram {
          * @access public
          * @param int $media_id A media ID
          * @param string $token An access token
-         * @return Instaphp\Response 
+         * @return Response 
          */
         public function Like($media_id = null, $token = null)
         {
@@ -196,7 +196,7 @@ namespace Instaphp\Instagram {
          * @access public
          * @param int $media_id A media ID
          * @param string $token An access token
-         * @return Instaphp\Response
+         * @return Response
          */
         public function UnLike($media_id = null, $token = null)
         {

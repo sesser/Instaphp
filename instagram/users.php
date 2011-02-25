@@ -33,7 +33,7 @@ namespace Instaphp\Instagram {
          * @access public
          * @param string $code The authorization code returned by the oAuth call
          * @param string $scope The scope of the oAuth request
-         * @return Instaphp\Response 
+         * @return Response 
          */
         public function Authenticate($code = null, $scope = null)
         {
@@ -53,7 +53,7 @@ namespace Instaphp\Instagram {
          * Gets info about a particular user
          * @access public
          * @param mixed $user_id A user ID or 'self' to get info about the currently authenticated user
-         * @return Instaphp\Response 
+         * @return Response 
          */
         public function Info($user_id = 'self')
         {
@@ -87,7 +87,7 @@ namespace Instaphp\Instagram {
          * @param mixed $user_id A user ID or 'self' to get info about the currently authenticated user
          * @param string $token An access token
          * @param Array $params An associative array of key/value pairs to pass to the API
-         * @return Instaphp\Response 
+         * @return Response 
          */
         public function Recent($user_id = 'self', $token = null, $params = array())
         {
@@ -107,7 +107,7 @@ namespace Instaphp\Instagram {
          * @access public
          * @param string $query A username
          * @param string $token An access token
-         * @return Instaphp\Response 
+         * @return Response 
          */
         public function Find($query = '', $token = null)
         {
@@ -124,7 +124,7 @@ namespace Instaphp\Instagram {
          * Gets followers of a particular user
          * @access public
          * @param mixed $user_id A user ID or 'self' to get info about the currently authenticated user
-         * @return Instaphp\Response 
+         * @return Response 
          */
         public function Following($user_id = 'self')
         {
@@ -136,7 +136,7 @@ namespace Instaphp\Instagram {
          * @access public
          * @param mixed $user_id A user ID or 'self' to get info about the currently authenticated user
          * @param string $token An access token
-         * @return Instaphp\Response 
+         * @return Response 
          */
         public function Followers($user_id = 'self', $token = null)
         {
@@ -153,6 +153,7 @@ namespace Instaphp\Instagram {
          * @access public
          * @param mixed $user_id A user ID or 'self' to get info about the currently authenticated user
          * @param string $token An access token
+         * @return Response
          */
         public function Requests($user_id = 'self', $token = null)
         {
@@ -167,7 +168,7 @@ namespace Instaphp\Instagram {
          * @access public
          * @param mixed $user_id A user ID or 'self' to get info about the currently authenticated user
          * @param string $token An access token
-         * @return Instaphp\Response 
+         * @return Response 
          */
         public function Relationship($user_id = 'self', $token = null)
         {
@@ -185,7 +186,7 @@ namespace Instaphp\Instagram {
          * @param int $user_id A user ID
          * @param string $action The action to perform. One of follow, unfollow, block, unblock, approve,  or deny
          * @param Array $token An associative array of key/value pairs to pass to the API
-         * @return Instaphp\Response 
+         * @return Response 
          */
         protected function SetRelationship($user_id, $action, $token)
         {
@@ -200,8 +201,8 @@ namespace Instaphp\Instagram {
          * Follow a user...
          * @access public
          * @param int $user_id A user ID
-         * @param type $token An access token
-         * @return type Instaphp\Response
+         * @param string $token An access token
+         * @return Response
          */
         public function Follow($user_id, $token)
         {
@@ -212,8 +213,8 @@ namespace Instaphp\Instagram {
          * Unfollow a user...
          * @access public
          * @param int $user_id A user ID
-         * @param type $token An access token
-         * @return type Instaphp\Response
+         * @param string $token An access token
+         * @return Response
          */
         public function Unfollow($user_id, $token)
         {
@@ -224,8 +225,8 @@ namespace Instaphp\Instagram {
          * Block a user...
          * @access public
          * @param int $user_id A user ID
-         * @param type $token An access token
-         * @return type Instaphp\Response
+         * @param string $token An access token
+         * @return Response
          */
         public function Block($user_id, $token)
         {
@@ -236,8 +237,8 @@ namespace Instaphp\Instagram {
          * Unblock a user...
          * @access public
          * @param int $user_id A user ID
-         * @param type $token An access token
-         * @return type Instaphp\Response
+         * @param string $token An access token
+         * @return Response
          */
         public function Unblock($user_id, $token)
         {
@@ -248,8 +249,8 @@ namespace Instaphp\Instagram {
          * Approve a user request...
          * @access public
          * @param int $user_id A user ID
-         * @param type $token An access token
-         * @return type Instaphp\Response
+         * @param string $token An access token
+         * @return Response
          */
         public function Approve($user_id, $token)
         {
@@ -260,8 +261,8 @@ namespace Instaphp\Instagram {
          * Deny a user request...
          * @access public
          * @param int $user_id A user ID
-         * @param type $token An access token
-         * @return type Instaphp\Response
+         * @param string $token An access token
+         * @return Response
          */
         public function Deny($user_id, $token)
         {
