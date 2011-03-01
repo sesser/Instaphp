@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Config>
     <Instagram>
-        <Endpoint>https://api.instagram.com</Endpoint>
+        <Endpoint timeout="10">https://api.instagram.com</Endpoint>
         <Version>v1</Version>
         <ClientId></ClientId>
         <ClientSecret></ClientSecret>
