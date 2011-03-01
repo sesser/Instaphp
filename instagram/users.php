@@ -170,13 +170,9 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function Relationship($user_id = 'self', $token = null)
+        public function Relationship($user_id, $token)
         {
-            if (empty($token))
-                trigger_error('Access token is required in ' . __METHOD__, E_USER_ERROR);
-
             $this->access_token = $token;
-
             return $this->Get($this->buildUrl($user_id . '/relationship'));
         }
 
