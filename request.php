@@ -59,7 +59,7 @@ namespace Instaphp {
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HEADER => false,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_CONNECTTIMEOUT => 6,
+            CURLOPT_CONNECTTIMEOUT => 2,
             CURLOPT_TIMEOUT => 10,
             CURLOPT_ENCODING => ''
         );
@@ -86,6 +86,9 @@ namespace Instaphp {
         public function __construct($url = null, $params = array())
         {
             $this->config = Config::Instance();
+            if (isset($this->config->Endpoint['timeout']))
+                $this->curl_opts[CURLOPT_TIMEOUT] = (int)$this->config->Endpoint['timeout'];
+                
             $this->curl_opts[CURLOPT_USERAGENT] = 'Instaphp/v' . INSTAPHP_VERSION;
             if (isset($this->config->Instaphp->CACertBundlePath) && !empty($this->config->Instaphp->CACertBundlePath)) {
                 // echo $this->config->Instaphp->CACertBundlePath;
