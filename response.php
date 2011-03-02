@@ -90,8 +90,16 @@ namespace Instaphp {
          * var response = JSON.parse('<?php echo \$response->json ?>');
          * </code>
          * @var string
+         * @access public 
          */
         public $json = '';
+        /**
+         * The original request URL used to generate the Response object
+         *
+         * @var string
+         * @access public
+         */
+        public $requestUrl = '';
 
         public function __construct()
         {

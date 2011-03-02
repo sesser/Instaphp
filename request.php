@@ -214,6 +214,7 @@ namespace Instaphp {
          */
         private function GetResponse($method = 'GET')
         {
+            $this->response = new Response();
             if (null == $this->url)
                 trigger_error('No URL to make a request', E_USER_ERROR);
 
@@ -242,13 +243,14 @@ namespace Instaphp {
                 $opts[CURLOPT_URL] = $this->url . $query;
                 if (curl_setopt_array($this->ch, $opts)) {
                     if (false !== ($res = curl_exec($this->ch))) {
-                        return Response::FromResponseText($res);
+                        $response = Response::FromResponseText($res);
+                        $response->requestUrl = $this->url.$query;
                     } else {
                         trigger_error("cURL error #" . curl_errno($this->ch) . ' - ' . curl_error($this->ch), E_USER_ERROR);
                     }
                 }
 
-                return new Response();
+                return $response;
             }
         }
 
