@@ -115,8 +115,12 @@ namespace Instaphp {
                 $this->curl_opts[CURLOPT_TIMEOUT] = (int)$this->config->Endpoint['timeout'];
                 
             $this->curl_opts[CURLOPT_USERAGENT] = 'Instaphp/v' . INSTAPHP_VERSION;
+
+            //-- this is an interesting hack to make curl+ssl+windows follow redirects
+            //-- without skipping verification. For some reason, the version of libcurl/curl
+            //-- included with ZendServer CE doesn't use the systems CA bundle, so, we specify
+            //-- the path to the cert here (via config setting)
             if (isset($this->config->Instaphp->CACertBundlePath) && !empty($this->config->Instaphp->CACertBundlePath)) {
-                // echo $this->config->Instaphp->CACertBundlePath;
                 $this->curl_opts[CURLOPT_SSL_VERIFYPEER] = true;
                 $this->curl_opts[CURLOPT_SSL_VERIFYHOST] = 2;
                 $this->curl_opts[CURLOPT_SSLVERSION] = 3;
@@ -127,6 +131,7 @@ namespace Instaphp {
             //-- We always pass the client_id
             $this->parameters['client_id'] = $this->config->Instagram->ClientId;
 
+            //-- if there's any parameters being passed, merge them with the defaults
             if (!empty($params))
                 $this->parameters = array_merge($this->parameters, $params);
 
@@ -138,6 +143,7 @@ namespace Instaphp {
          */
         public function __destruct()
         {
+            //-- close the curl handle. we're done with it
             if (null != $this->ch)
                 curl_close($this->ch);
         }
@@ -214,14 +220,18 @@ namespace Instaphp {
          */
         private function GetResponse($method = 'GET')
         {
-            $this->response = new Response();
+            //-- if there's no url, can't make a request
             if (null == $this->url)
                 trigger_error('No URL to make a request', E_USER_ERROR);
 
+            //-- since there's no option to use anything other curl, this check is kinda useless
+            //-- I had high hopes with this one using sockets and whatnot, but alas, time is of 
+            //-- the essence... in internet time
             if ($this->useCurl) {
-
+                //-- no curl handle? create one
                 if ($this->ch === null)
                     $this->ch = curl_init();
+
 
                 $opts = $this->curl_opts;
                 $query = '';
@@ -233,18 +243,18 @@ namespace Instaphp {
                     case 'delete':
                         $opts[CURLOPT_CUSTOMREQUEST] = 'DELETE';
                         foreach ($this->parameters as $key => $val)
-                            $query .= ( (strlen($query) == 0) ? '?' : '&') . $key . '=' . urlencode($val);
+                            $query .= ((strlen($query) == 0) ? '?' : '&') . $key . '=' . urlencode($val);
                         break;
                     default:
                         foreach ($this->parameters as $key => $val)
-                            $query .= ( (strlen($query) == 0) ? '?' : '&') . $key . '=' . urlencode($val);
+                            $query .= ((strlen($query) == 0) ? '?' : '&') . $key . '=' . urlencode($val);
                         break;
                 }
                 $opts[CURLOPT_URL] = $this->url . $query;
                 if (curl_setopt_array($this->ch, $opts)) {
                     if (false !== ($res = curl_exec($this->ch))) {
                         $response = Response::FromResponseText($res);
-                        $response->requestUrl = $this->url.$query;
+                        $response->requestUrl = $opts[CURLOPT_URL];
                     } else {
                         trigger_error("cURL error #" . curl_errno($this->ch) . ' - ' . curl_error($this->ch), E_USER_ERROR);
                     }
@@ -264,6 +274,19 @@ namespace Instaphp {
             return function_exists('curl_init');
         }
         
+        /**
+         * Determines whether or not curl will follow redirects over SSL
+         * See the constructor for details, but there are cases in which
+         * if curl can't verify the certificate of an SSL request, AND
+         * PHP is in safe_mode OR there are open_basedir restrictions, it will
+         * not follow a redirect. There's a fix for this that involves
+         * parsing all the response headers from a request and detecting
+         * a Location header, but that's kind of a hack as it bypasses the
+         * whole point of SSL. This method left for posterity. Or something...
+         *
+         * @return boolean
+         * @access private
+         **/
         private function WillFollowRedirects()
         {
             $open_basedir = ini_get('open_basedir');
