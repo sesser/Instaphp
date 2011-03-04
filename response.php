@@ -138,7 +138,7 @@ namespace Instaphp {
             if (isset($obj->{'meta'}))
                 $res->meta = $obj->{'meta'};
 
-            if ($res->meta->code != 200) {
+            if (isset($obj->{'meta'}) && $obj->{'meta'}->code !== 200) {
                 $res->error = new Error($res->meta->error_type, $res->meta->code, $res->meta->error_message);
             }
 
