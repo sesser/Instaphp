@@ -122,14 +122,12 @@ namespace Instaphp {
             $obj = json_decode($responseText);
 
             if (empty($obj)) {
-                $res->error->message = 'Unknown error occurred.';
-                $res->error->type = 'Unknown';
+                $res->error = new Error('Unknown', null, 'Unknown error occurred.');
             }
 
 
             if (isset($obj->{'message'})) {
-                $res->error->message = $obj->{'message'};
-                $res->error->type = $obj->{'type'};
+                $res->error = new Error($obj->{'type'}, null, $obj->{'message'});
             }
 
             if (isset($obj->{'access_token'})) {
@@ -139,6 +137,10 @@ namespace Instaphp {
 
             if (isset($obj->{'meta'}))
                 $res->meta = $obj->{'meta'};
+
+            if ($res->meta->code != 200) {
+                $res->error = new Error($res->meta->error_type, $res->meta->code, $res->meta->error_message);
+            }
 
             if (isset($obj->{'data'}))
                 $res->data = $obj->{'data'};
@@ -151,6 +153,20 @@ namespace Instaphp {
             return $res;
         }
 
+    }
+
+    class Error
+    {
+        public $type = null;
+        public $code = null;
+        public $message = null;
+
+        public function __construct($type = null, $code = null, $message = null)
+        {
+            $this->type = $type;
+            $this->code = $code;
+            $this->message = $message;
+        }
     }
 
 }
