@@ -148,10 +148,14 @@ namespace Instaphp\Instagram {
          * Gets followers of a particular user
          * @access public
          * @param mixed $user_id A user ID or 'self' to get info about the currently authenticated user
+         * @param Array $params Additional params to pass to the API
          * @return Response 
          */
-        public function Following($user_id = 'self')
+        public function Following($user_id, $params = array())
         {
+            if (!empty($params))
+                $this->AddParams($params);
+            
             return $this->Get($this->buildUrl($user_id . '/follows'));
         }
 
@@ -159,15 +163,13 @@ namespace Instaphp\Instagram {
          * Gets a user's followers
          * @access public
          * @param mixed $user_id A user ID or 'self' to get info about the currently authenticated user
-         * @param string $token An access token
+         * @param Array $params Additional params to pass to the API
          * @return Response 
          */
-        public function Followers($user_id = 'self', $token = null)
+        public function Followers($user_id, $params = array())
         {
-            if (empty($token))
-                trigger_error('Access token is required in ' . __METHOD__, E_USER_ERROR);
-
-            $this->access_token = $token;
+            if (!empty($params))
+                $this->AddParams($params);
 
             return $this->Get($this->buildUrl($user_id . '/followed-by'));
         }

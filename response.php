@@ -67,11 +67,11 @@ namespace Instaphp {
         /**
          * If an error occurred, this will be populated. Check here first.
          * <code>
-         * if (isset(\$response->error)) {
+         * if (\$response->error != null)) {
          *  echo \$response->error->message;
          * }
          * </code>
-         * @var object
+         * @var Error
          * @access public
          */
         public $error = null;
@@ -110,16 +110,20 @@ namespace Instaphp {
          * A convenience method to parse the response text and build a Response object
          * @access public 
          * @static
-         * @param type $responseText The response from the API call
-         * @return Response A new Response object
+         * @param string $responseText The response from the API call
+         * @param string $url The url used to generate the Response object
+         * @return Response
          */
-        public static function FromResponseText($responseText)
+        public static function FromResponseText($responseText, $url = null)
         {
             if (empty($responseText))
                 return null;
 
             $res = new Response;
             $obj = json_decode($responseText);
+
+            if (!empty($url))
+                $res->requestUrl = $url;
 
             if (empty($obj)) {
                 $res->error = new Error('Unknown', null, 'Unknown error occurred.');
@@ -155,12 +159,43 @@ namespace Instaphp {
 
     }
 
+    /**
+     * Error Object
+     * 
+     *
+     * @package Instaphp
+     * @version 1.0
+     * @author randy sesser <randy@instaphp.com>
+     */
     class Error
     {
+        /**
+         * Error Type
+         * @var string
+         * @access public
+         */
         public $type = null;
+        /**
+         * Error Code
+         * @var int
+         * @access public
+         */
         public $code = null;
+        /**
+         * Error Message
+         * @var string
+         * @access public
+         */
         public $message = null;
 
+        /**
+         * The constructor constructs
+         * @param string $type The error type
+         * @param int $code The error code
+         * @param string $message The error message
+         * @return Error
+         * @access public
+         */
         public function __construct($type = null, $code = null, $message = null)
         {
             $this->type = $type;

@@ -187,7 +187,7 @@ namespace Instaphp\Instagram {
          */
         public function AddParams($params = array())
         {
-            if (!empty($params)) {
+            if (is_array($params)) {
                 foreach ($params as $name => $value)
                     $this->api_params[$name] = $value;
             }

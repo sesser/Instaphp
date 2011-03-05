@@ -253,8 +253,7 @@ namespace Instaphp {
                 $opts[CURLOPT_URL] = $this->url . $query;
                 if (curl_setopt_array($this->ch, $opts)) {
                     if (false !== ($res = curl_exec($this->ch))) {
-                        $response = Response::FromResponseText($res);
-                        $response->requestUrl = $opts[CURLOPT_URL];
+                        $response = Response::FromResponseText($res, $opts[CURLOPT_URL]);
                     } else {
                         trigger_error("cURL error #" . curl_errno($this->ch) . ' - ' . curl_error($this->ch), E_USER_ERROR);
                     }

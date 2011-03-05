@@ -70,6 +70,13 @@ namespace Instaphp {
          */
         public $Locations = null;
 
+        /**
+         * Contains the last API url called
+         *
+         * @var string
+         **/
+        public $url = null;
+
         private static $instance = null;
         /**
          * The constructor constructs, but only for itself
