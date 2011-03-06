@@ -67,7 +67,7 @@ namespace Instaphp {
         /**
          * If an error occurred, this will be populated. Check here first.
          * <code>
-         * if (\$response->error != null)) {
+         * if (!empty(\$response->error)) {
          *  echo \$response->error->message;
          * }
          * </code>

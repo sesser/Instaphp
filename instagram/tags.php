@@ -59,16 +59,12 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function Info($tag = mull, $token = null)
+        public function Info($tag = mull, $token)
         {
-            if (empty($token))
-                trigger_error("An access token is required in " . __METHOD__, E_USER_ERROR);
-
             if (empty($tag))
                 trigger_error("You didn't supply a tag, not sure what whill happen here...", E_USER_WARNING);
 
             $this->access_token = $token;
-
             return $this->Get($this->buildUrl($tag));
         }
 
@@ -80,13 +76,8 @@ namespace Instaphp\Instagram {
          * @param Array $params An associative array of key/value pairs to pass to the API
          * @return Response 
          */
-        public function Recent($tag = null, $token = null, $params = array())
+        public function Recent($tag, $token, Array $params = array())
         {
-            if (empty($token))
-                trigger_error("An access token is required in " . __METHOD__, E_USER_ERROR);
-            if (empty($tag))
-                trigger_error("A tag is required for this to work in " . __METHOD__, E_USER_ERROR);
-
             $this->access_token = $token;
             $this->AddParams($params);
             return $this->Get($this->buildUrl($tag . '/media/recent'));
@@ -99,10 +90,8 @@ namespace Instaphp\Instagram {
          * @param string $token
          * @return Response 
          */
-        public function Search($query = '', $token = null)
+        public function Search($query = '', $token)
         {
-            if (empty($token))
-                trigger_error("An access token is required in " . __METHOD__, E_USER_ERROR);
             $this->access_token = $token;
             $this->AddParam('q', $query);
             return $this->Get($this->buildUrl('search'));

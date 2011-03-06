@@ -47,7 +47,7 @@ namespace Instaphp\Instagram {
 
         /**
          * The Instaphp Config object
-         * @var Instaphp\Config
+         * @var Config
          * @access protected
          */
         protected $config = null;
@@ -71,7 +71,7 @@ namespace Instaphp\Instagram {
         protected $access_token;
         /**
          * Our request object
-         * @var Instaphp\Request
+         * @var Request
          * @access protected
          */
         protected $request;
@@ -79,11 +79,6 @@ namespace Instaphp\Instagram {
         /**
          * Constructor. 
          * If you inherit from this class, you must call the parent constructor
-         * <code>
-         * public function __construct() {
-         *  parent::__construct();
-         * }
-         * </code>
          * @access public
          */
         public function __construct()
@@ -106,7 +101,9 @@ namespace Instaphp\Instagram {
         {
             if (empty($url))
                 trigger_error('A URL is required in ' . __METHOD__, E_USER_ERROR);
+            
             $this->AddParams($params);
+            
             return $this->request->Get($url, $this->api_params)->response;
         }
 
@@ -121,7 +118,9 @@ namespace Instaphp\Instagram {
         {
             if (empty($url))
                 trigger_error('A URL is required in ' . __METHOD__, E_USER_ERROR);
+            
             $this->AddParams($params);
+            
             return $this->request->Post($url, $this->api_params)->response;
         }
 
@@ -136,7 +135,9 @@ namespace Instaphp\Instagram {
         {
             if (empty($url))
                 trigger_error('A URL is required in ' . __METHOD__, E_USER_ERROR);
+            
             $this->AddParams($params);
+            
             return $this->request->Delete($url, $this->api_params)->response;
         }
 
@@ -183,9 +184,8 @@ namespace Instaphp\Instagram {
          * @access public
          * @param Array $params Associative array of key/value pairs to add
          * @return void
-         * {@source}
          */
-        public function AddParams($params = array())
+        public function AddParams(Array $params = array())
         {
             if (is_array($params)) {
                 foreach ($params as $name => $value)
@@ -201,11 +201,11 @@ namespace Instaphp\Instagram {
          * @param string $name The parameter name
          * @param string $value The value to pass
          * @return void
-         * {@source}
          */
         public function AddParam($name, $value)
         {
-            $this->api_params[$name] = $value;
+            if (!empty($name))
+                $this->api_params[$name] = $value;
         }
 
         /**
@@ -213,7 +213,6 @@ namespace Instaphp\Instagram {
          * @access public
          * @param string $name The name of the parameter to remove
          * @return void
-         * {@source}
          */
         public function RemoveParam($name)
         {

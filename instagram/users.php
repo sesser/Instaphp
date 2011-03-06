@@ -59,7 +59,7 @@ namespace Instaphp\Instagram {
          * @param string $scope The scope of the oAuth request
          * @return Response 
          */
-        public function Authenticate($code = null, $scope = null)
+        public function Authenticate($code, $scope = null)
         {
             if (!empty($code)) {
                 $this->AddParams(array(
@@ -92,10 +92,8 @@ namespace Instaphp\Instagram {
          * @param Array $params An associative array of key/value pairs to pass to the API
          * @return Instaphp\Response 
          */
-        public function Feed($user_id = 'self', $token = null, $params = array())
+        public function Feed($user_id, $token, Array $params = array())
         {
-            if (empty($token))
-                trigger_error("Token is requred to call this methog", E_USER_ERROR);
 
             $this->access_token = $token;
 
@@ -113,11 +111,8 @@ namespace Instaphp\Instagram {
          * @param Array $params An associative array of key/value pairs to pass to the API
          * @return Response 
          */
-        public function Recent($user_id = 'self', $token = null, $params = array())
+        public function Recent($user_id, $token, Array $params = array())
         {
-            if (empty($token))
-                trigger_error("Token is requred to call this methog", E_USER_ERROR);
-
             $this->access_token = $token;
 
             if (!empty($params))
@@ -133,11 +128,8 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function Find($query = '', $token = null)
+        public function Find($query = '', $token)
         {
-            if (empty($token))
-                trigger_error("Token is requred to call this methog", E_USER_ERROR);
-
             $this->access_token = $token;
             $this->AddParam('q', $query);
 
@@ -151,7 +143,7 @@ namespace Instaphp\Instagram {
          * @param Array $params Additional params to pass to the API
          * @return Response 
          */
-        public function Following($user_id, $params = array())
+        public function Following($user_id, Array $params = array())
         {
             if (!empty($params))
                 $this->AddParams($params);
@@ -166,7 +158,7 @@ namespace Instaphp\Instagram {
          * @param Array $params Additional params to pass to the API
          * @return Response 
          */
-        public function Followers($user_id, $params = array())
+        public function Followers($user_id, Array $params = array())
         {
             if (!empty($params))
                 $this->AddParams($params);
@@ -181,7 +173,7 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response
          */
-        public function Requests($user_id = 'self', $token = null)
+        public function Requests($user_id, $token)
         {
             if (empty($token))
                 trigger_error('Access token is required in ' . __METHOD__, E_USER_ERROR);

@@ -111,6 +111,7 @@ namespace Instaphp {
         public function __construct($url = null, $params = array())
         {
             $this->config = Config::Instance();
+            
             if (isset($this->config->Endpoint['timeout']))
                 $this->curl_opts[CURLOPT_TIMEOUT] = (int)$this->config->Endpoint['timeout'];
                 
@@ -255,7 +256,8 @@ namespace Instaphp {
                     if (false !== ($res = curl_exec($this->ch))) {
                         $response = Response::FromResponseText($res, $opts[CURLOPT_URL]);
                     } else {
-                        trigger_error("cURL error #" . curl_errno($this->ch) . ' - ' . curl_error($this->ch), E_USER_ERROR);
+                        $response = new Response();
+                        $response->error = new Error('cURLError', curl_errno($this->ch), curl_error($this->ch));
                     }
                 }
 

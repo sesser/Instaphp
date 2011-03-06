@@ -58,14 +58,9 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function Info($media_id = null, $token = null)
+        public function Info($media_id, $token)
         {
-            if (empty($media_id))
-                trigger_error('Media ID is required in ' . __METHOD__, E_USER_ERROR);
-
-            if (!empty($token))
-                $this->access_token = $token;
-
+            $this->access_token = $token;
             return $this->Get($this->buildUrl($media_id));
         }
 
@@ -76,10 +71,8 @@ namespace Instaphp\Instagram {
          * @param Array $params An associative array of key/value pairs to pass to the API
          * @return Response 
          */
-        public function Search($token = null, $params = array())
+        public function Search($token, Array $params = array())
         {
-            if (empty($token))
-                trigger_error('Access token is required in ' . __METHOD__, E_USER_ERROR);
 
             if (isset($params['lat'])) {
                 if (!isset($params['lng']) || empty($params['lng']))
@@ -114,16 +107,9 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function Comments($media_id = null, $token = null)
+        public function Comments($media_id, $token)
         {
-            if (empty($media_id))
-                trigger_error('Media ID is required in ' . __METHOD__, E_USER_ERROR);
-
-            if (empty($token))
-                trigger_error('Access token is required in ' . __METHOD__, E_USER_ERROR);
-
             $this->access_token = $token;
-
             return $this->Get($this->buildUrl($media_id . '/comments'));
         }
 
@@ -135,17 +121,8 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function AddComment($media_id = null, $comment = null, $token = null)
+        public function Comment($media_id, $comment, $token)
         {
-            if (empty($media_id))
-                trigger_error('Media ID is required in ' . __METHOD__, E_USER_ERROR);
-
-            if (empty($comment))
-                trigger_error('Comment is null in ' . __METHOD__, E_USER_WARNING);
-
-            if (empty($token))
-                trigger_error('Access token is required in ' . __METHOD__, E_USER_ERROR);
-
             $this->access_token = $token;
 
             $this->AddParam('text', $comment);
@@ -161,19 +138,9 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function DeleteComment($media_id = null, $comment_id = null, $token = null)
+        public function DeleteComment($media_id, $comment_id, $token)
         {
-            if (empty($media_id))
-                trigger_error('Media ID is required in ' . __METHOD__, E_USER_ERROR);
-
-            if (empty($comment_id))
-                trigger_error('Comment ID is required in ' . __METHOD__, E_USER_ERROR);
-
-            if (empty($token))
-                trigger_error('Access token is required in ' . __METHOD__, E_USER_ERROR);
-
             $this->access_token = $token;
-
             return $this->Delete($this->buildUrl($media_id . '/comments/' . $comment_id));
         }
 
@@ -184,14 +151,8 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function Likes($media_id = null, $token = null)
+        public function Likes($media_id, $token)
         {
-            if (empty($token))
-                trigger_error('Access token is required in ' . __METHOD__, E_USER_ERROR);
-
-            if (empty($media_id))
-                trigger_error('Media ID is required in ' . __METHOD__, E_USER_ERROR);
-
             $this->access_token = $token;
             return $this->Get($this->buildUrl($media_id . '/likes'));
         }
@@ -203,14 +164,8 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function Like($media_id = null, $token = null)
+        public function Like($media_id, $token)
         {
-            if (empty($token))
-                trigger_error('Access token is required in ' . __METHOD__, E_USER_ERROR);
-
-            if (empty($media_id))
-                trigger_error('Media ID is required in ' . __METHOD__, E_USER_ERROR);
-
             $this->access_token = $token;
             return $this->Post($this->buildUrl($media_id . '/likes'));
         }
@@ -222,14 +177,8 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response
          */
-        public function Unlike($media_id = null, $token = null)
+        public function Unlike($media_id, $token)
         {
-            if (empty($token))
-                trigger_error('Access token is required in ' . __METHOD__, E_USER_ERROR);
-
-            if (empty($media_id))
-                trigger_error('Media ID is required in ' . __METHOD__, E_USER_ERROR);
-
             $this->access_token = $token;
             return $this->Delete($this->buildUrl($media_id . '/likes'));
         }

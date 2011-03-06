@@ -59,12 +59,8 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function Info($location_id = null, $token = null)
+        public function Info($location_id, $token)
         {
-            if (empty($token))
-                trigger_error("An access token is required in " . __METHOD__, E_USER_ERROR);
-            if (empty($location_id))
-                trigger_error("A location ID is required in " . __METHOD__, E_USER_ERROR);
             $this->access_token = $token;
             return $this->Get($this->buildUrl($location_id));
         }
@@ -77,12 +73,8 @@ namespace Instaphp\Instagram {
          * @param Array $params An associative array of key/value pairs to pass to the API
          * @return Response 
          */
-        public function Recent($location_id = null, $token = null, $params = array())
+        public function Recent($location_id, $token, Array $params = array())
         {
-            if (empty($token))
-                trigger_error("An access token is required in " . __METHOD__, E_USER_ERROR);
-            if (empty($location_id))
-                trigger_error("A location ID is required in " . __METHOD__, E_USER_ERROR);
             $this->access_token = $token;
             $this->AddParams($params);
             return $this->Get($this->buildUrl($location_id . '/media/recent'));
@@ -95,11 +87,8 @@ namespace Instaphp\Instagram {
          * @param Array $params An associative array of key/value pairs to pass to the API
          * @return Response 
          */
-        public function Search($token = null, $params = array())
+        public function Search($token, Array $params = array())
         {
-            if (empty($token))
-                trigger_error('Access token is required in ' . __METHOD__, E_USER_ERROR);
-
             if (isset($params['lat'])) {
                 if (!isset($params['lng']) || empty($params['lng']))
                     trigger_error('Longitude and Latitude are mutually inclusive in ' . __METHOD__, E_USER_ERROR);
