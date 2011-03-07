@@ -87,12 +87,11 @@ namespace Instaphp\Instagram {
         /**
          * Gets a users feed
          * @access public
-         * @param mixed $user_id A user ID or 'self' to get info about the currently authenticated user
          * @param string $token An access token
          * @param Array $params An associative array of key/value pairs to pass to the API
-         * @return Instaphp\Response 
+         * @return Response 
          */
-        public function Feed($user_id, $token, Array $params = array())
+        public function Feed($token, Array $params = array())
         {
 
             $this->access_token = $token;
@@ -100,7 +99,7 @@ namespace Instaphp\Instagram {
             if (!empty($params))
                 $this->AddParams($params);
 
-            return $this->Get($this->buildUrl($user_id . '/feed/'));
+            return $this->Get($this->buildUrl('self/feed/'));
         }
 
         /**
