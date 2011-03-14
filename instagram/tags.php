@@ -76,9 +76,11 @@ namespace Instaphp\Instagram {
          * @param Array $params An associative array of key/value pairs to pass to the API
          * @return Response 
          */
-        public function Recent($tag, $token, Array $params = array())
+        public function Recent($tag, $token = null, Array $params = array())
         {
-            $this->access_token = $token;
+			if (!empty($token))
+            	$this->access_token = $token;
+
             $this->AddParams($params);
             return $this->Get($this->buildUrl($tag . '/media/recent'));
         }

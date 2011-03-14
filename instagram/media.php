@@ -58,9 +58,10 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function Info($media_id, $token)
+        public function Info($media_id, $token = null)
         {
-            $this->access_token = $token;
+			if (null !== $token)
+            	$this->access_token = $token;
             return $this->Get($this->buildUrl($media_id));
         }
 
