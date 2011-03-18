@@ -46,9 +46,9 @@ namespace Instaphp\Instagram {
     class Users extends InstagramBase
     {
 
-        public function __construct()
+        public function __construct($token = null)
         {
-            parent::__construct();
+            parent::__construct($token);
             $this->api_path = '/users';
         }
 
@@ -91,11 +91,8 @@ namespace Instaphp\Instagram {
          * @param Array $params An associative array of key/value pairs to pass to the API
          * @return Response 
          */
-        public function Feed($token, Array $params = array())
+        public function Feed(Array $params = array())
         {
-
-            $this->access_token = $token;
-
             if (!empty($params))
                 $this->AddParams($params);
 
@@ -110,10 +107,8 @@ namespace Instaphp\Instagram {
          * @param Array $params An associative array of key/value pairs to pass to the API
          * @return Response 
          */
-        public function Recent($user_id, $token, Array $params = array())
+        public function Recent($user_id, Array $params = array())
         {
-            $this->access_token = $token;
-
             if (!empty($params))
                 $this->AddParams($params);
 
@@ -127,11 +122,9 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function Find($query = '', $token)
+        public function Find($query = '')
         {
-            $this->access_token = $token;
             $this->AddParam('q', $query);
-
             return $this->Get($this->buildUrl('search'));
         }
 
@@ -172,12 +165,9 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response
          */
-        public function Requests($user_id, $token)
+        public function Requests($user_id)
         {
-            if (empty($token))
-                trigger_error('Access token is required in ' . __METHOD__, E_USER_ERROR);
-
-            $this->access_token = $token;
+	
         }
 
         /**
@@ -187,9 +177,8 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function Relationship($user_id, $token)
+        public function Relationship($user_id)
         {
-            $this->access_token = $token;
             return $this->Get($this->buildUrl($user_id . '/relationship'));
         }
 
@@ -201,12 +190,9 @@ namespace Instaphp\Instagram {
          * @param Array $token An associative array of key/value pairs to pass to the API
          * @return Response 
          */
-        protected function SetRelationship($user_id, $action, $token)
+        protected function SetRelationship($user_id, $action)
         {
-            $this->access_token = $token;
-
-            $this->api_params['action'] = $action;
-
+            $this->AddParam('action', $action);
             return $this->Post($this->buildUrl($user_id . '/relationship'));
         }
         
@@ -217,9 +203,9 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response
          */
-        public function Follow($user_id, $token)
+        public function Follow($user_id)
         {
-            return $this->SetRelationship($user_id, 'follow', $token);
+            return $this->SetRelationship($user_id, 'follow');
         }
         
         /**
@@ -229,9 +215,9 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response
          */
-        public function Unfollow($user_id, $token)
+        public function Unfollow($user_id)
         {
-            return $this->SetRelationship($user_id, 'unfollow', $token);
+            return $this->SetRelationship($user_id, 'unfollow');
         }
         
         /**
@@ -241,9 +227,9 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response
          */
-        public function Block($user_id, $token)
+        public function Block($user_id)
         {
-            return $this->SetRelationship($user_id, 'block', $token);
+            return $this->SetRelationship($user_id, 'block');
         }
         
         /**
@@ -253,9 +239,9 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response
          */
-        public function Unblock($user_id, $token)
+        public function Unblock($user_id)
         {
-            $this->SetRelationship($user_id, 'unblock', $token);
+            $this->SetRelationship($user_id, 'unblock');
         }
         
         /**
@@ -265,9 +251,9 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response
          */
-        public function Approve($user_id, $token)
+        public function Approve($user_id)
         {
-            $this->SetRelationship($user_id, 'approve', $token);
+            $this->SetRelationship($user_id, 'approve');
         }
         
         /**
@@ -277,9 +263,9 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response
          */
-        public function Deny($user_id, $token)
+        public function Deny($user_id)
         {
-            $this->SetRelationship($user_id, 'deny', $token);
+            $this->SetRelationship($user_id, 'deny');
         }
     }
 

@@ -45,9 +45,9 @@ namespace Instaphp\Instagram {
      */
     class Media extends InstagramBase
     {
-        public function __construct()
+        public function __construct($token = null)
         {
-            parent::__construct();
+            parent::__construct($token);
             $this->api_path = '/media';
         }
 
@@ -58,10 +58,8 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function Info($media_id, $token = null)
+        public function Info($media_id)
         {
-			if (null !== $token)
-            	$this->access_token = $token;
             return $this->Get($this->buildUrl($media_id));
         }
 
@@ -72,7 +70,7 @@ namespace Instaphp\Instagram {
          * @param Array $params An associative array of key/value pairs to pass to the API
          * @return Response 
          */
-        public function Search($token, Array $params = array())
+        public function Search(Array $params = array())
         {
 
             if (isset($params['lat'])) {
@@ -84,8 +82,8 @@ namespace Instaphp\Instagram {
                     trigger_error('Longitude and Latitude are mutually inclusive in ' . __METHOD__, E_USER_ERROR);
             }
 
-            $this->access_token = $token;
-            $this->AddParams($params);
+			if (!empty($params))
+				$this->AddParams($params);
 
             return $this->Get($this->buildUrl('search'));
         }
@@ -108,9 +106,8 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function Comments($media_id, $token)
+        public function Comments($media_id)
         {
-            $this->access_token = $token;
             return $this->Get($this->buildUrl($media_id . '/comments'));
         }
 
@@ -122,12 +119,9 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function Comment($media_id, $comment, $token)
+        public function Comment($media_id, $comment)
         {
-            $this->access_token = $token;
-
             $this->AddParam('text', $comment);
-
             return $this->Post($this->buildUrl($media_id . '/comments'));
         }
 
@@ -139,9 +133,8 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function DeleteComment($media_id, $comment_id, $token)
+        public function DeleteComment($media_id, $comment_id)
         {
-            $this->access_token = $token;
             return $this->Delete($this->buildUrl($media_id . '/comments/' . $comment_id));
         }
 
@@ -152,9 +145,8 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function Likes($media_id, $token)
+        public function Likes($media_id)
         {
-            $this->access_token = $token;
             return $this->Get($this->buildUrl($media_id . '/likes'));
         }
 
@@ -165,9 +157,8 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function Like($media_id, $token)
+        public function Like($media_id)
         {
-            $this->access_token = $token;
             return $this->Post($this->buildUrl($media_id . '/likes'));
         }
 
@@ -178,9 +169,8 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response
          */
-        public function Unlike($media_id, $token)
+        public function Unlike($media_id)
         {
-            $this->access_token = $token;
             return $this->Delete($this->buildUrl($media_id . '/likes'));
         }
 

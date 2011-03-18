@@ -81,12 +81,12 @@ namespace Instaphp {
         /**
          * The constructor constructs, but only for itself
          */
-        final private function __construct()
+        final private function __construct($token = null)
         {
-            $this->Users = new Instagram\Users;
-            $this->Media = new Instagram\Media;
-            $this->Tags = new Instagram\Tags;
-            $this->Locations = new Instagram\Locations;
+            $this->Users = new Instagram\Users($token);
+            $this->Media = new Instagram\Media($token);
+            $this->Tags = new Instagram\Tags($token);
+            $this->Locations = new Instagram\Locations($token);
         }
         
         /**
@@ -94,10 +94,10 @@ namespace Instaphp {
          * We don't need to go instantiating all these objects more than once here
          * @return Instaphp 
          */
-        public static function Instance()
+        public static function Instance($token = null)
         {
             if (self::$instance == null) {
-                self::$instance = new self();
+                self::$instance = new self($token);
             }
             return self::$instance;
         }

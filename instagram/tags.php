@@ -46,9 +46,9 @@ namespace Instaphp\Instagram {
     class Tags extends InstagramBase
     {
 
-        public function __construct()
+        public function __construct($token = null)
         {
-            parent::__construct();
+            parent::__construct($token);
             $this->api_path = '/tags';
         }
 
@@ -59,12 +59,11 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function Info($tag = mull, $token)
+        public function Info($tag = mull)
         {
             if (empty($tag))
                 trigger_error("You didn't supply a tag, not sure what whill happen here...", E_USER_WARNING);
 
-            $this->access_token = $token;
             return $this->Get($this->buildUrl($tag));
         }
 
@@ -76,12 +75,11 @@ namespace Instaphp\Instagram {
          * @param Array $params An associative array of key/value pairs to pass to the API
          * @return Response 
          */
-        public function Recent($tag, $token = null, Array $params = array())
+        public function Recent($tag, Array $params = array())
         {
-			if (!empty($token))
-            	$this->access_token = $token;
+			if (!empty($params))
+				$this->AddParams($params);
 
-            $this->AddParams($params);
             return $this->Get($this->buildUrl($tag . '/media/recent'));
         }
 
@@ -92,9 +90,8 @@ namespace Instaphp\Instagram {
          * @param string $token
          * @return Response 
          */
-        public function Search($query = '', $token)
+        public function Search($query = '')
         {
-            $this->access_token = $token;
             $this->AddParam('q', $query);
             return $this->Get($this->buildUrl('search'));
         }

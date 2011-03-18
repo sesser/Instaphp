@@ -129,13 +129,8 @@ namespace Instaphp {
             }
 
             $this->useCurl = self::HasCurl();
-            //-- We always pass the client_id
-            $this->parameters['client_id'] = $this->config->Instagram->ClientId;
 
-            //-- if there's any parameters being passed, merge them with the defaults
-            if (!empty($params))
-                $this->parameters = array_merge($this->parameters, $params);
-
+            $this->parameters = $params;
             $this->url = $url;
         }
 
@@ -159,9 +154,9 @@ namespace Instaphp {
         {
             if (null !== $url)
                 $this->url = $url;
-
-            if (!empty($params))
-                $this->parameters = array_merge($this->parameters, $params);
+			
+			if (!empty($params))
+				$this->parameters = $params;
 
             $this->response = $this->GetResponse();
             return $this;
@@ -177,8 +172,9 @@ namespace Instaphp {
         {
             if (null !== $url)
                 $this->url = $url;
-            if (!empty($params))
-                $this->parameters = array_merge($this->parameters, $params);
+
+			if (!empty($params))
+				$this->parameters = $params;
 
             $this->response = $this->GetResponse('POST');
             return $this;
@@ -205,8 +201,9 @@ namespace Instaphp {
         {
             if (null !== $url)
                 $this->url = $url;
-            if (!empty($params))
-                $this->parameters = array_merge($this->parameters, $params);
+
+			if (!empty($params))
+				$this->parameters = $params;
 
             $this->response = $this->GetResponse('DELETE');
             return $this;

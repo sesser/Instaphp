@@ -62,7 +62,7 @@ namespace Instaphp\Instagram {
          * @var Array
          * @access protected
          */
-        protected $api_params;
+        protected $default_params = array();
         /**
          * The access token used to authenticate API calls
          * @var string
@@ -76,17 +76,27 @@ namespace Instaphp\Instagram {
          */
         protected $request;
 
+		/**
+		 * THE parameters array passed to the API call
+		 *
+		 * @var array
+		 * @access public
+		 */
+		public $parameters = array();
+
         /**
          * Constructor. 
          * If you inherit from this class, you must call the parent constructor
          * @access public
          */
-        public function __construct()
+        public function __construct($token = null)
         {
             $this->config = Config::Instance();
-            $this->api_params = array(
-                'client_id' => $this->config->Instagram->ClientId
-            );
+			$this->default_params['client_id'] = $this->config->Instagram->ClientId;
+			
+			if (!empty($token))
+				$this->default_params['access_token'] = $token;
+				
             $this->request = new Request();
         }
 
@@ -101,10 +111,11 @@ namespace Instaphp\Instagram {
         {
             if (empty($url))
                 trigger_error('A URL is required in ' . __METHOD__, E_USER_ERROR);
+
+			if (!empty($params))
+				$this->AddParams($params);
             
-            $this->AddParams($params);
-            
-            return $this->request->Get($url, $this->api_params)->response;
+            return $this->request->Get($url, array_merge($this->default_params, $this->parameters))->response;
         }
 
         /**
@@ -119,9 +130,10 @@ namespace Instaphp\Instagram {
             if (empty($url))
                 trigger_error('A URL is required in ' . __METHOD__, E_USER_ERROR);
             
-            $this->AddParams($params);
+			if (!empty($params))
+				$this->AddParams($params);
             
-            return $this->request->Post($url, $this->api_params)->response;
+            return $this->request->Post($url, array_merge($this->default_params, $this->parameters))->response;
         }
 
         /**
@@ -136,9 +148,10 @@ namespace Instaphp\Instagram {
             if (empty($url))
                 trigger_error('A URL is required in ' . __METHOD__, E_USER_ERROR);
             
-            $this->AddParams($params);
+			if (!empty($params))
+				$this->AddParams($params);
             
-            return $this->request->Delete($url, $this->api_params)->response;
+            return $this->request->Delete($url, array_merge($this->default_params, $this->parameters))->response;
         }
 
         /**
@@ -172,8 +185,8 @@ namespace Instaphp\Instagram {
                 $uri .= $action;
             }
 
-            if (!empty($this->access_token))
-                $this->AddParam('access_token', $this->access_token);
+            // if (!empty($this->access_token))
+            //     $this->AddParam('access_token', $this->access_token);
 
             return $uri;
         }
@@ -187,10 +200,7 @@ namespace Instaphp\Instagram {
          */
         public function AddParams(Array $params = array())
         {
-            if (is_array($params)) {
-                foreach ($params as $name => $value)
-                    $this->api_params[$name] = $value;
-            }
+			$this->parameters = $params;
         }
 
         /**
@@ -205,7 +215,7 @@ namespace Instaphp\Instagram {
         public function AddParam($name, $value)
         {
             if (!empty($name))
-                $this->api_params[$name] = $value;
+                $this->parameters[$name] = $value;
         }
 
         /**
@@ -216,8 +226,8 @@ namespace Instaphp\Instagram {
          */
         public function RemoveParam($name)
         {
-            if (isset($this->api_params[$name]))
-                unset($this->api_params[$name]);
+            if (isset($this->parameters[$name]))
+                unset($this->parameters[$name]);
         }
 
     }

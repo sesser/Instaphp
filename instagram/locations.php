@@ -46,9 +46,9 @@ namespace Instaphp\Instagram {
     class Locations extends InstagramBase
     {
 
-        public function __construct()
+        public function __construct($token = null)
         {
-            parent::__construct();
+            parent::__construct($token);
             $this->api_path = '/locations';
         }
         
@@ -59,9 +59,8 @@ namespace Instaphp\Instagram {
          * @param string $token An access token
          * @return Response 
          */
-        public function Info($location_id, $token)
+        public function Info($location_id)
         {
-            $this->access_token = $token;
             return $this->Get($this->buildUrl($location_id));
         }
 
@@ -73,10 +72,11 @@ namespace Instaphp\Instagram {
          * @param Array $params An associative array of key/value pairs to pass to the API
          * @return Response 
          */
-        public function Recent($location_id, $token, Array $params = array())
+        public function Recent($location_id, Array $params = array())
         {
-            $this->access_token = $token;
-            $this->AddParams($params);
+			if (!empty($params))
+				$this->AddParams($params);
+				
             return $this->Get($this->buildUrl($location_id . '/media/recent'));
         }
 
@@ -87,7 +87,7 @@ namespace Instaphp\Instagram {
          * @param Array $params An associative array of key/value pairs to pass to the API
          * @return Response 
          */
-        public function Search($token, Array $params = array())
+        public function Search(Array $params = array())
         {
             if (isset($params['lat'])) {
                 if (!isset($params['lng']) || empty($params['lng']))
@@ -98,8 +98,8 @@ namespace Instaphp\Instagram {
                     trigger_error('Longitude and Latitude are mutually inclusive in ' . __METHOD__, E_USER_ERROR);
             }
 
-            $this->access_token = $token;
-            $this->AddParams($params);
+			if (!empty($params))
+				$this->AddParams($params);
 
             return $this->Get($this->buildUrl('search'));
         }
