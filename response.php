@@ -82,6 +82,13 @@ namespace Instaphp {
          * @access public
          */
         public $auth = null;
+		/**
+		 * For embeded calls
+		 *
+		 * @var object
+		 * @access public
+		 **/
+		public $embed = null;
         /**
          * This is the raw JSON response returned from the API. Usefull if 
          * you just want a "passthrough" situation or perhaps you want to embed
@@ -122,6 +129,13 @@ namespace Instaphp {
             $res = new Response;
             $obj = json_decode($responseText);
 
+			//-- for embeded calls, just return the embeded object
+			if (isset($obj->{'provider_url'}) && !empty($obj->{'provider_url'})) {
+				$res->embed = $obj;
+				return $res;
+			}
+				
+
             if (!empty($url))
                 $res->requestUrl = $url;
 
@@ -157,6 +171,22 @@ namespace Instaphp {
             return $res;
         }
 
+		private static function fixNonUtf8Chars($data)
+		{ 
+		    $aux = str_split($data); 
+		    foreach($aux as $a) { 
+		        $a1 = urlencode($a); 
+		        $aa = explode("%", $a1); 
+
+		        foreach($aa as $v)
+		            if($v!="")
+		                if(hexdec($v)>127)
+		                	$data = str_replace($a,"&#".hexdec($v).";",$data); 
+
+		    } 
+
+		    return $data; 
+		}
     }
 
     /**

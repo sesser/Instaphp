@@ -88,6 +88,12 @@ namespace Instaphp\Instagram {
             return $this->Get($this->buildUrl('search'));
         }
 
+		public function OEmbed($url)
+		{
+			$uri = $this->config->Instagram->Endpoint . '/' . $this->config->Instagram->Version;
+			return $this->Get($uri.'/oembed', array('url' => $url));
+		}
+
         /**
          * Gets the recent popular media.
          * Note: This method does not appear to require authentication
