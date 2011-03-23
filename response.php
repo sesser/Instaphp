@@ -145,7 +145,7 @@ namespace Instaphp {
 
 
             if (isset($obj->{'message'})) {
-                $res->error = new Error($obj->{'type'}, null, $obj->{'message'});
+                $res->error = new Error($obj->{'type'}, null, $obj->{'message'}, $url);
             }
 
             if (isset($obj->{'access_token'})) {
@@ -157,7 +157,7 @@ namespace Instaphp {
                 $res->meta = $obj->{'meta'};
 
             if (isset($obj->{'meta'}) && $obj->{'meta'}->code !== 200) {
-                $res->error = new Error($res->meta->error_type, $res->meta->code, $res->meta->error_message);
+                $res->error = new Error($res->meta->error_type, $res->meta->code, $res->meta->error_message, $url);
             }
 
             if (isset($obj->{'data'}))
@@ -217,6 +217,13 @@ namespace Instaphp {
          * @access public
          */
         public $message = null;
+		/**
+		 * The url associated with this error
+		 *
+		 * @var string
+		 * @access public
+		 **/
+		public $url = null;
 
         /**
          * The constructor constructs
@@ -226,11 +233,12 @@ namespace Instaphp {
          * @return Error
          * @access public
          */
-        public function __construct($type = null, $code = null, $message = null)
+        public function __construct($type = null, $code = null, $message = null, $url = null)
         {
             $this->type = $type;
             $this->code = $code;
             $this->message = $message;
+			$this->url = $url;
         }
     }
 

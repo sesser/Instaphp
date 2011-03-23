@@ -254,7 +254,7 @@ namespace Instaphp {
                         $response = Response::FromResponseText($res, $opts[CURLOPT_URL]);
                     } else {
                         $response = new Response();
-                        $response->error = new Error('cURLError', curl_errno($this->ch), curl_error($this->ch));
+                        $response->error = new Error('cURLError', curl_errno($this->ch), curl_error($this->ch), $opts[CURLOPT_URL]);
                     }
                 }
 
