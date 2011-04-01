@@ -58,12 +58,6 @@ namespace Instaphp {
          */
         public $url = null;
         /**
-         * A Response object returned from the server
-         * @var Instaphp\Response
-         * @access public
-         */
-        public $response = null;
-        /**
          * A var to store whether or not to use curl
          * @var boolean
          * @access private
@@ -88,13 +82,7 @@ namespace Instaphp {
             CURLOPT_TIMEOUT => 10,
             CURLOPT_ENCODING => ''
         );
-        /**
-         * Our configuration object
-         * @var Instaphp\Config
-         * @access protected
-         */
-        protected $config = null;
-        
+
         /**
          * Max number of redirects to follow a request before giving up
          * @var int
@@ -110,10 +98,8 @@ namespace Instaphp {
          */
         public function __construct($url = null, $params = array())
         {
-            $this->config = Config::Instance();
-            
-            if (isset($this->config->Endpoint['timeout']))
-                $this->curl_opts[CURLOPT_TIMEOUT] = (int)$this->config->Endpoint['timeout'];
+            if (isset(Config::Instance()->Endpoint['timeout']))
+                $this->curl_opts[CURLOPT_TIMEOUT] = (int)Config::Instance()->Endpoint['timeout'];
                 
             $this->curl_opts[CURLOPT_USERAGENT] = 'Instaphp/v' . INSTAPHP_VERSION;
 
@@ -121,11 +107,11 @@ namespace Instaphp {
             //-- without skipping verification. For some reason, the version of libcurl/curl
             //-- included with ZendServer CE doesn't use the systems CA bundle, so, we specify
             //-- the path to the cert here (via config setting)
-            if (isset($this->config->Instaphp->CACertBundlePath) && !empty($this->config->Instaphp->CACertBundlePath)) {
+            if (isset(Config::Instance()->Instaphp->CACertBundlePath) && !empty(Config::Instance()->Instaphp->CACertBundlePath)) {
                 $this->curl_opts[CURLOPT_SSL_VERIFYPEER] = true;
                 $this->curl_opts[CURLOPT_SSL_VERIFYHOST] = 2;
                 $this->curl_opts[CURLOPT_SSLVERSION] = 3;
-                $this->curl_opts[CURLOPT_CAINFO] = $this->config->Instaphp->CACertBundlePath;
+                $this->curl_opts[CURLOPT_CAINFO] = Config::Instance()->Instaphp->CACertBundlePath;
             }
 
             $this->useCurl = self::HasCurl();
@@ -148,7 +134,7 @@ namespace Instaphp {
          * Makes a GET request
          * @param string $url A URL in which to make a GET request
          * @param Array $params An associative array of key/value pairs to pass to said URL
-         * @return Instaphp\Request
+         * @return Request
          */
         public function Get($url = null, $params = array())
         {
@@ -166,7 +152,7 @@ namespace Instaphp {
          * Makes a POST request
          * @param string $url A URL in which to make a POST request
          * @param Array $params An associative array of key/value pairs to pass to said URL
-         * @return Instaphp\Request
+         * @return Request
          */
         public function Post($url = null, $params = array())
         {
@@ -195,7 +181,7 @@ namespace Instaphp {
          * Makes a DELETE request
          * @param string $url A URL in which to make a DELETE request
          * @param Array $params An associative array of key/value pairs to pass to said URL
-         * @return Instaphp\Request
+         * @return Request
          */
         public function Delete($url = null, $params = array())
         {
@@ -214,7 +200,7 @@ namespace Instaphp {
          * @param string $url A URL in which to make a GET request
          * @param Array $params An associative array of key/value pairs to pass to said URL
          * @access private
-         * @return Instaphp\Response
+         * @return Response
          */
         private function GetResponse($method = 'GET')
         {
@@ -248,12 +234,17 @@ namespace Instaphp {
                             $query .= ((strlen($query) == 0) ? '?' : '&') . $key . '=' . urlencode($val);
                         break;
                 }
-                $opts[CURLOPT_URL] = $this->url . $query;
+				$this->url .= $query;
+                $opts[CURLOPT_URL] = $this->url;
+
+				$response = new Response;
+				
                 if (curl_setopt_array($this->ch, $opts)) {
                     if (false !== ($res = curl_exec($this->ch))) {
-                        $response = Response::FromResponseText($res, $opts[CURLOPT_URL]);
-                    } else {
-                        $response = new Response();
+						$response->info = curl_getinfo($this->ch);
+						$response->json = $res;
+						$response = Response::Create($this, &$response);
+                    } else {                        
                         $response->error = new Error('cURLError', curl_errno($this->ch), curl_error($this->ch), $opts[CURLOPT_URL]);
                     }
                 }
@@ -296,5 +287,4 @@ namespace Instaphp {
         }
 
     }
-
 }

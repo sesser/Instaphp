@@ -44,7 +44,13 @@ namespace Instaphp {
      */
     class Response
     {
-
+		/**
+		 * Technical information about the http response
+		 *
+		 * @var array
+		 * @access public
+		 */
+		public $info;
         /**
          * The meta "object" (contains a status code. 200 when successful)
          * @var object
@@ -100,13 +106,6 @@ namespace Instaphp {
          * @access public 
          */
         public $json = '';
-        /**
-         * The original request URL used to generate the Response object
-         *
-         * @var string
-         * @access public
-         */
-        public $requestUrl = '';
 
         public function __construct()
         {
@@ -121,54 +120,89 @@ namespace Instaphp {
          * @param string $url The url used to generate the Response object
          * @return Response
          */
-        public static function FromResponseText($responseText, $url = null)
+        public static function Create(Request $request, Response $response)
         {
-            if (empty($responseText))
-                return null;
-
-            $res = new Response;
-            $obj = json_decode($responseText);
+            $obj = json_decode($response->json);
 
 			//-- for embeded calls, just return the embeded object
 			if (isset($obj->{'provider_url'}) && !empty($obj->{'provider_url'})) {
-				$res->embed = $obj;
-				return $res;
+				$response->embed = $obj;
+				return $response;
 			}
 				
-
-            if (!empty($url))
-                $res->requestUrl = $url;
-
             if (empty($obj)) {
-                $res->error = new Error('Unknown', null, 'Unknown error occurred.');
+				$error = new Error;
+				$error->type = 'cURLResponseError';
+				$error->code = $response->info['http_code'];
+				$error->url = $request->url;
+				switch ($error->code)
+				{
+					case 505:
+						$error->message = 'HTTP version not supported? Weird.';
+						break;
+					case 504:
+						$error->message = 'Gateway timeout. Sorry.';
+						break;
+					case 503:
+						$error->message = 'The API is currently unavailable';
+						break;
+					case 502:
+						$error->message = 'Baaaaaaaaad gateway!';
+						break;
+					case 501:
+						$error->message = 'Sorry, not implemented... YET.';
+						break;
+					case 500:
+						$error->message = 'Whoops! API just barfed on your new shoes.';
+						break;
+					case 405:
+						$error->message = 'Method not allowed.';
+						break;
+					case 404:
+						$error->message = 'Received a 404 from the API';
+						break;
+					case 403:
+						$error->message = 'The API says you are forbidden';
+						break;
+					case 402:
+						$error->message = 'The API claims you own them money.';
+						break;
+					case 401:
+						$error->message = 'The API says you are unauthorized.';
+						break;
+					case 400:
+						$error->message = 'POBR... Plain Old Bad Request.';
+						break;
+					default:
+						$error->message = 'Unknown error ocurred making this request';
+						break;
+				}
+				$response->error = $error;
             }
 
-
             if (isset($obj->{'message'})) {
-                $res->error = new Error($obj->{'type'}, null, $obj->{'message'}, $url);
+                $response->error = new Error($obj->{'type'}, null, $obj->{'message'}, $request->url);
             }
 
             if (isset($obj->{'access_token'})) {
-                $res->auth->access_token = $obj->{'access_token'};
-                $res->auth->user = $obj->{'user'};
+                $response->auth->access_token = $obj->{'access_token'};
+                $response->auth->user = $obj->{'user'};
             }
 
             if (isset($obj->{'meta'}))
-                $res->meta = $obj->{'meta'};
+                $response->meta = $obj->{'meta'};
 
             if (isset($obj->{'meta'}) && $obj->{'meta'}->code !== 200) {
-                $res->error = new Error($res->meta->error_type, $res->meta->code, $res->meta->error_message, $url);
+                $response->error = new Error($response->meta->error_type, $response->meta->code, $response->meta->error_message, $request->url);
             }
 
             if (isset($obj->{'data'}))
-                $res->data = $obj->{'data'};
+                $response->data = $obj->{'data'};
 
             if (isset($obj->{'pagination'}))
-                $res->pagination = $obj->{'pagination'};
+                $response->pagination = $obj->{'pagination'};
 
-            $res->json = $responseText;
-
-            return $res;
+            return $response;
         }
 
 		private static function fixNonUtf8Chars($data)
