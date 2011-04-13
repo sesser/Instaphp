@@ -96,7 +96,7 @@ namespace Instaphp {
          */
         public static function Instance($token = null)
         {
-            if (self::$instance == null) {
+            if (self::$instance == null || !empty($token)) {
                 self::$instance = new self($token);
             }
             return self::$instance;
