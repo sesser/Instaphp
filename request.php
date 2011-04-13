@@ -83,6 +83,14 @@ namespace Instaphp {
             CURLOPT_ENCODING => ''
         );
 
+		/**
+		 * Headers to pass in the request
+		 *
+		 * @var array
+		 * @access private
+		 **/
+		private $headers = null;
+		
         /**
          * Max number of redirects to follow a request before giving up
          * @var int
@@ -118,6 +126,13 @@ namespace Instaphp {
 
             $this->parameters = $params;
             $this->url = $url;
+
+			$this->curl_opts[CURLOPT_HTTPHEADER] = array(
+				"Connection: keep-alive",
+				"Keep-Alive: 300",
+				"Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7",
+				"Accept-Language: en-us,en;q=0.5"
+			);
         }
 
         /**
