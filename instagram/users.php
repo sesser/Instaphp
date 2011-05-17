@@ -88,7 +88,7 @@ namespace Instaphp\Instagram {
          * Gets a users feed
          * @access public
          * @param string $token An access token
-         * @param Array $params An associative array of key/value pairs to pass to the API
+         * @param Array $params An associative array of key/value pairs to pass to the API.
          * @return Response 
          */
         public function Feed(Array $params = array())
@@ -103,7 +103,6 @@ namespace Instaphp\Instagram {
          * Gets a user most recent media
          * @access public
          * @param mixed $user_id A user ID or 'self' to get info about the currently authenticated user
-         * @param string $token An access token
          * @param Array $params An associative array of key/value pairs to pass to the API
          * @return Response 
          */
@@ -119,7 +118,6 @@ namespace Instaphp\Instagram {
          * Search for a user by username
          * @access public
          * @param string $query A username
-         * @param string $token An access token
          * @return Response 
          */
         public function Find($query = '')
@@ -162,7 +160,6 @@ namespace Instaphp\Instagram {
          * Gets requests for follows for a particular user
          * @access public
          * @param mixed $user_id A user ID or 'self' to get info about the currently authenticated user
-         * @param string $token An access token
          * @return Response
          */
         public function Requests($user_id)
@@ -174,7 +171,6 @@ namespace Instaphp\Instagram {
          * Gets the relationship of a user based on the currently authenticated user
          * @access public
          * @param mixed $user_id A user ID or 'self' to get info about the currently authenticated user
-         * @param string $token An access token
          * @return Response 
          */
         public function Relationship($user_id)
@@ -186,7 +182,6 @@ namespace Instaphp\Instagram {
          * Sets a relationship between a particular user and the currently authenticated user
          * @access public
          * @param int $user_id A user ID
-         * @param string $action The action to perform. One of follow, unfollow, block, unblock, approve,  or deny
          * @param Array $token An associative array of key/value pairs to pass to the API
          * @return Response 
          */
@@ -200,7 +195,6 @@ namespace Instaphp\Instagram {
          * Follow a user...
          * @access public
          * @param int $user_id A user ID
-         * @param string $token An access token
          * @return Response
          */
         public function Follow($user_id)
@@ -212,7 +206,6 @@ namespace Instaphp\Instagram {
          * Unfollow a user...
          * @access public
          * @param int $user_id A user ID
-         * @param string $token An access token
          * @return Response
          */
         public function Unfollow($user_id)
@@ -224,7 +217,6 @@ namespace Instaphp\Instagram {
          * Block a user...
          * @access public
          * @param int $user_id A user ID
-         * @param string $token An access token
          * @return Response
          */
         public function Block($user_id)
@@ -236,7 +228,6 @@ namespace Instaphp\Instagram {
          * Unblock a user...
          * @access public
          * @param int $user_id A user ID
-         * @param string $token An access token
          * @return Response
          */
         public function Unblock($user_id)
@@ -248,7 +239,6 @@ namespace Instaphp\Instagram {
          * Approve a user request...
          * @access public
          * @param int $user_id A user ID
-         * @param string $token An access token
          * @return Response
          */
         public function Approve($user_id)
@@ -260,7 +250,6 @@ namespace Instaphp\Instagram {
          * Deny a user request...
          * @access public
          * @param int $user_id A user ID
-         * @param string $token An access token
          * @return Response
          */
         public function Deny($user_id)

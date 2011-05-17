@@ -156,8 +156,7 @@ namespace Instaphp\Instagram {
 
         /**
          * A convenience method that builds a base URL to the Instagram API based on
-         * values in the config.xml file and the $api_path property. It also adds
-         * the access token to the global parameters if it is set elsewhere.
+         * values in the config.xml file and the $api_path property.
          * @access protected
          * @param string $path The path to append to the base URL to create the endpoint
          * @param string $action The 'action' to append to the endpoint (not always used, but available)
@@ -184,9 +183,6 @@ namespace Instaphp\Instagram {
 
                 $uri .= $action;
             }
-
-            // if (!empty($this->access_token))
-            //     $this->AddParam('access_token', $this->access_token);
 
             return $uri;
         }
