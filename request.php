@@ -233,23 +233,25 @@ namespace Instaphp {
 
 
                 $opts = $this->curl_opts;
+
                 $query = '';
+                foreach ($this->parameters as $key => $val)
+                    $query .= ((strlen($query) == 0) ? '' : '&') . sprintf("%s=%s", $key, $val);
+
                 switch (strtolower($method)) {
                     case 'post':
                         $opts[CURLOPT_POST] = true;
-                        $opts[CURLOPT_POSTFIELDS] = $this->parameters;
+                        $opts[CURLOPT_POSTFIELDS] = $query;
                         break;
                     case 'delete':
                         $opts[CURLOPT_CUSTOMREQUEST] = 'DELETE';
-                        foreach ($this->parameters as $key => $val)
-                            $query .= ((strlen($query) == 0) ? '?' : '&') . $key . '=' . urlencode($val);
+						$this->url .= "?" . $query;
                         break;
                     default:
-                        foreach ($this->parameters as $key => $val)
-                            $query .= ((strlen($query) == 0) ? '?' : '&') . $key . '=' . urlencode($val);
+						$this->url .= "?" . $query;
                         break;
                 }
-				$this->url .= $query;
+				
                 $opts[CURLOPT_URL] = $this->url;
 
 				$response = new Response;

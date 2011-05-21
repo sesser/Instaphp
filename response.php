@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Instaphp
  * 
@@ -31,7 +30,6 @@
  */
 
 namespace Instaphp {
-
     /**
      * The Response object.
      * This is the object passed back to the caller of this framework. It mimcs
