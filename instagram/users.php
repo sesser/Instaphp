@@ -114,6 +114,19 @@ namespace Instaphp\Instagram {
             return $this->Get($this->buildUrl($user_id . '/media/recent/'));
         }
 
+		/**
+		 * Gets media liked by the current user
+		 * @access public
+		 * @param Array $params An associative array of key/value pairs to pass to the API
+		 * @return Response
+		 */
+		public function Liked(Array $params = array())
+		{
+			if (!empty($params))
+				$this->AddParams($params);
+			return $this->Get($this->buildUrl('self/media/liked/'));
+		}
+
         /**
          * Search for a user by username
          * @access public
