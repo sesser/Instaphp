@@ -178,8 +178,8 @@ namespace Instaphp {
 				$response->error = $error;
             }
 
-            if (isset($obj->{'message'})) {
-                $response->error = new Error($obj->{'type'}, null, $obj->{'message'}, $request->url);
+            if (isset($obj->{'error_message'})) {
+                $response->error = new Error($obj->{'error_type'}, $obj->{'code'}, $obj->{'error_message'}, $request->url);
             }
 
             if (isset($obj->{'access_token'})) {
