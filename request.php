@@ -33,7 +33,7 @@
 namespace Instaphp {
 
     use Instaphp\Config;
-
+	use Instaphp\WebRequest;
     /**
      * Request
      * The Request class performs simple curl requests to a URL optionally passing
@@ -63,41 +63,6 @@ namespace Instaphp {
          * @access private
          */
         private $useCurl = false;
-        /**
-         * A curl handle
-         * @var Handle
-         * @access private
-         */
-        private $ch = null;
-        /**
-         * Default options to pass to cURL
-         * @var Array
-         * @access private
-         */
-        private $curl_opts = array(
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HEADER => false,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_CONNECTTIMEOUT => 2,
-            CURLOPT_TIMEOUT => 10,
-            CURLOPT_ENCODING => ''
-        );
-
-		/**
-		 * Headers to pass in the request
-		 *
-		 * @var array
-		 * @access private
-		 **/
-		private $headers = null;
-		
-        /**
-         * Max number of redirects to follow a request before giving up
-         * @var int
-         * @access private
-         * @static
-         */
-        private static $max_redirects = 3;
         
         /**
          * The constructor contructs
@@ -106,44 +71,11 @@ namespace Instaphp {
          */
         public function __construct($url = null, $params = array())
         {
-            if (isset(Config::Instance()->Endpoint['timeout']))
-                $this->curl_opts[CURLOPT_TIMEOUT] = (int)Config::Instance()->Endpoint['timeout'];
-                
-            $this->curl_opts[CURLOPT_USERAGENT] = 'Instaphp/v' . INSTAPHP_VERSION;
-
-            //-- this is an interesting hack to make curl+ssl+windows follow redirects
-            //-- without skipping verification. For some reason, the version of libcurl/curl
-            //-- included with ZendServer CE doesn't use the systems CA bundle, so, we specify
-            //-- the path to the cert here (via config setting)
-            if (isset(Config::Instance()->Instaphp->CACertBundlePath) && !empty(Config::Instance()->Instaphp->CACertBundlePath)) {
-                $this->curl_opts[CURLOPT_SSL_VERIFYPEER] = true;
-                $this->curl_opts[CURLOPT_SSL_VERIFYHOST] = 2;
-                $this->curl_opts[CURLOPT_SSLVERSION] = 3;
-                $this->curl_opts[CURLOPT_CAINFO] = Config::Instance()->Instaphp->CACertBundlePath;
-            }
-
             $this->useCurl = self::HasCurl();
-
             $this->parameters = $params;
             $this->url = $url;
-
-			$this->curl_opts[CURLOPT_HTTPHEADER] = array(
-				"Connection: keep-alive",
-				"Keep-Alive: 300",
-				"Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7",
-				"Accept-Language: en-us,en;q=0.5"
-			);
         }
 
-        /**
-         * Used to close the current curl handle
-         */
-        public function __destruct()
-        {
-            //-- close the curl handle. we're done with it
-            if (null != $this->ch)
-                curl_close($this->ch);
-        }
 
         /**
          * Makes a GET request
@@ -219,53 +151,22 @@ namespace Instaphp {
          */
         private function GetResponse($method = 'GET')
         {
-            //-- if there's no url, can't make a request
-            if (null == $this->url)
-                trigger_error('No URL to make a request', E_USER_ERROR);
-
             //-- since there's no option to use anything other curl, this check is kinda useless
             //-- I had high hopes with this one using sockets and whatnot, but alas, time is of 
             //-- the essence... in internet time
             if ($this->useCurl) {
-                //-- no curl handle? create one
-                if ($this->ch === null)
-                    $this->ch = curl_init();
-
-
-                $opts = $this->curl_opts;
-
-                $query = '';
-                foreach ($this->parameters as $key => $val)
-                    $query .= ((strlen($query) == 0) ? '' : '&') . sprintf("%s=%s", $key, $val);
-
-                switch (strtolower($method)) {
-                    case 'post':
-                        $opts[CURLOPT_POST] = true;
-                        $opts[CURLOPT_POSTFIELDS] = $query;
-                        break;
-                    case 'delete':
-                        $opts[CURLOPT_CUSTOMREQUEST] = 'DELETE';
-						$this->url .= "?" . $query;
-                        break;
-                    default:
-						$this->url .= "?" . $query;
-                        break;
-                }
-				
-                $opts[CURLOPT_URL] = $this->url;
 
 				$response = new Response;
 				
-                if (curl_setopt_array($this->ch, $opts)) {
-                    if (false !== ($res = curl_exec($this->ch))) {
-						$response->info = curl_getinfo($this->ch);
-						$response->json = $res;
-						$response = Response::Create($this, &$response);
-                    } else {                        
-                        $response->error = new Error('cURLError', curl_errno($this->ch), curl_error($this->ch), $opts[CURLOPT_URL]);
-                    }
-                }
+				$http = WebRequest::Instance();
+				$res = $http->Create($this->url, $method, $this->parameters);
 
+				if ($res instanceof Error)
+					return $res;
+				
+				$response->info = $res->Info;
+				$response->json = $res->Content;
+				$response = Response::Create($this, &$response);
                 return $response;
             }
         }
