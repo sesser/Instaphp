@@ -33,6 +33,7 @@
 namespace Instaphp {
     
     require_once('config.php');
+	require_once('cache/file.php');
 	require_once('webrequest.php');
     require_once('request.php');
     require_once('response.php');

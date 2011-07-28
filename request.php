@@ -33,6 +33,7 @@
 namespace Instaphp {
 
     use Instaphp\Config;
+	use Instaphp\Cache;
 	use Instaphp\WebRequest;
     /**
      * Request
@@ -64,6 +65,13 @@ namespace Instaphp {
          */
         private $useCurl = false;
         
+		/**
+		 *
+		 * @var iCache Cache object used for caching
+		 * @access private 
+		 */
+		private $_cache = null;
+		
         /**
          * The constructor contructs
          * @param string $url A URL in which to create a new request (optional)
@@ -74,6 +82,18 @@ namespace Instaphp {
             $this->useCurl = self::HasCurl();
             $this->parameters = $params;
             $this->url = $url;
+
+			$cacheConfig = Config::Instance()->xpath("//Cache");
+			if (!empty($cacheConfig) && count($cacheConfig) > 0) {
+				$cacheConfig = $cacheConfig[0];
+				if ($cacheConfig["Enabled"]) {
+					$engine = (string)$cacheConfig["Engine"];
+					$method = new \ReflectionMethod("Instaphp\\Cache\\".$engine, 'Instance');
+					$this->_cache = $method->invoke(null, null);
+//					$this->_cache = Cache\File::Instance();
+				}
+				
+			}
         }
 
 
@@ -90,8 +110,24 @@ namespace Instaphp {
 			
 			if (!empty($params))
 				$this->parameters = $params;
+			$query = '';
+			foreach ($this->parameters as $k => $v)
+				$query .= ((strlen ($query) == 0) ? '?' : '&') . sprintf('%s=%s', $k, $v);
+			
+			if (null !== $this->_cache) {
+				$key = sha1($url.$query);
+				
+				if (false === ($response = $this->_cache->Get($key))) {
+					$response = $this->GetResponse();
+					if (empty ($response->error)) {
+						$this->_cache->Set($key, $response);
+					}
+				}
+			} else {
+				$response = $this->GetResponse();
+			}
 
-            $this->response = $this->GetResponse();
+            $this->response = $response;
             return $this;
         }
 

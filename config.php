@@ -113,6 +113,18 @@ namespace Instaphp {
 
             return $this->Instagram->Endpoint . $this->Instagram->OAuthTokenPath;
         }
+		
+		public function CacheSetting($name, $key)
+		{
+			$cache = $this->xpath("//Instaphp/Cache[@Engine='File']");
+			if (empty($cache) || count($cache) == 0)
+				return null;
+			
+			$cache = $cache[0];
+			
+			return $cache->Settings->Setting[$key];
+			
+		}
 
     }
 
