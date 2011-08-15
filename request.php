@@ -83,17 +83,20 @@ namespace Instaphp {
             $this->parameters = $params;
             $this->url = $url;
 
-			$cacheConfig = Config::Instance()->xpath("//Cache");
+/*
+			$cacheConfig = Config::Instance()->GetSection("Instaphp/Cache");
 			if (!empty($cacheConfig) && count($cacheConfig) > 0) {
 				$cacheConfig = $cacheConfig[0];
 				if ($cacheConfig["Enabled"]) {
 					$engine = (string)$cacheConfig["Engine"];
-					$method = new \ReflectionMethod("Instaphp\\Cache\\".$engine, 'Instance');
-					$this->_cache = $method->invoke(null, null);
-//					$this->_cache = Cache\File::Instance();
+                    $this->_cache = Cache\Cache::Instance($engine);
+					// $method = new \ReflectionMethod("Instaphp\\Cache\\".$engine, 'Instance');
+					// $this->_cache = $method->invoke(null, null);
+					// $this->_cache = Cache\File::Instance();
 				}
 				
 			}
+*/
         }
 
 

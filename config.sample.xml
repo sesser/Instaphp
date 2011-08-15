@@ -12,5 +12,11 @@
     <Instaphp>
         <RedirectUri></RedirectUri>
         <CACertBundlePath></CACertBundlePath>
+        <Cache Engine="File" Enabled="true">
+            <Settings>
+                <Setting Path="tmp/cache"/>
+                <Setting TTL="+2 Minutes"/>
+            </Settings>
+        </Cache>
     </Instaphp>
 </Config>

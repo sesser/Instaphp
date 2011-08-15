@@ -8,13 +8,13 @@ namespace Instaphp\Cache
 {
 	use Instaphp;
 	use Instaphp\Config;
-	require_once('icache.php');
+	require_once('cache.php');
 	/**
 	 * Description of file
 	 *
 	 * @author randy
 	 */
-	class File implements iCache
+	class File extends Cache
 	{
 		private static $_instance;
 		private $_config;

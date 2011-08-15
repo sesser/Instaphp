@@ -180,7 +180,7 @@ namespace Instaphp
 			$options = $this->_options;
 			
 			foreach ($parameters as $k => $v)
-				$query .= ((strlen ($query) == 0) ? '':'&') . sprintf('%s=%s', $k, $v);
+				$query .= ((strlen ($query) == 0) ? "":"&") . sprintf('%s=%s', $k, urlencode($v));
 
 			switch (strtolower($method))
 			{

@@ -126,6 +126,17 @@ namespace Instaphp {
 			
 		}
 
+        public function GetSection($section = null, \SimpleXMLElement $parent = null)
+        {
+            if (empty($section))
+                return null;
+
+            if (null !== $parent)
+                return $parent->xpath($section);
+            
+            return $this->xpath($section);
+        }
+
     }
 
 }

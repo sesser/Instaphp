@@ -132,7 +132,7 @@ namespace Instaphp {
 				$error = new Error;
 				$error->type = 'cURLResponseError';
 				$error->code = $response->info['http_code'];
-				$error->url = $request->url;
+				$error->url = $response->info['url'];
 				switch ($error->code)
 				{
 					case 505:
@@ -179,7 +179,7 @@ namespace Instaphp {
             }
 
             if (isset($obj->{'error_message'})) {
-                $response->error = new Error($obj->{'error_type'}, $obj->{'code'}, $obj->{'error_message'}, $request->url);
+                $response->error = new Error($obj->{'error_type'}, $obj->{'code'}, $obj->{'error_message'}, $response->info['url']);
             }
 
             if (isset($obj->{'access_token'})) {
@@ -191,7 +191,9 @@ namespace Instaphp {
                 $response->meta = $obj->{'meta'};
 
             if (isset($obj->{'meta'}) && $obj->{'meta'}->code !== 200) {
-                $response->error = new Error($response->meta->error_type, $response->meta->code, $response->meta->error_message, $request->url);
+                $response->error = new Error($response->meta->error_type, $response->meta->code, $response->meta->error_message, $response->info['url']);
+                $query = '';
+                
             }
 
             if (isset($obj->{'data'}))
@@ -256,7 +258,7 @@ namespace Instaphp {
 		 * @access public
 		 **/
 		public $url = null;
-
+		
         /**
          * The constructor constructs
          * @param string $type The error type
