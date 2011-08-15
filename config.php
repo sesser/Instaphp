@@ -71,8 +71,10 @@ namespace Instaphp {
             if (static::$file == null)
                 static::$file = realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'config.xml';
 
-            if (!file_exists(static::$file))
-                trigger_error("No configuration found for Instaphp", E_USER_ERROR);
+            if (!file_exists(static::$file)) {
+                trigger_error("No configuration found for Instaphp. Using sample file!", E_USER_WARNING);
+				static::$file = realpath(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'config.sample.xml';
+			}
 
             if (null == static::$_instance)
                 static::$_instance = new self(static::$file, null, true);
