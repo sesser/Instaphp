@@ -30,10 +30,6 @@
  * @filesource
  */
 
-namespace Instaphp {
-
-    use \SimpleXMLElement;
-
     /**
      * The Instaphp version. We pass this to Instagram as part of the User-Agent
      */
@@ -128,7 +124,7 @@ namespace Instaphp {
 			
 		}
 
-        public function GetSection($section = null, \SimpleXMLElement $parent = null)
+        public function GetSection($section = null, SimpleXMLElement $parent = null)
         {
             if (empty($section))
                 return null;

@@ -28,8 +28,6 @@
  * @package Instaphp
  * @filesource
  */
-namespace Instaphp
-{
 	class WebRequest
 	{
 		/**
@@ -281,4 +279,3 @@ namespace Instaphp
 			$this->Info = $info;
 		}
 	}
-}

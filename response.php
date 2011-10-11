@@ -29,7 +29,6 @@
  * @filesource
  */
 
-namespace Instaphp {
     /**
      * The Response object.
      * This is the object passed back to the caller of this framework. It mimcs
@@ -118,7 +117,7 @@ namespace Instaphp {
          * @param string $url The url used to generate the Response object
          * @return Response
          */
-        public static function Create(Request $request, Response $response)
+        public static function Create(Request $request, Response &$response)
         {
             $obj = json_decode($response->json);
 
@@ -183,6 +182,7 @@ namespace Instaphp {
             }
 
             if (isset($obj->{'access_token'})) {
+                $response->auth = new stdClass();
                 $response->auth->access_token = $obj->{'access_token'};
                 $response->auth->user = $obj->{'user'};
             }
@@ -275,5 +275,3 @@ namespace Instaphp {
 			$this->url = $url;
         }
     }
-
-}

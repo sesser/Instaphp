@@ -30,12 +30,6 @@
  * @filesource
  */
 
-namespace Instaphp\Instagram {
-
-    use Instaphp\Config;
-    use Instaphp\Request;
-    use Instaphp\Response;
-
     /**
      * Locations class
      * Handles all Location based API requests
@@ -105,5 +99,4 @@ namespace Instaphp\Instagram {
         }
 
     }
-
-}
+    

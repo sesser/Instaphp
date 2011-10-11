@@ -30,11 +30,6 @@
  * @filesource
  */
 
-namespace Instaphp\Instagram {
-
-    use Instaphp\Config;
-    use Instaphp\Request;
-    use Instaphp\Response;
 
     /**
      * Media
@@ -181,5 +176,3 @@ namespace Instaphp\Instagram {
         }
 
     }
-
-}

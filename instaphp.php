@@ -30,8 +30,6 @@
  * @filesource
  */
 
-namespace Instaphp {
-    
     require_once('config.php');
 	require_once('cache/file.php');
 	require_once('webrequest.php');
@@ -104,5 +102,4 @@ namespace Instaphp {
             return self::$instance;
         }
     }
-
-}
+    

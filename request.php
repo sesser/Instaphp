@@ -30,11 +30,6 @@
  * @filesource
  */
 
-namespace Instaphp {
-
-    use Instaphp\Config;
-	use Instaphp\Cache;
-	use Instaphp\WebRequest;
     /**
      * Request
      * The Request class performs simple curl requests to a URL optionally passing
@@ -205,7 +200,7 @@ namespace Instaphp {
 				
 				$response->info = $res->Info;
 				$response->json = $res->Content;
-				$response = Response::Create($this, &$response);
+				$response = Response::Create($this, $response);
                 return $response;
             }
         }

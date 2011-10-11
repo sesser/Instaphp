@@ -30,11 +30,6 @@
  * @filesource
  */
 
-namespace Instaphp\Instagram {
-
-    use Instaphp\Config;
-    use Instaphp\Request;
-    use Instaphp\Response;
 
     /**
      * Tags
@@ -97,5 +92,3 @@ namespace Instaphp\Instagram {
         }
 
     }
-
-}
