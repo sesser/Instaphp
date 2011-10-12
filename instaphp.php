@@ -31,7 +31,6 @@
  */
 
     require_once('config.php');
-	require_once('cache/file.php');
 	require_once('webrequest.php');
     require_once('request.php');
     require_once('response.php');
@@ -83,10 +82,10 @@
          */
         final private function __construct($token = null)
         {
-            $this->Users = new Instagram\Users($token);
-            $this->Media = new Instagram\Media($token);
-            $this->Tags = new Instagram\Tags($token);
-            $this->Locations = new Instagram\Locations($token);
+            $this->Users = new Users($token);
+            $this->Media = new Media($token);
+            $this->Tags = new Tags($token);
+            $this->Locations = new Locations($token);
         }
         
         /**
@@ -102,4 +101,3 @@
             return self::$instance;
         }
     }
-    

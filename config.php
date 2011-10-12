@@ -134,8 +134,5 @@
             
             return $this->xpath($section);
         }
-
     }
-
-}
-
+    
