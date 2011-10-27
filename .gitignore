@@ -1,3 +1,4 @@
 /config.xml
-tmp/
+/tmp/
 .DS_Store
+/nbproject/

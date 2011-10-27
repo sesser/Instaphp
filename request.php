@@ -33,7 +33,6 @@
 namespace Instaphp {
 
     use Instaphp\Config;
-	use Instaphp\Cache;
 	use Instaphp\WebRequest;
     /**
      * Request
@@ -65,13 +64,6 @@ namespace Instaphp {
          */
         private $useCurl = false;
         
-		/**
-		 *
-		 * @var iCache Cache object used for caching
-		 * @access private 
-		 */
-		private $_cache = null;
-		
         /**
          * The constructor contructs
          * @param string $url A URL in which to create a new request (optional)
@@ -82,28 +74,13 @@ namespace Instaphp {
             $this->useCurl = self::HasCurl();
             $this->parameters = $params;
             $this->url = $url;
-
-/*
-			$cacheConfig = Config::Instance()->GetSection("Instaphp/Cache");
-			if (!empty($cacheConfig) && count($cacheConfig) > 0) {
-				$cacheConfig = $cacheConfig[0];
-				if ($cacheConfig["Enabled"]) {
-					$engine = (string)$cacheConfig["Engine"];
-                    $this->_cache = Cache\Cache::Instance($engine);
-					// $method = new \ReflectionMethod("Instaphp\\Cache\\".$engine, 'Instance');
-					// $this->_cache = $method->invoke(null, null);
-					// $this->_cache = Cache\File::Instance();
-				}
-				
-			}
-*/
         }
 
 
         /**
          * Makes a GET request
          * @param string $url A URL in which to make a GET request
-         * @param Array $params An associative array of key/value pairs to pass to said URL
+         * @param \Array $params An associative array of key/value pairs to pass to said URL
          * @return Request
          */
         public function Get($url = null, $params = array())
@@ -117,20 +94,7 @@ namespace Instaphp {
 			foreach ($this->parameters as $k => $v)
 				$query .= ((strlen ($query) == 0) ? '?' : '&') . sprintf('%s=%s', $k, $v);
 			
-			if (null !== $this->_cache) {
-				$key = sha1($url.$query);
-				
-				if (false === ($response = $this->_cache->Get($key))) {
-					$response = $this->GetResponse();
-					if (empty ($response->error)) {
-						$this->_cache->Set($key, $response);
-					}
-				}
-			} else {
-				$response = $this->GetResponse();
-			}
-
-            $this->response = $response;
+            $this->response = $this->GetResponse();
             return $this;
         }
 
@@ -203,9 +167,10 @@ namespace Instaphp {
 				if ($res instanceof Error)
 					return $res;
 				
-				$response->info = $res->Info;
-				$response->json = $res->Content;
-				$response = Response::Create($this, &$response);
+				$response->info = $res->info;
+				$response->json = $res->body;
+                $response->headers = $res->headers;
+				$response = Response::Create($this, $response);
                 return $response;
             }
         }

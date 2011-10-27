@@ -59,7 +59,8 @@ namespace Instaphp
 		 */
 		private $_options = array(
             CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HEADER => false,
+            CURLOPT_HEADER => true,
+            CURLINFO_HEADER_OUT => true,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CONNECTTIMEOUT => 2,
             CURLOPT_TIMEOUT => 10,
@@ -97,6 +98,7 @@ namespace Instaphp
                 $this->_options[CURLOPT_SSLVERSION] = 3;
                 $this->_options[CURLOPT_CAINFO] = Config::Instance()->Instaphp->CACertBundlePath;
             }
+            $this->_options[CURLOPT_SSL_VERIFYPEER] = false;
 			
 			$this->_options[CURLOPT_HTTPHEADER] = array(
 				"Connection: keep-alive",
@@ -272,13 +274,35 @@ namespace Instaphp
 	
 	class WebResponse
 	{
-		public $Content;
-		public $Info;
+		public $headers;
+		public $info;
+		public $body;
 		
 		public function __construct($content = null, $info = null)
 		{
-			$this->Content = $content;
-			$this->Info = $info;
+			$this->info = $info;
+			$this->headers = array();
+			$this->body = '';
+			$this->parse($content);
+		}
+
+		private function parse($content)
+		{
+			$parts = explode("\r\n", $content);
+			while (null !== ($line = array_shift($parts))) {
+				if (0 == strlen(trim($line))) {
+					$this->body = implode('', $parts);
+					break;
+				}
+
+				if (preg_match('/^(HTTPS?)\/(\d\.\d)\s([\d]{3})\s(.+)/', $line, $m)) {
+					$this->headers['http'] = array('protocol' => $m[1], 'version' => $m[2], 'code' => $m[3], 'message' => trim($m[4]));
+					continue;
+				}
+
+				$header = explode(':', $line);
+				$this->headers[$header[0]] = trim($header[1]);
+			}
 		}
 	}
 }

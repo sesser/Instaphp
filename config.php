@@ -41,7 +41,7 @@ namespace Instaphp {
 
     /**
      * Our Config class which extends the SimpleXMLElement class
-     * See {inline @link http://php.net/simplexmlelement SimplXMLElement}
+     * 
      * @package Instaphp
      * @version 1.0
      * @author randy sesser <randy@instaphp.com>

@@ -50,6 +50,13 @@ namespace Instaphp {
 		 */
 		public $info;
         /**
+         * HTTP headers returned from Instagram
+         *
+         * @var array
+         * @access public
+         */
+        public $headers = array();
+        /**
          * The meta "object" (contains a status code. 200 when successful)
          * @var object
          * @access public
@@ -93,6 +100,7 @@ namespace Instaphp {
 		 * @access public
 		 **/
 		public $embed = null;
+
         /**
          * This is the raw JSON response returned from the API. Usefull if 
          * you just want a "passthrough" situation or perhaps you want to embed
@@ -118,7 +126,7 @@ namespace Instaphp {
          * @param string $url The url used to generate the Response object
          * @return Response
          */
-        public static function Create(Request $request, Response $response)
+        public static function Create(Request $request, Response &$response)
         {
             $obj = json_decode($response->json);
 
@@ -133,6 +141,7 @@ namespace Instaphp {
 				$error->type = 'cURLResponseError';
 				$error->code = $response->info['http_code'];
 				$error->url = $response->info['url'];
+                $error->headers = $response->headers;
 				switch ($error->code)
 				{
 					case 505:
@@ -180,9 +189,11 @@ namespace Instaphp {
 
             if (isset($obj->{'error_message'})) {
                 $response->error = new Error($obj->{'error_type'}, $obj->{'code'}, $obj->{'error_message'}, $response->info['url']);
+                $response->error->headers = $response->headers;
             }
 
             if (isset($obj->{'access_token'})) {
+                $response->auth = new \stdClass();
                 $response->auth->access_token = $obj->{'access_token'};
                 $response->auth->user = $obj->{'user'};
             }
@@ -258,6 +269,14 @@ namespace Instaphp {
 		 * @access public
 		 **/
 		public $url = null;
+
+        /**
+         * HTTP Headers returned from Instagram
+         *
+         * @var array
+         * @access public
+         */
+        public $headers = array();
 		
         /**
          * The constructor constructs

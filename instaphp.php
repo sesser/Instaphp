@@ -33,7 +33,6 @@
 namespace Instaphp {
     
     require_once('config.php');
-	require_once('cache/file.php');
 	require_once('webrequest.php');
     require_once('request.php');
     require_once('response.php');
@@ -80,8 +79,11 @@ namespace Instaphp {
         public $url = null;
 
         private static $instance = null;
+
         /**
          * The constructor constructs, but only for itself
+         * @param null $token
+         * @return \Instaphp\Instaphp
          */
         final private function __construct($token = null)
         {
