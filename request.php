@@ -2,7 +2,7 @@
 
 /**
  * Instaphp
- * 
+ *
  * Copyright (c) 2011 randy sesser <randy@instaphp.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -11,10 +11,10 @@
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,7 +22,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- * 
+ *
  * @author randy sesser <randy@instaphp.com>
  * @copyright 2011, randy sesser
  * @license http://www.opensource.org/licenses/mit-license The MIT License
@@ -63,8 +63,8 @@ namespace Instaphp {
          * @access private
          */
         private $useCurl = false;
-        
-        /**
+
+		/**
          * The constructor contructs
          * @param string $url A URL in which to create a new request (optional)
          * @param Array $params An associated array of key/value pairs to pass to said URL (optional)
@@ -87,7 +87,7 @@ namespace Instaphp {
         {
             if (null !== $url)
                 $this->url = $url;
-			
+
 			if (!empty($params))
 				$this->parameters = $params;
 			$query = '';
@@ -124,7 +124,7 @@ namespace Instaphp {
          */
         public function Put($url = null, $params = array())
         {
-            
+
         }
 
         /**
@@ -155,12 +155,12 @@ namespace Instaphp {
         private function GetResponse($method = 'GET')
         {
             //-- since there's no option to use anything other curl, this check is kinda useless
-            //-- I had high hopes with this one using sockets and whatnot, but alas, time is of 
+            //-- I had high hopes with this one using sockets and whatnot, but alas, time is of
             //-- the essence... in internet time
             if ($this->useCurl) {
 
 				$response = new Response;
-				
+
 				$http = WebRequest::Instance();
 				$res = $http->Create($this->url, $method, $this->parameters);
 
@@ -184,7 +184,7 @@ namespace Instaphp {
         {
             return function_exists('curl_init');
         }
-        
+
         /**
          * Determines whether or not curl will follow redirects over SSL
          * See the constructor for details, but there are cases in which
