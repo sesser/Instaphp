@@ -162,6 +162,11 @@ namespace Instaphp {
 				$response = new Response;
 
 				$http = WebRequest::Instance();
+				
+				//-- if this is an authenticated call, remove the client_id
+				if (isset($this->parameters['access_token']))
+					unset($this->parameters['client_id']);
+				
 				$res = $http->Create($this->url, $method, $this->parameters);
 
 				if ($res instanceof Error)

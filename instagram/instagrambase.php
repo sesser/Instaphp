@@ -94,8 +94,10 @@ namespace Instaphp\Instagram {
             $this->config = Config::Instance();
 			$this->default_params['client_id'] = $this->config->Instagram->ClientId;
 			
-			if (!empty($token))
+			if (!empty($token)) {
 				$this->default_params['access_token'] = $token;
+				unset($this->default_params['client_id']);
+			}
 				
             $this->request = new Request();
         }
@@ -196,7 +198,7 @@ namespace Instaphp\Instagram {
          */
         public function AddParams(Array $params = array())
         {
-			$this->parameters = $params;
+			$this->request->parameters = $params;
         }
 
         /**
@@ -211,7 +213,7 @@ namespace Instaphp\Instagram {
         public function AddParam($name, $value)
         {
             if (!empty($name))
-                $this->parameters[$name] = $value;
+                $this->request->parameters[$name] = $value;
         }
 
         /**
@@ -222,8 +224,8 @@ namespace Instaphp\Instagram {
          */
         public function RemoveParam($name)
         {
-            if (isset($this->parameters[$name]))
-                unset($this->parameters[$name]);
+            if (isset($this->request->parameters[$name]))
+                unset($this->request->parameters[$name]);
         }
 
     }
