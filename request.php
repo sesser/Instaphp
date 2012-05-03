@@ -89,10 +89,7 @@ namespace Instaphp {
                 $this->url = $url;
 
 			if (!empty($params))
-				$this->parameters = $params;
-			$query = '';
-			foreach ($this->parameters as $k => $v)
-				$query .= ((strlen ($query) == 0) ? '?' : '&') . sprintf('%s=%s', $k, $v);
+				$this->parameters = array_merge($this->parameters, $params);
 			
             $this->response = $this->GetResponse();
             return $this;
@@ -110,7 +107,7 @@ namespace Instaphp {
                 $this->url = $url;
 
 			if (!empty($params))
-				$this->parameters = $params;
+				$this->parameters = array_merge($this->parameters, $params);
 
             $this->response = $this->GetResponse('POST');
             return $this;
@@ -139,7 +136,7 @@ namespace Instaphp {
                 $this->url = $url;
 
 			if (!empty($params))
-				$this->parameters = $params;
+				$this->parameters = array_merge($this->parameters, $params);
 
             $this->response = $this->GetResponse('DELETE');
             return $this;
@@ -176,6 +173,7 @@ namespace Instaphp {
 				$response->json = $res->body;
                 $response->headers = $res->headers;
 				$response = Response::Create($this, $response);
+                $this->parameters = array();
                 return $response;
             }
         }

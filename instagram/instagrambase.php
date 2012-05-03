@@ -198,7 +198,7 @@ namespace Instaphp\Instagram {
          */
         public function AddParams(Array $params = array())
         {
-			$this->request->parameters = $params;
+			$this->request->parameters = array_merge($this->request->parameters, $params);
         }
 
         /**
