@@ -42,6 +42,16 @@ namespace Instaphp {
      */
     class Response
     {
+    	/**
+    	 * @const RATELIMIT The HTTP header key for the Instagram rate limit
+    	 */
+    	const RATELIMIT = 'X-Ratelimit-Limit';
+    	
+    	/**
+    	 * @const RATELIMIT_REMAINGING The HTTP header key for the remaining calls left
+    	 */
+    	const RATELIMIT_REMAINGING = 'X-Ratelimit-Remaining';
+    	
 		/**
 		 * Technical information about the http response
 		 *
@@ -214,6 +224,29 @@ namespace Instaphp {
                 $response->pagination = $obj->{'pagination'};
 
             return $response;
+        }
+        
+        /**
+         * A convenience method to get the current Ratelimit for the request
+         * @return integer The number of allowed API calls per hour
+         */
+        public function getRatelimit()
+        {
+        	return isset($this->headers[self::RATELIMIT]) ? $this->headers[self::RATELIMIT] : 0;
+        }
+        
+        /**
+         * A convenience method to get the remaining API calls left this hour
+         * for this client_id or access_code
+         * 
+         * Note: the rate limit is technically by hour, but is calculated
+         * in 5-minute bucket increments.
+         * @link http://j.mp/JGMauX
+         * @return integer The number of requests left for this client_id or access_token
+         */
+        public function getRatelimitRemaining()
+        {
+        	return isset($this->headers[self::RATELIMIT_REMAINGING]) ? $this->headers[self::RATELIMIT_REMAINGING] : 0;
         }
 
 		private static function fixNonUtf8Chars($data)

@@ -55,28 +55,28 @@ namespace Instaphp {
          * @var Users
          * @access public
          */
-        public $Users = null;
+        public $Users = NULL;
         /**
          * @var Media
          * @access public
          */
-        public $Media = null;
+        public $Media = NULL;
         /**
          * @var Tags
          * @access public
          */
-        public $Tags = null;
+        public $Tags = NULL;
         /**
          * @var Locations
          */
-        public $Locations = null;
+        public $Locations = NULL;
 
         /**
          * Contains the last API url called
          *
          * @var string
          **/
-        public $url = null;
+        public $url = NULL;
 
         private static $instance = null;
 
@@ -85,12 +85,12 @@ namespace Instaphp {
          * @param null $token
          * @return \Instaphp\Instaphp
          */
-        final private function __construct($token = null)
+        final private function __construct($token, $callback)
         {
-            $this->Users = new Instagram\Users($token);
-            $this->Media = new Instagram\Media($token);
-            $this->Tags = new Instagram\Tags($token);
-            $this->Locations = new Instagram\Locations($token);
+            $this->Users = new Instagram\Users($token, $callback);
+            $this->Media = new Instagram\Media($token, $callback);
+            $this->Tags = new Instagram\Tags($token, $callback);
+            $this->Locations = new Instagram\Locations($token, $callback);
         }
         
         /**
@@ -98,10 +98,10 @@ namespace Instaphp {
          * We don't need to go instantiating all these objects more than once here
          * @return Instaphp 
          */
-        public static function Instance($token = null)
+        public static function Instance($token = NULL, $callback = NULL)
         {
             if (self::$instance == null || !empty($token)) {
-                self::$instance = new self($token);
+                self::$instance = new self($token, $callback);
             }
             return self::$instance;
         }

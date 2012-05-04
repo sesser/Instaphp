@@ -63,17 +63,24 @@ namespace Instaphp {
          * @access private
          */
         private $useCurl = false;
-
+        
+        /**
+         * A global callback method to process the response before it's returned
+         * @var object A callable object
+         */
+        protected $callback;
+        
 		/**
          * The constructor contructs
          * @param string $url A URL in which to create a new request (optional)
          * @param Array $params An associated array of key/value pairs to pass to said URL (optional)
          */
-        public function __construct($url = null, $params = array())
+        public function __construct($url = null, $params = array(), $callback)
         {
             $this->useCurl = self::HasCurl();
             $this->parameters = $params;
             $this->url = $url;
+            $this->callback = $callback;
         }
 
 
@@ -92,6 +99,7 @@ namespace Instaphp {
 				$this->parameters = array_merge($this->parameters, $params);
 			
             $this->response = $this->GetResponse();
+            
             return $this;
         }
 
@@ -173,6 +181,10 @@ namespace Instaphp {
 				$response->json = $res->body;
                 $response->headers = $res->headers;
 				$response = Response::Create($this, $response);
+				
+				if (NULL !== $this->callback && is_callable($this->callback))
+					call_user_func($this->callback, &$response);
+				
                 $this->parameters = array();
                 return $response;
             }

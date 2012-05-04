@@ -46,9 +46,9 @@ namespace Instaphp\Instagram {
     class Users extends InstagramBase
     {
 
-        public function __construct($token = null)
+        public function __construct($token, $callback)
         {
-            parent::__construct($token);
+            parent::__construct($token, $callback);
             $this->api_path = '/users';
         }
 
@@ -81,7 +81,7 @@ namespace Instaphp\Instagram {
          */
         public function Info($user_id = 'self')
         {
-            return $this->Get($this->buildUrl($user_id));
+        	return $this->Get($this->buildUrl($user_id));
         }
 
         /**

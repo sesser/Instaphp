@@ -46,9 +46,9 @@ namespace Instaphp\Instagram {
     class Tags extends InstagramBase
     {
 
-        public function __construct($token = null)
+        public function __construct($token = NULL, $callback = NULL)
         {
-            parent::__construct($token);
+            parent::__construct($token, $callback);
             $this->api_path = '/tags';
         }
 
