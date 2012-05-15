@@ -100,8 +100,9 @@ namespace Instaphp\Instagram {
          * @access public
          * @return Response 
          */
-        public function Popular()
+        public function Popular(Array $params = array())
         {
+            $this->AddParams($params);
             return $this->Get($this->BuildUrl('popular'));
         }
 
