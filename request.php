@@ -183,7 +183,7 @@ namespace Instaphp {
 				$response = Response::Create($this, $response);
 				
 				if (NULL !== $this->callback && is_callable($this->callback))
-					call_user_func($this->callback, &$response);
+					call_user_func($this->callback, $response);
 				
                 $this->parameters = array();
                 return $response;
