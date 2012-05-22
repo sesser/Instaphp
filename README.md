@@ -74,7 +74,7 @@ oAuth to work. The basic flow looks like this:
 Here's how it looks:
 
 	//-- The oAuth URL can be found in the Config object
-	$oAuthUrl = Instaphp\Config::Instance()->GetOAuthUrl();
+	$oAuthUrl = Instaphp\Config::Instance()->GetOAuthUri();
 
 	<!-- Here's a link -->
 	<a href="<?php echo $oAuthUrl ?>">Login</a>
