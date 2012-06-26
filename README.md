@@ -9,6 +9,8 @@ possible. It's currently only compatible with PHP 5 >= 5.3 but there are
 very few 5.3 features being used and it's relatively trivial to convert it
 to versions < 5.3.
 
+Instaphp is currently being used to power [instaview.me](http://instaview.me).
+
 ### Quickstart Guide
 To get an idea of how the library works, it's best to understand the various
 [endpoints][2] provided by the API itself. The Instagram API currently has eight
@@ -74,7 +76,7 @@ oAuth to work. The basic flow looks like this:
 Here's how it looks:
 
 	//-- The oAuth URL can be found in the Config object
-	$oAuthUrl = Instaphp\Config::Instance()->GetOAuthUrl();
+	$oAuthUrl = Instaphp\Config::Instance()->GetOAuthUri();
 
 	<!-- Here's a link -->
 	<a href="<?php echo $oAuthUrl ?>">Login</a>
