@@ -175,9 +175,9 @@ namespace Instaphp\Instagram {
          * @param mixed $user_id A user ID or 'self' to get info about the currently authenticated user
          * @return Response
          */
-        public function Requests($user_id)
+        public function Requests()
         {
-	
+            return $this->Get($this->buildUrl('self/requested-by'));
         }
 
         /**
