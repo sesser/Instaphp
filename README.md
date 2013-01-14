@@ -79,13 +79,14 @@ oAuth to work. The basic flow looks like this:
 Here's how it looks:
 
 ```php
-<?php
+<?php 
 	//-- The oAuth URL can be found in the Config object
-	$oAuthUrl = Instaphp\Config::Instance()->GetOAuthUri();
+	$oAuthUrl = Instaphp\Config::Instance()->GetOAuthUri(); ?>
 
 	<!-- Here's a link -->
 	<a href="<?php echo $oAuthUrl ?>">Login</a>
-
+	
+	<?php
 	//-- To authenticate, simply grab the code in your callback url
 	$code = $_GET['code'];
 	if (!empty($code)) {
