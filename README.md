@@ -42,19 +42,22 @@ separation for the various data you can pull from Instagram.
 
 #### Example: Getting the current Popular photos
 
-	//-- Include our library
-	include_once 'instaphp/instaphp.php';
+```php
+<?php
+//-- Include our library
+include_once 'instaphp/instaphp.php';
 
-	//-- Get an instance of the Instaphp object
-	$api = Instaphp\Instaphp::Instance();
+//-- Get an instance of the Instaphp object
+$api = Instaphp\Instaphp::Instance();
 
-	//-- Get the response for Popular media
-	$response = $api->Media->Popular();
+//-- Get the response for Popular media
+$response = $api->Media->Popular();
 
-	//-- Check if an error was returned from the API
-	if (empty($response->error))
-		foreach ($response->data as $item)
-			printf('<img src="%s" width="%d" height="%d" alt="%s">', $item->images->thumbnail->url, $item->images->thumbnail->width, $item->images->thumbnail->height, empty($item->caption->text) ? 'Untitled':$item->caption->text);
+//-- Check if an error was returned from the API
+if (empty($response->error))
+	foreach ($response->data as $item)
+		printf('<img src="%s" width="%d" height="%d" alt="%s">', $item->images->thumbnail->url, $item->images->thumbnail->width, $item->images->thumbnail->height, empty($item->caption->text) ? 'Untitled':$item->caption->text);
+```
 
 #### Example: Authentication
 
@@ -75,6 +78,8 @@ oAuth to work. The basic flow looks like this:
 
 Here's how it looks:
 
+```php
+<?php
 	//-- The oAuth URL can be found in the Config object
 	$oAuthUrl = Instaphp\Config::Instance()->GetOAuthUri();
 
@@ -98,6 +103,7 @@ Here's how it looks:
 			$api = Instaphp\Instaphp::Instance($token);
 		}
 	}
+```
 
 [0]: http://instagr.am/
 [1]: http://instagram.com/developer/
