@@ -43,6 +43,8 @@ possible. It's currently only compatible with PHP 5 &gt;= 5.3 but there are
 very few 5.3 features being used and it's relatively trivial to convert it
 to versions &lt; 5.3.</p>
 
+<p>Instaphp is currently being used to power <a href="http://instaview.me">instaview.me</a>.</p>
+
 <h3>Quickstart Guide</h3>
 
 <p>To get an idea of how the library works, it's best to understand the various
@@ -75,20 +77,21 @@ separation for the various data you can pull from Instagram.</p>
 
 <h4>Example: Getting the current Popular photos</h4>
 
-<pre><code>//-- Include our library
-include_once 'instaphp/instaphp.php';
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="c1">//-- Include our library</span>
+<span class="k">include_once</span> <span class="s1">'instaphp/instaphp.php'</span><span class="p">;</span>
 
-//-- Get an instance of the Instaphp object
-$api = Instaphp\Instaphp::Instance();
+<span class="c1">//-- Get an instance of the Instaphp object</span>
+<span class="nv">$api</span> <span class="o">=</span> <span class="nx">Instaphp\Instaphp</span><span class="o">::</span><span class="na">Instance</span><span class="p">();</span>
 
-//-- Get the response for Popular media
-$response = $api-&gt;Media-&gt;Popular();
+<span class="c1">//-- Get the response for Popular media</span>
+<span class="nv">$response</span> <span class="o">=</span> <span class="nv">$api</span><span class="o">-&gt;</span><span class="na">Media</span><span class="o">-&gt;</span><span class="na">Popular</span><span class="p">();</span>
 
-//-- Check if an error was returned from the API
-if (empty($response-&gt;error))
-    foreach ($response-&gt;data as $item)
-        printf('&lt;img src="%s" width="%d" height="%d" alt="%s"&gt;', $item-&gt;images-&gt;thumbnail-&gt;url, $item-&gt;images-&gt;thumbnail-&gt;width, $item-&gt;images-&gt;thumbnail-&gt;height, empty($item-&gt;caption-&gt;text) ? 'Untitled':$item-&gt;caption-&gt;text);
-</code></pre>
+<span class="c1">//-- Check if an error was returned from the API</span>
+<span class="k">if</span> <span class="p">(</span><span class="k">empty</span><span class="p">(</span><span class="nv">$response</span><span class="o">-&gt;</span><span class="na">error</span><span class="p">))</span>
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$response</span><span class="o">-&gt;</span><span class="na">data</span> <span class="k">as</span> <span class="nv">$item</span><span class="p">)</span>
+        <span class="nb">printf</span><span class="p">(</span><span class="s1">'&lt;img src="%s" width="%d" height="%d" alt="%s"&gt;'</span><span class="p">,</span> <span class="nv">$item</span><span class="o">-&gt;</span><span class="na">images</span><span class="o">-&gt;</span><span class="na">thumbnail</span><span class="o">-&gt;</span><span class="na">url</span><span class="p">,</span> <span class="nv">$item</span><span class="o">-&gt;</span><span class="na">images</span><span class="o">-&gt;</span><span class="na">thumbnail</span><span class="o">-&gt;</span><span class="na">width</span><span class="p">,</span> <span class="nv">$item</span><span class="o">-&gt;</span><span class="na">images</span><span class="o">-&gt;</span><span class="na">thumbnail</span><span class="o">-&gt;</span><span class="na">height</span><span class="p">,</span> <span class="k">empty</span><span class="p">(</span><span class="nv">$item</span><span class="o">-&gt;</span><span class="na">caption</span><span class="o">-&gt;</span><span class="na">text</span><span class="p">)</span> <span class="o">?</span> <span class="s1">'Untitled'</span><span class="o">:</span><span class="nv">$item</span><span class="o">-&gt;</span><span class="na">caption</span><span class="o">-&gt;</span><span class="na">text</span><span class="p">);</span>
+</pre></div>
 
 <h4>Example: Authentication</h4>
 
@@ -109,30 +112,32 @@ oAuth to work. The basic flow looks like this:</p>
 <li>   Application is then given an access token to "sign" the calls to the API</li>
 </ol><p>Here's how it looks:</p>
 
-<pre><code>//-- The oAuth URL can be found in the Config object
-$oAuthUrl = Instaphp\Config::Instance()-&gt;GetOAuthUrl();
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span> 
+    <span class="c1">//-- The oAuth URL can be found in the Config object</span>
+    <span class="nv">$oAuthUrl</span> <span class="o">=</span> <span class="nx">Instaphp\Config</span><span class="o">::</span><span class="na">Instance</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">GetOAuthUri</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span>
 
-&lt;!-- Here's a link --&gt;
-&lt;a href="&lt;?php echo $oAuthUrl ?&gt;"&gt;Login&lt;/a&gt;
+<span class="x">    &lt;!-- Here's a link --&gt;</span>
+<span class="x">    &lt;a href="</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$oAuthUrl</span> <span class="cp">?&gt;</span><span class="x">"&gt;Login&lt;/a&gt;</span>
 
-//-- To authenticate, simply grab the code in your callback url
-$code = $_GET['code'];
-if (!empty($code)) {
-    //-- Create an Instaphp instance
-    $api = Instaphp\Instaphp::Instance();
+<span class="x">    </span><span class="cp">&lt;?php</span>
+    <span class="c1">//-- To authenticate, simply grab the code in your callback url</span>
+    <span class="nv">$code</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">'code'</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$code</span><span class="p">))</span> <span class="p">{</span>
+        <span class="c1">//-- Create an Instaphp instance</span>
+        <span class="nv">$api</span> <span class="o">=</span> <span class="nx">Instaphp\Instaphp</span><span class="o">::</span><span class="na">Instance</span><span class="p">();</span>
 
-    //-- Authenticate
-    $response = $api-&gt;Users-&gt;Authenticate($code);
+        <span class="c1">//-- Authenticate</span>
+        <span class="nv">$response</span> <span class="o">=</span> <span class="nv">$api</span><span class="o">-&gt;</span><span class="na">Users</span><span class="o">-&gt;</span><span class="na">Authenticate</span><span class="p">(</span><span class="nv">$code</span><span class="p">);</span>
 
-    //-- If no errors, grab the access_token (and cookie it, if desired)
-    if (empty($response-&gt;error)) {
-        $token = $response-&gt;auth-&gt;access_token;
-        setcookie('instaphp', $token, strtotime('30 days'));
-        //-- once you have a token, update the Instaphp instance so it passes the token for future calls
-        $api = Instaphp\Instaphp::Instance($token);
-    }
-}
-</code></pre>
+        <span class="c1">//-- If no errors, grab the access_token (and cookie it, if desired)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">empty</span><span class="p">(</span><span class="nv">$response</span><span class="o">-&gt;</span><span class="na">error</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nv">$token</span> <span class="o">=</span> <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">auth</span><span class="o">-&gt;</span><span class="na">access_token</span><span class="p">;</span>
+            <span class="nx">setcookie</span><span class="p">(</span><span class="s1">'instaphp'</span><span class="p">,</span> <span class="nv">$token</span><span class="p">,</span> <span class="nb">strtotime</span><span class="p">(</span><span class="s1">'30 days'</span><span class="p">));</span>
+            <span class="c1">//-- once you have a token, update the Instaphp instance so it passes the token for future calls</span>
+            <span class="nv">$api</span> <span class="o">=</span> <span class="nx">Instaphp\Instaphp</span><span class="o">::</span><span class="na">Instance</span><span class="p">(</span><span class="nv">$token</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</pre></div>
         </section>
 
         <footer>
