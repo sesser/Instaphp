@@ -58,6 +58,10 @@ class Instaphp
 	/** @var array Configuration for Instaphp */
 	protected $config = [];
 
+	/**
+	 * Constucts a new Instaphp object
+	 * @param array $config Configuration
+	 */
 	public function __construct(array $config = [])
 	{
 		$ua = sprintf('Instaphp/2.0; cURL/%s; (+http://instaphp.com)', curl_version()['version']);
@@ -76,6 +80,12 @@ class Instaphp
 		$this->config = $config + $defaults;
 	}
 	
+	/**
+	 * Get an Instagram API endpoint
+	 * @param string $endpoint The endpoint name
+	 * @return mixed The instantiated endpoint
+	 * @throws Exceptions\InvalidEndpointException
+	 */
 	public function __get($endpoint)
 	{
 		$endpoint = strtolower($endpoint);
@@ -92,6 +102,11 @@ class Instaphp
 		throw new Exceptions\InvalidEndpointException("{$endpoint} is not a valid endpoint");
 	}
 	
+	/**
+	 * Check if endpoint is set and already instantiated
+	 * @param string $endpoint The endpoint name
+	 * @return bool
+	 */
 	public function __isset($endpoint)
 	{
 		$endpoint = strtolower($endpoint);
@@ -100,6 +115,10 @@ class Instaphp
 				static::$endpoints[$endpoint] instanceof Instagram\Instagram;
 	}
 	
+	/**
+	 * Unset an endpoint
+	 * @param string $endpoint The endpoint name
+	 */
 	public function __unset($endpoint)
 	{
 		$endpoint = strtolower($endpoint);
@@ -109,16 +128,18 @@ class Instaphp
 	
 	/**
 	 * Get the OAuth url for logging into Instagram
+	 * @param bool $displayTouch When true, adds 'display=touch' to the url for mobile friendly UI
 	 * @return string
 	 */
-	public function getOauthUrl()
+	public function getOauthUrl($displayTouch = TRUE)
 	{
-		return sprintf('%s://%s/oauth/authorize/?client_id=%s&redirect_uri=%s&scope=%s&display=touch&response_type=code',
+		return sprintf('%s://%s/oauth/authorize/?client_id=%s&redirect_uri=%s&scope=%s&response_type=code%s',
 				$this->config['api_protocol'],
 				$this->config['api_host'],
 				$this->config['client_id'],
 				urlencode($this->config['redirect_uri']),
-				$this->config['scope']);
+				$this->config['scope'],
+				$displayTouch ? '&display=touch':'');
 	}
 }
 

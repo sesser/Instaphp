@@ -30,8 +30,8 @@
  * @author Randy Sesser <randy@instaphp.com>
  */
 define('TEST_ROOT', dirname(__DIR__) . '/tests');
-define('TEST_ACCESS_TOKEN', '5830.7cb6ed7.85172158248642e2a7c613887b5b2170');
-define('TEST_CLIENT_ID', '5d0849d43684434283b40dcdacadd747');
-define('TEST_CLIENT_SECRET', '969d115c62fc4ac487634b1bcf36d256');
-define('TEST_MEDIA_ID', '374555737806667434_5830');
+define('TEST_ACCESS_TOKEN', '');
+define('TEST_CLIENT_ID', '');
+define('TEST_CLIENT_SECRET', '');
+define('TEST_MEDIA_ID', '');
 include_once dirname(__DIR__) . '/vendor/autoload.php';

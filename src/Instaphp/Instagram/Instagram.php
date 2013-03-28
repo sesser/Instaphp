@@ -57,7 +57,7 @@ class Instagram
 	/** @var array The currently authenticated user */
 	protected $user = [];
 	
-	/** @var \Instaphp\Utils\Http\Http The Http object for making requests to the API */
+	/** @var \Sesser\Scurl\Scurl The Http object for making requests to the API */
 	protected $http = NULL;
 	
 	public function __construct(array $config)
@@ -65,17 +65,11 @@ class Instagram
 		$this->config = $config;
 		$this->client_id = $config['client_id'];
 		$this->client_secret = $config['client_secret'];
-		$base = sprintf('%s://%s', $this->config['api_protocol'], $this->config['api_host']);
-		$this->http = new \Instaphp\Utils\Http\Http($base, [
-			'curl_opts' => [
-				CURLOPT_TIMEOUT => $this->config['http_timeout'],
-				CURLOPT_CONNECTTIMEOUT => $this->config['http_connect_timeout'],
-				CURLOPT_USERAGENT => $this->config['http_useragent']
-			],
-			'events' => [
-				'error.handler' => function(\Instaphp\Utils\Http\Http $request, $errNo, $errMsg) {
-					throw new \Instaphp\Exceptions\CurlException($errMsg, $errNo);
-				}
+		$this->http = new \Sesser\Scurl\Scurl([
+			'options' => [
+				'user-agent' => $this->config['http_useragent'],
+				'timeout' => $this->config['http_timeout'],
+				'connect_timeout' => $this->config['http_connect_timeout']
 			]
 		]);
 	}
@@ -85,7 +79,7 @@ class Instagram
 	 * @param string $access_token A valid access_token
 	 * @return void
 	 */
-	public function SetAccessToken($access_token)
+	public function setAccessToken($access_token)
 	{
 		$this->access_token = $access_token;
 	}
@@ -97,9 +91,9 @@ class Instagram
 	 * @param array $headers Additional headers to pass in the HTTP call
 	 * @return \Instaphp\Instagram\Response
 	 */
-	protected function Get($path, array $params = [], array $headers = [])
+	protected function get($path, array $params = [], array $headers = [])
 	{
-		$response = $this->http->Get($this->buildPath($path), $this->prepare($params));
+		$response = $this->http->get($this->buildPath($path), $this->prepare($params), ['headers' => $headers]);
 		return $this->parseResponse($response);
 	}
 	
@@ -110,9 +104,9 @@ class Instagram
 	 * @param array $headers Additional headers to pass in the HTTP call
 	 * @return \Instaphp\Instagram\Response
 	 */
-	protected function Post($path, array $params = [], array $headers = [])
+	protected function post($path, array $params = [], array $headers = [])
 	{
-		$response = $this->http->Post($this->buildPath($path), $this->prepare($params), $headers);
+		$response = $this->http->post($this->buildPath($path), $this->prepare($params), ['headers' => $headers]);
 		return $this->parseResponse($response);
 	}
 	
@@ -123,9 +117,9 @@ class Instagram
 	 * @param array $headers Additional headers to pass in the HTTP call
 	 * @return \Instaphp\Instagram\Response
 	 */
-	protected function Delete($path, array $params = [], array $headers = [])
+	protected function delete($path, array $params = [], array $headers = [])
 	{
-		$response = $this->http->Delete($this->buildPath($path), $this->prepare($params), $headers);
+		$response = $this->http->delete($this->buildPath($path), $this->prepare($params), ['headers' => $headers]);
 		return $this->parseResponse($response);
 	}
 	
@@ -152,8 +146,9 @@ class Instagram
 	 */
 	private function buildPath($path)
 	{
+		$base = sprintf('%s://%s', $this->config['api_protocol'], $this->config['api_host']);
 		if (empty($path))
-			return '/';
+			return $base . '/';
 		
 		if (substr($path, 0, 1) !== '/')
 			$path = '/' . $path;
@@ -161,7 +156,7 @@ class Instagram
 		if (!preg_match('/^\/'.$this->config['api_version'].'/', $path))
 			$path = '/' . $this->config['api_version'] . $path;
 		
-		return $path;
+		return $base.$path;
 	}
 	
 	/**
@@ -170,7 +165,7 @@ class Instagram
 	 * for errors and throws the apropriate exception. If there's no errors,
 	 * this method returns the Instagram Response object.
 	 * 
-	 * @param \Instaphp\Utils\Http\Response $response
+	 * @param \Sesser\Scurl\Response $response
 	 * @return \Instaphp\Instagram\Response
 	 * @throws \Instaphp\Exceptions\OAuthParameterException
 	 * @throws \Instaphp\Exceptions\OAuthRateLimitException
@@ -179,7 +174,7 @@ class Instagram
 	 * @throws \Instaphp\Exceptions\APIInvalidParametersError
 	 * @throws \Instaphp\Exceptions\HttpException
 	 */
-	private function parseResponse(\Instaphp\Utils\Http\Response $response)
+	private function parseResponse(\Sesser\Scurl\Response $response)
 	{
 		$igresponse = new Response($response);
 		
@@ -188,19 +183,19 @@ class Instagram
 			switch ($igresponse->meta['error_type'])
 			{
 				case 'OAuthParameterException':					
-					throw new \Instaphp\Exceptions\OAuthParameterException($igresponse->meta['error_message'], $igresponse->meta['error_code']);
+					throw new \Instaphp\Exceptions\OAuthParameterException($igresponse->meta['error_message'], $igresponse->meta['code']);
 					break;
 				case 'OAuthRateLimitException':
-					throw new \Instaphp\Exceptions\OAuthRateLimitException($igresponse->meta['error_message'], $igresponse->meta['error_code']);
+					throw new \Instaphp\Exceptions\OAuthRateLimitException($igresponse->meta['error_message'], $igresponse->meta['code']);
 					break;
 				case 'APINotFoundError':
-					throw new \Instaphp\Exceptions\APINotFoundError($igresponse->meta['error_message'], $igresponse->meta['error_code']);
+					throw new \Instaphp\Exceptions\APINotFoundError($igresponse->meta['error_message'], $igresponse->meta['code']);
 					break;
 				case 'APINotAllowedError':
-					throw new \Instaphp\Exceptions\APINotAllowedError($igresponse->meta['error_message'], $igresponse->meta['error_code']);
+					throw new \Instaphp\Exceptions\APINotAllowedError($igresponse->meta['error_message'], $igresponse->meta['code']);
 					break;
 				case 'APIInvalidParametersError':
-					throw new \Instaphp\Exceptions\APIInvalidParametersError($igresponse->meta['error_message'], $igresponse->meta['error_code']);
+					throw new \Instaphp\Exceptions\APIInvalidParametersError($igresponse->meta['error_message'], $igresponse->meta['code']);
 					break;
 
 				default:

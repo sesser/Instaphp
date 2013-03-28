@@ -83,7 +83,6 @@ class MediaTest extends InstagramTest
 		$this->object->SetAccessToken(TEST_ACCESS_TOKEN);
 		$res = $this->object->Like(TEST_MEDIA_ID);
 		$this->assertInstanceOf('\Instaphp\Instagram\Response', $res);
-		$this->assertEquals('POST', $res->method);
 		$this->assertEquals(200, $res->meta['code']);
 		$info = $this->object->Info(TEST_MEDIA_ID);
 		$this->assertTrue($info->data['user_has_liked']);

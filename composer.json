@@ -1,5 +1,5 @@
 {
-    "name": "instaphp/instaphp2",
+    "name": "instaphp/instaphp",
     "description": "A library for accessing Instagram's API (v2)",
     "keywords": ["library","instagram","instaphp"],
     "homepage": "http://instaphp.com",
@@ -12,7 +12,8 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0"
+        "php": ">=5.4.0",
+		"sesser/scurl": "1.*"
     },
 	"autoload": {
 		"psr-0": {

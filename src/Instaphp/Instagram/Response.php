@@ -84,12 +84,12 @@ class Response
 	/** @var int The number of requests you have remaining for this client/access_token */
 	public $remaining = 0;
 	
-	public function __construct(\Instaphp\Utils\Http\Response $response)
+	public function __construct(\Sesser\Scurl\Response $response)
 	{
 		$this->headers = $response->headers;
 		$this->url = $response->request_url;
-		$this->params = $response->request_params;
-		$this->method = $response->request_method;
+		$this->params = $response->request_parameters;
+//		$this->method = $response->request_method;
 		
 		$this->json = $response->body;
 		$json = json_decode($this->json, TRUE);
