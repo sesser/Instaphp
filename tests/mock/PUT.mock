@@ -1,0 +1,44 @@
+HTTP/1.1 100 Continue
+
+HTTP/1.1 200 OK
+Server: nginx/1.2.4
+Date: Wed, 23 Jan 2013 06:41:50 GMT
+Content-Type: application/json
+Transfer-Encoding: chunked
+Connection: keep-alive
+Vary: Accept-Encoding
+Content-Encoding: gzip
+
+{
+    "request_method": "PUT",
+    "request_method_matches": "true",
+    "request_get_parameters": [
+
+    ],
+    "request_put_parameters": [
+
+    ],
+    "request_post_parameters": [
+
+    ],
+    "request_headers": {
+        "REQUEST_METHOD": "PUT",
+        "REMOTE_ADDR": "70.187.182.70",
+        "SCRIPT_NAME": "",
+        "PATH_INFO": "\/test\/put\/beer.png",
+        "QUERY_STRING": "",
+        "SERVER_NAME": "httptest.instaphp.com",
+        "SERVER_PORT": "80",
+        "CONTENT_TYPE": "",
+        "CONTENT_LENGTH": "15547",
+        "USER_AGENT": "Instaphp\/2.0 (+http:\/\/instaphp.com)",
+        "HOST": "httptest.instaphp.com",
+        "ACCEPT": "*\/*",
+        "ACCEPT_ENCODING": "deflate, gzip",
+        "CONNECTION": "keep-alive",
+        "KEEP_ALIVE": "300",
+        "ACCEPT_CHARSET": "ISO-8859-1,utf-8;q=0.7,*;q=0.7",
+        "ACCEPT_LANGUAGE": "en-us,en;q=0.5",
+        "EXPECT": "100-continue"
+    }
+}
