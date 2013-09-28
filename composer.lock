@@ -1,0 +1,56 @@
+{
+    "hash": "f4ad01a0a02279a87bf1fac7c520da37",
+    "packages": [
+        {
+            "name": "sesser/scurl",
+            "version": "1.0.4",
+            "source": {
+                "type": "git",
+                "url": "git://github.com/sesser/Scurl.git",
+                "reference": "1.0.4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sesser/Scurl/zipball/1.0.4",
+                "reference": "1.0.4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "time": "2013-02-07 06:28:45",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-0": {
+                    "Sesser": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Randy Sesser",
+                    "email": "sesser@gmail.com",
+                    "homepage": "http://randys.org"
+                }
+            ],
+            "description": "A small library wrapper for making HTTP requests using PHP curl functions",
+            "homepage": "https://github.com/sesser/Scurl",
+            "keywords": [
+                "curl",
+                "http",
+                "library"
+            ]
+        }
+    ],
+    "packages-dev": null,
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": [
+
+    ]
+}

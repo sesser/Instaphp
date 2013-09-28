@@ -1,3 +1,4 @@
-/config.xml
-tmp/
-.DS_Store
+nbproject/private
+vendor/*
+docs/*
+tmp/*

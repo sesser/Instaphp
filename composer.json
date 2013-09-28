@@ -1,0 +1,23 @@
+{
+    "name": "instaphp/instaphp",
+    "description": "A library for accessing Instagram's API (v2)",
+    "keywords": ["library","instagram","instaphp"],
+    "homepage": "http://instaphp.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Randy Sesser",
+            "email": "randy@instaphp.com",
+            "homepage": "http://instaphp.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+		"sesser/scurl": "1.*"
+    },
+	"autoload": {
+		"psr-0": {
+			"Instaphp": "src/"
+		}
+	}
+}
