@@ -105,8 +105,6 @@ class MediaTest extends InstagramTest
 	{
 		$this->object->SetAccessToken(TEST_ACCESS_TOKEN);
 		$res = $this->object->Unlike(TEST_MEDIA_ID);
-		print_r($res->meta);
-		print_r($res->data);
 		$this->assertInstanceOf('\Instaphp\Instagram\Response', $res);
 		$this->assertEquals(200, $res->meta['code']);
 		$info = $this->object->Info(TEST_MEDIA_ID);

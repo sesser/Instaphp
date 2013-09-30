@@ -17,7 +17,7 @@ class InstaphpTest extends \PHPUnit_Framework_TestCase
 	protected $config = [
 		'client_id' => TEST_CLIENT_ID,
 		'client_secret' => TEST_CLIENT_SECRET,
-		'callback_uri' => 'http://localhost:3001/auth'
+		'redirect_uri' => 'http://localhost:3001/auth'
 	];
 
 	/**
@@ -36,6 +36,18 @@ class InstaphpTest extends \PHPUnit_Framework_TestCase
 	protected function tearDown()
 	{
 		
+	}
+	
+	/**
+	 * @covers Instaphp\Instaphp::__construct
+	 */
+	public function testConstructor()
+	{
+		$config = $this->config;
+		$config['access_token'] = TEST_ACCESS_TOKEN;
+		$obj = new \Instaphp\Instaphp($config);
+		$this->assertEquals(TEST_ACCESS_TOKEN, $obj->getAccessToken());
+		$this->assertTrue($obj->isAuthorized());
 	}
 
 	/**
@@ -64,10 +76,30 @@ class InstaphpTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function test__unset()
 	{
-		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
+		$media = $this->object->media;
+		$this->assertTrue(isset($this->object->media));
+		unset($this->object->Media);
+		$this->assertTrue(!isset($this->object->Media));
+	}
+	
+	/**
+	 * @covers Instaphp\Instaphp::setAccessToken
+	 * @covers Instaphp\Instaphp::getAccessToken
+	 */
+	public function testSetAccessToken()
+	{
+		$this->object->setAccessToken(TEST_ACCESS_TOKEN);
+		$this->assertEquals(TEST_ACCESS_TOKEN, $this->object->getAccessToken());
+	}
+	
+	/**
+	 * @covers Instagram\Instagram::isAuthorized
+	 * @covers Instaphp\Instaphp::isAuthorized
+	 */
+	public function testIsAuthorized()
+	{
+		$this->object->setAccessToken(TEST_ACCESS_TOKEN);
+		$this->assertTrue($this->object->isAuthorized());
 	}
 
 }

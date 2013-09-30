@@ -17,7 +17,7 @@ It's not battle tested so I can't speak to it's reliability/speed/ease of use, b
 	$api = new Instaphp\Instaphp([
 		'client_id' => 'your client id',
 		'client_secret' => 'your client secret',
-		'callback_uri' => 'http://somehost.foo/callback.php',
+		'redirect_uri' => 'http://somehost.foo/callback.php',
 		'scope' => 'comments+likes'
 	]);
 

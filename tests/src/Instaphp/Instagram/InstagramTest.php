@@ -23,7 +23,7 @@ class InstagramTest extends \PHPUnit_Framework_TestCase
 		'api_version' => 'v1',
 		'client_id' => TEST_CLIENT_ID,
 		'client_secret' => TEST_CLIENT_SECRET,
-		'callback_uri' => '',
+		'redirect_uri' => '',
 		'http_useragent' => 'pass',
 		'http_timeout' => 6,
 		'http_connect_timeout' => 2
