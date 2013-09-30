@@ -85,6 +85,25 @@ class Instagram
 	}
 	
 	/**
+	 * Get the access_token currently in use
+	 * @return string
+	 */
+	public function getAccessToken()
+	{
+		return $this->access_token;
+	}
+	
+	/**
+	 * Checks the existance of an access_token and assumes the user is logged in
+	 * and has authorized this site
+	 * @return boolean
+	 */
+	public function isAuthorized()
+	{
+		return !empty($this->access_token);
+	}
+	
+	/**
 	 * Makes a GET request to the API
 	 * @param string $path The path of the request
 	 * @param array $params Parameters to pass to the API

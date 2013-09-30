@@ -41,11 +41,11 @@ namespace Instaphp;
  * @package Instaphp
  * @version 2.0-dev
  * 
- * @property-read Instagram\Media $media Media API
- * @property-read Instagram\Users $users Users API
- * @property-read Instagram\Tags $tags Tags API
- * @property-read Instagram\Locations $locations Locations API
- * @property-read Instagram\Subscriptions $subscriptions Subscription API
+ * @property-read Instagram\Media $Media Media API
+ * @property-read Instagram\Users $Users Users API
+ * @property-read Instagram\Tags $Tags Tags API
+ * @property-read Instagram\Locations $Locations Locations API
+ * @property-read Instagram\Subscriptions $Subscriptions Subscription API
  */
 class Instaphp
 {
@@ -68,7 +68,8 @@ class Instaphp
 		$defaults = [
 			'client_id'	=> '',
 			'client_secret' => '',
-			'callback_uri' => '',
+			'access_token' => '',
+			'redirect_uri' => '',
 			'scope' => 'comments+relationships+likes',
 			'api_protocol' => 'https',
 			'api_host' => 'api.instagram.com',
@@ -78,6 +79,8 @@ class Instaphp
 			'http_connect_timeout' => 2,
 		];
 		$this->config = $config + $defaults;
+		if (!empty($this->config['access_token']))
+			$this->setAccessToken($this->config['access_token']);
 	}
 	
 	/**
@@ -140,6 +143,33 @@ class Instaphp
 				urlencode($this->config['redirect_uri']),
 				$this->config['scope'],
 				$displayTouch ? '&display=touch':'');
+	}
+	
+	/**
+	 * Set the access_token
+	 * @param string $access_token The access_token
+	 */
+	public function setAccessToken($access_token)
+	{
+		$this->Users->setAccessToken($access_token);
+	}
+	
+	/**
+	 * Get the access_token
+	 * @return string
+	 */
+	public function getAccessToken()
+	{
+		return $this->Users->getAccessToken();
+	}
+	
+	/**
+	 * @see Instagram\Instagram::isAuthorized()
+	 * @return boolean
+	 */
+	public function isAuthorized()
+	{
+		return $this->Users->isAuthorized();
 	}
 }
 
