@@ -161,9 +161,10 @@ class Instagram
 	/**
 	 * Adds the api_version to the beginning of the path
 	 * @param string $path
+	 * @param bool $add_version
 	 * @return string Returns the corrected path
 	 */
-	private function buildPath($path)
+	protected function buildPath($path, $add_version = true)
 	{
 		$base = sprintf('%s://%s', $this->config['api_protocol'], $this->config['api_host']);
 		if (empty($path))
@@ -172,7 +173,7 @@ class Instagram
 		if (substr($path, 0, 1) !== '/')
 			$path = '/' . $path;
 		
-		if (!preg_match('/^\/'.$this->config['api_version'].'/', $path))
+		if ($add_version && !preg_match('/^\/'.$this->config['api_version'].'/', $path))
 			$path = '/' . $this->config['api_version'] . $path;
 		
 		return $base.$path;

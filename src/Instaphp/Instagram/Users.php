@@ -45,7 +45,8 @@ class Users extends Instagram
 	 */
 	public function Authorize($code)
 	{
-		$response = $this->http->Post('/oauth/access_token', [
+		$response = $this->http->Post($this->buildPath('/oauth/access_token', false), [
+			'client_id' => $this->config['client_id'],
 			'client_secret' => $this->config['client_secret'],
 			'grant_type' => 'authorization_code',
 			'redirect_uri' => $this->config['redirect_uri'],
@@ -53,7 +54,7 @@ class Users extends Instagram
 		]);
 		if ($response->code == 200) {
 			$res = new Response($response);
-			$this->SetAccessToken($res['data']['access_token']);
+			$this->SetAccessToken($res->data['access_token']);
 			$this->user = $res->data['user'];
 			return true;
 		}
