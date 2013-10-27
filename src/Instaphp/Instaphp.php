@@ -26,6 +26,8 @@
  * @filesource
  */
 namespace Instaphp;
+use Instaphp\Exceptions\InstaphpException;
+use Instaphp\Exceptions\InvalidEndpointException;
 
 /**
  * A PHP library for accessing Instagram's API
@@ -77,10 +79,16 @@ class Instaphp
 			'http_useragent' => $ua,
 			'http_timeout' => 6,
 			'http_connect_timeout' => 2,
+			'debug' => FALSE,
+			'event.before' => [],
+			'event.after' => [],
+			'event.error' => []
 		];
 		$this->config = $config + $defaults;
-		if (!empty($this->config['access_token']))
-			$this->setAccessToken($this->config['access_token']);
+
+		//-- Can't do anything without a client_id...
+        if (empty($this->config['client_id']))
+            throw new InstaphpException("Invalid client id");
 	}
 	
 	/**
@@ -92,7 +100,7 @@ class Instaphp
 	public function __get($endpoint)
 	{
 		$endpoint = strtolower($endpoint);
-		$class = ucfirst(strtolower($endpoint));
+		$class = ucfirst($endpoint);
 		if (in_array($endpoint, static::$availableEndpoints)) {
 			if (!$this->__isset($endpoint)) {
 				$ref = new \ReflectionClass('Instaphp\\Instagram\\' . $class);
@@ -102,7 +110,7 @@ class Instaphp
 			
 			return static::$endpoints[$endpoint];
 		}
-		throw new Exceptions\InvalidEndpointException("{$endpoint} is not a valid endpoint");
+		throw new InvalidEndpointException("{$endpoint} is not a valid endpoint");
 	}
 	
 	/**

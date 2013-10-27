@@ -46,8 +46,8 @@ class Users extends Instagram
 	public function Authorize($code)
 	{
 		$response = $this->http->Post($this->buildPath('/oauth/access_token', false), [
-			'client_id' => $this->config['client_id'],
-			'client_secret' => $this->config['client_secret'],
+			'client_id' => $this->client_id,
+			'client_secret' => $this->client_secret,
 			'grant_type' => 'authorization_code',
 			'redirect_uri' => $this->config['redirect_uri'],
 			'code' => $code

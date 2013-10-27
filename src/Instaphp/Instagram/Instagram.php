@@ -27,6 +27,7 @@
  */
 
 namespace Instaphp\Instagram;
+use \Sesser\Scurl\Scurl;
 
 /**
  * The base Instagram API object.
@@ -57,6 +58,9 @@ class Instagram
 	/** @var array The currently authenticated user */
 	protected $user = [];
 	
+	/** @var bool Are we in debug mode */
+	protected $debug = FALSE;
+	
 	/** @var \Sesser\Scurl\Scurl The Http object for making requests to the API */
 	protected $http = NULL;
 	
@@ -65,13 +69,18 @@ class Instagram
 		$this->config = $config;
 		$this->client_id = $config['client_id'];
 		$this->client_secret = $config['client_secret'];
-		$this->http = new \Sesser\Scurl\Scurl([
+        $this->access_token = $config['access_token'];
+		$this->debug = $config['debug'];
+		$this->http = new Scurl([
 			'options' => [
 				'user-agent' => $this->config['http_useragent'],
 				'timeout' => $this->config['http_timeout'],
 				'connect_timeout' => $this->config['http_connect_timeout']
 			]
 		]);
+		$this->http->addListener(Scurl::EVENT_BEFORE, $this->config['event.before']);
+		$this->http->addListener(Scurl::EVENT_AFTER, $this->config['event.after']);
+		$this->http->addListener(Scurl::EVENT_ERROR, $this->config['event.error']);
 	}
 	
 	/**
@@ -91,6 +100,11 @@ class Instagram
 	public function getAccessToken()
 	{
 		return $this->access_token;
+	}
+
+	public function getCurrentUser()
+	{
+		return !empty($this->user) ?: $this->user;
 	}
 	
 	/**
