@@ -48,6 +48,7 @@ use Instaphp\Exceptions\InvalidEndpointException;
  * @property-read Instagram\Tags $Tags Tags API
  * @property-read Instagram\Locations $Locations Locations API
  * @property-read Instagram\Subscriptions $Subscriptions Subscription API
+ * @property-read Instagram\Direct $Direct Direct share API
  */
 class Instaphp
 {
@@ -55,7 +56,7 @@ class Instaphp
 	private static $endpoints = [];
 	
 	/** @var array Available enoints */
-	private static $availableEndpoints = ["media", "users", "tags", "locations", "subscriptions"];
+	private static $availableEndpoints = ["media", "users", "tags", "locations", "subscriptions", "direct"];
 	
 	/** @var array Configuration for Instaphp */
 	protected $config = [];
