@@ -43,7 +43,10 @@ class Direct extends Instagram
 	 */
 	public function Inbox()
 	{
-		return $this->Get('/direct_share/inbox');
+		$res = $this->http->Get('https://instagram.com/api/v1/direct_share/inbox/', [
+			'access_token' => $this->getAccessToken()
+		]);
+		return new Response($res);
 	}
 	
 	/**
@@ -52,6 +55,9 @@ class Direct extends Instagram
 	 */
 	public function Pending()
 	{
-		return $this->Get('/direct_share/pending');
+		$res = $this->http->Get('https://instagram.com/api/v1/direct_share/pending/', [
+			'access_token' => $this->getAccessToken()
+		]);
+		return new Response($res);
 	}
 }
