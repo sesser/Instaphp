@@ -18,15 +18,19 @@ class InstagramTest extends \PHPUnit_Framework_TestCase
 	 * @var array
 	 */
 	protected $config = [
+        'api_endpoint' => 'https://api.instagram.com/{version}',
 		'api_protocol' => 'https',
 		'api_host' => 'api.instagram.com',
 		'api_version' => 'v1',
 		'client_id' => TEST_CLIENT_ID,
 		'client_secret' => TEST_CLIENT_SECRET,
 		'redirect_uri' => '',
-		'http_useragent' => 'pass',
+		'http_useragent' => 'Instaphp/Guzzle/cUrl v3 (+http://instaphp.com)',
 		'http_timeout' => 6,
-		'http_connect_timeout' => 2
+		'http_connect_timeout' => 2,
+        'log_enabled' => true,
+        'log_level' => \Monolog\Logger::DEBUG,
+        'log_path' => './instagram_test.log'
 	];
 
 	/**
@@ -44,7 +48,7 @@ class InstagramTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected function tearDown()
 	{
-		
+
 	}
 
 	/**

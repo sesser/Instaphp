@@ -13,11 +13,11 @@ class InstaphpTest extends \PHPUnit_Framework_TestCase
 	 * @var Instaphp
 	 */
 	protected $object;
-	
 	protected $config = [
 		'client_id' => TEST_CLIENT_ID,
 		'client_secret' => TEST_CLIENT_SECRET,
-		'redirect_uri' => 'http://localhost:3001/auth'
+		'redirect_uri' => 'http://localhost:3001/auth',
+        'log_path' => './instaphp_test.log'
 	];
 
 	/**
@@ -27,6 +27,7 @@ class InstaphpTest extends \PHPUnit_Framework_TestCase
 	protected function setUp()
 	{
 		$this->object = new Instaphp($this->config);
+        // print_r($this->object);
 	}
 
 	/**
@@ -35,9 +36,9 @@ class InstaphpTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected function tearDown()
 	{
-		
+
 	}
-	
+
 	/**
 	 * @covers Instaphp\Instaphp::__construct
 	 */
@@ -45,7 +46,7 @@ class InstaphpTest extends \PHPUnit_Framework_TestCase
 	{
 		$config = $this->config;
 		$config['access_token'] = TEST_ACCESS_TOKEN;
-		$obj = new \Instaphp\Instaphp($config);
+		$obj = new Instaphp($config);
 		$this->assertEquals(TEST_ACCESS_TOKEN, $obj->getAccessToken());
 		$this->assertTrue($obj->isAuthorized());
 	}
@@ -81,7 +82,7 @@ class InstaphpTest extends \PHPUnit_Framework_TestCase
 		unset($this->object->Media);
 		$this->assertTrue(!isset($this->object->Media));
 	}
-	
+
 	/**
 	 * @covers Instaphp\Instaphp::setAccessToken
 	 * @covers Instaphp\Instaphp::getAccessToken
@@ -91,7 +92,7 @@ class InstaphpTest extends \PHPUnit_Framework_TestCase
 		$this->object->setAccessToken(TEST_ACCESS_TOKEN);
 		$this->assertEquals(TEST_ACCESS_TOKEN, $this->object->getAccessToken());
 	}
-	
+
 	/**
 	 * @covers Instagram\Instagram::isAuthorized
 	 * @covers Instaphp\Instaphp::isAuthorized

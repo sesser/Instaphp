@@ -36,7 +36,7 @@ class UsersTest extends InstagramTest
     {
         $res = $this->object->FindId('sesser');
 		$this->assertEquals(5830, $res);
-		
+
     }
 
     /**
@@ -44,11 +44,11 @@ class UsersTest extends InstagramTest
      */
     public function testInfo()
     {
-		$res = $this->object->Info(5830);
+		$res = $this->object->Info(3740103);
 		$this->assertEquals(200, $res->meta['code']);
-		$this->assertEquals('sesser', $res->data['username']);
+		$this->assertEquals('bowkylion', $res->data['username']);
     }
-	
+
 	/**
 	 * @covers Instaphp\Instagram\Users::Feed
 	 * @expectedException \Instaphp\Exceptions\OAuthParameterException
@@ -68,7 +68,7 @@ class UsersTest extends InstagramTest
 		$this->assertNotEmpty($res->data);
 		$this->assertEquals(200, $res->meta['code']);
 		$this->assertEquals(5, count($res->data));
-		
+
     }
 
     /**
@@ -82,7 +82,7 @@ class UsersTest extends InstagramTest
 		$this->assertEquals(200, $res->meta['code']);
 		$this->assertEquals(5, count($res->data));
     }
-	
+
 	/**
 	 * @covers Instaphp\Instagram\Users::Liked
 	 * @expectedException \Instaphp\Exceptions\OAuthParameterException
