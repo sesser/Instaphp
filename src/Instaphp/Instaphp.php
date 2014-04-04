@@ -58,7 +58,7 @@ class Instaphp
 
 	/** @var array Available enoints */
 	private static $availableEndpoints = ["media", "users", "tags", "locations", "subscriptions", "direct"];
-	
+
 	/** @var array Configuration for Instaphp */
 	protected $config = [];
 
@@ -147,9 +147,7 @@ class Instaphp
 	 */
 	public function getOauthUrl($displayTouch = TRUE)
 	{
-		return sprintf('%s://%s/oauth/authorize/?client_id=%s&redirect_uri=%s&scope=%s&response_type=code%s',
-				$this->config['api_protocol'],
-				$this->config['api_host'],
+		return sprintf('https://api.instagram.com/oauth/authorize/?client_id=%s&redirect_uri=%s&scope=%s&response_type=code%s',
 				$this->config['client_id'],
 				urlencode($this->config['redirect_uri']),
 				$this->config['scope'],
