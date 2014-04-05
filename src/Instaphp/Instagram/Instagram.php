@@ -27,7 +27,6 @@
  */
 
 namespace Instaphp\Instagram;
-use \Sesser\Scurl\Scurl;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Subscriber\Log\LogSubscriber;
@@ -62,10 +61,10 @@ class Instagram
 
 	/** @var array The currently authenticated user */
 	protected $user = [];
-	
+
 	/** @var bool Are we in debug mode */
 	protected $debug = FALSE;
-	
+
 	/** @var GuzzleHttp\Client The Http client for making requests to the API */
 	protected $http = NULL;
 
@@ -113,7 +112,7 @@ class Instagram
 	{
 		return !empty($this->user) ?: $this->user;
 	}
-	
+
 	/**
 	 * Checks the existance of an access_token and assumes the user is logged in
 	 * and has authorized this site
@@ -199,15 +198,15 @@ class Instagram
 	 */
 	protected function buildPath($path, $add_version = true)
 	{
-		$base = sprintf('%s://%s', $this->config['api_protocol'], $this->config['api_host']);
+		$base = 'https://api.instagram.com';
 		if (empty($path))
 			return $base . '/';
 
-		if (substr($path, 0, 1) !== '/')
-			$path = '/' . $path;
+        $path = sprintf('/%s/', $path);
+        $path = preg_replace('/[\/]{2,}/', '/', $path);
 
-		if ($add_version && !preg_match('/^\/'.$this->config['api_version'].'/', $path))
-			$path = '/' . $this->config['api_version'] . $path;
+		if ($add_version && !preg_match('/^\/v1/', $path))
+			$path = '/v1' . $path;
 
 		return $base.$path;
 	}
