@@ -75,6 +75,7 @@ class Instagram
 		$this->client_id = $this->config['client_id'];
 		$this->client_secret = $this->config['client_secret'];
         $this->http = new Client([
+            'base_url' => 'https://api.instagram.com',
             'defaults' => [
                 'timeout' => $this->config['http_timeout'],
                 'connect_timeout' => $this->config['http_connect_timeout'],
@@ -110,7 +111,7 @@ class Instagram
 
 	public function getCurrentUser()
 	{
-		return !empty($this->user) ?: $this->user;
+		return $this->user;
 	}
 
 	/**
@@ -151,7 +152,7 @@ class Instagram
 	{
         $query = $this->prepare($params);
 		$response = $this->http->post($this->buildPath($path), [
-            'query' => $query,
+            'body' => $query,
             'headers' => $headers
         ]);
 		return $this->parseResponse($response);
@@ -198,9 +199,7 @@ class Instagram
 	 */
 	protected function buildPath($path, $add_version = true)
 	{
-		$base = 'https://api.instagram.com';
-		if (empty($path))
-			return $base . '/';
+		//$base = 'https://api.instagram.com';
 
         $path = sprintf('/%s/', $path);
         $path = preg_replace('/[\/]{2,}/', '/', $path);
@@ -208,7 +207,7 @@ class Instagram
 		if ($add_version && !preg_match('/^\/v1/', $path))
 			$path = '/v1' . $path;
 
-		return $base.$path;
+		return $path;
 	}
 
 	/**

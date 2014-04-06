@@ -180,4 +180,13 @@ class Instaphp
 	{
 		return $this->Users->isAuthorized();
 	}
+
+    /**
+     * @see Instagram\Instagram::getCurrentUser()
+     * @return array
+     */
+    public function getCurrentUser()
+    {
+        return $this->Users->getCurrentUser();
+    }
 }

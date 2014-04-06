@@ -45,19 +45,23 @@ class Users extends Instagram
 	 */
 	public function Authorize($code)
 	{
-        $request = $this->http->createRequest('POST', 'http://api.instagram.com/oauth/access_token');
-        $query = $request->getQuery();
-        $query->set('client_id', $this->config['client_id']);
-        $query->set('client_secret', $this->config['client_secret']);
-        $query->set('grant_type', 'authorization_code');
-        $query->set('redirect_uri', $this->config['redirect_uri']);
-        $query->set('code', $code);
-		$response = $this->http->Send($request);
-
+        try {
+            $response = $this->http->Post($this->buildPath('/oauth/access_token', false), [
+                'body' => [
+                    'client_id' => $this->config['client_id'],
+                    'client_secret' => $this->config['client_secret'],
+                    'redirect_uri' => $this->config['redirect_uri'],
+                    'grant_type' => 'authorization_code',
+                    'code' => $code
+                    ]
+            ]);
+        } catch (GuzzleHttp\Exception\RequestException $re) {
+            printf('%s%s', $re->getRequest(), PHP_EOL);
+        }
 		if ($response->getStatusCode() == 200) {
 			$res = new Response($response);
-			$this->SetAccessToken($res->data['access_token']);
-			$this->user = $res->data['user'];
+			$this->SetAccessToken($res->access_token);
+			$this->user = $res->user;
 			return true;
 		}
 		return false;
