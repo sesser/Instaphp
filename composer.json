@@ -13,7 +13,12 @@
     ],
     "require": {
         "php": ">=5.4.0",
-		"sesser/scurl": "1.*"
+        "guzzlehttp/guzzle": "4.*",
+        "guzzlehttp/log-subscriber": "1.*",
+        "monolog/monolog": "1.8.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
     },
 	"autoload": {
 		"psr-0": {

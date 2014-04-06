@@ -1,4 +1,5 @@
 nbproject/private
+.idea/*
 vendor/*
 docs/*
 tmp/*

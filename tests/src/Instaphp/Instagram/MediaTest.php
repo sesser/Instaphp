@@ -13,13 +13,13 @@ class MediaTest extends InstagramTest
 	 * @var Media
 	 */
 	protected $object;
-	
+
 	protected $lat = '37.78776';
-	
+
 	protected $lng = '-122.489556';
-	
+
 	static $comment_id = NULL;
-	
+
 	/**
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
@@ -35,7 +35,7 @@ class MediaTest extends InstagramTest
 	 */
 	protected function tearDown()
 	{
-		
+
 	}
 
 	/**
@@ -123,7 +123,7 @@ class MediaTest extends InstagramTest
 		$this->assertNotEmpty($res->data);
 		$this->assertNotEmpty($res->data['id']);
 		static::$comment_id = $res->data['id'];
-				
+
 	}
 
 	/**
@@ -146,7 +146,7 @@ class MediaTest extends InstagramTest
 		$res = $this->object->Uncomment(TEST_MEDIA_ID, static::$comment_id);
 		$this->assertInstanceOf('\Instaphp\Instagram\Response', $res);
 		$this->assertEquals(200, $res->meta['code']);
-		
+
 	}
 
 }
