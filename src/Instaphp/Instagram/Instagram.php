@@ -74,6 +74,7 @@ class Instagram
 		$this->config = $config;
 		$this->client_id = $this->config['client_id'];
 		$this->client_secret = $this->config['client_secret'];
+        $this->access_token = $this->config['access_token'];
         $this->http = new Client([
             'base_url' => 'https://api.instagram.com',
             'defaults' => [
