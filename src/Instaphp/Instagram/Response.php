@@ -108,6 +108,8 @@ class Response
 		// $json = json_decode($this->json, TRUE);
 		$this->data = isset($this->json['data']) ? $this->json['data'] : [];
 		$this->meta = isset($this->json['meta']) ? $this->json['meta'] : [];
+		if (isset($this->json['code']) && $this->json['code'] !== 200)
+			$this->meta = $this->json;
 		$this->pagination = isset($this->json['pagination']) ? $this->json['pagination'] : [];
         $this->user = isset($this->json['user']) ? $this->json['user'] : [];
         $this->access_token = isset($this->json['access_token']) ? $this->json['access_token'] : NULL;

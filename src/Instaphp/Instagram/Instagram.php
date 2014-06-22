@@ -32,7 +32,10 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Subscriber\Log\LogSubscriber;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
+use GuzzleHttp\Event\BeforeEvent;
+use GuzzleHttp\Event\CompleteEvent;
 use GuzzleHttp\Message\Response;
+use Instaphp\Http\Events\InstagramSignedAuthEvent;
 /**
  * The base Instagram API object.
  *
@@ -59,6 +62,9 @@ class Instagram
 	/** @var string The access_token for authenticated requests */
 	protected $access_token = '';
 
+	/** @var string The IP address of the client **/
+	protected $client_ip = '';
+
 	/** @var array The currently authenticated user */
 	protected $user = [];
 
@@ -68,13 +74,19 @@ class Instagram
 	/** @var GuzzleHttp\Client The Http client for making requests to the API */
 	protected $http = NULL;
 
+	/** @var Monolog\Logger The Monolog log object */
+	protected $log = NULL;
+
 	public function __construct(array $config)
 	{
-
+		
 		$this->config = $config;
+		$this->log = new Logger('instaphp');
+		$this->log->pushHandler(new StreamHandler($this->config['log_path'], $this->config['log_level']));
 		$this->client_id = $this->config['client_id'];
 		$this->client_secret = $this->config['client_secret'];
         $this->access_token = $this->config['access_token'];
+        $this->client_ip = $this->config['client_ip'];
         $this->http = new Client([
             'base_url' => 'https://api.instagram.com',
             'defaults' => [
@@ -85,10 +97,9 @@ class Instagram
             ]
         ]);
 
-        $log = new Logger('instaphp');
-        $log->pushHandler(new StreamHandler($this->config['log_path'], $this->config['log_level']));
-        $subscriber = new LogSubscriber($log);
+        $subscriber = new LogSubscriber($this->log);
         $this->http->getEmitter()->attach($subscriber);
+        $this->http->getEmitter()->attach(new InstagramSignedAuthEvent($this->client_ip, $this->client_secret));
 	}
 
 	/**
@@ -135,10 +146,13 @@ class Instagram
 	protected function get($path, array $params = [], array $headers = [])
 	{
         $query = $this->prepare($params);
-		$response = $this->http->get($this->buildPath($path), [
-            'query' => $query,
-            'headers' => $headers
-        ]);
+        $response = new Response(500);
+        try {
+			$response = $this->http->get($this->buildPath($path), [
+	            'query' => $query,
+	            'headers' => $headers
+	        ]);
+		} catch (\Exception $e) { }
 		return $this->parseResponse($response);
 	}
 
@@ -152,10 +166,13 @@ class Instagram
 	protected function post($path, array $params = [], array $headers = [])
 	{
         $query = $this->prepare($params);
-		$response = $this->http->post($this->buildPath($path), [
-            'body' => $query,
-            'headers' => $headers
-        ]);
+        $response = new Response(500);
+        try {
+			$response = $this->http->post($this->buildPath($path), [
+	            'body' => $query,
+	            'headers' => $headers
+	        ]);
+		} catch (\Exception $e) { }
 		return $this->parseResponse($response);
 	}
 
@@ -169,10 +186,13 @@ class Instagram
 	protected function delete($path, array $params = [], array $headers = [])
 	{
         $query = $this->prepare($params);
-		$response = $this->http->delete($this->buildPath($path), [
-            'query' => $query,
-            'headers' => $headers
-        ]);
+        $response = new Response(500);
+        try {
+			$response = $this->http->delete($this->buildPath($path), [
+	            'query' => $query,
+	            'headers' => $headers
+	        ]);
+		} catch (\Exception $e) { }
 		return $this->parseResponse($response);
 	}
 
@@ -228,6 +248,9 @@ class Instagram
 	 */
 	private function parseResponse(Response $response)
 	{
+		if ($response == NULL)
+			throw new \Instaphp\Exceptions\Exception("Response object is NULL");
+
 		$igresponse = new \Instaphp\Instagram\Response($response);
 
 		//-- First check if there's an API error from the Instagram response
