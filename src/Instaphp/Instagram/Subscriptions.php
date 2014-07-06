@@ -66,7 +66,7 @@ class Subscriptions extends Instagram
 			'aspect' => 'media'
 		];
 		$params = $params + $defaults;
-		return $this->http->Post('/subscriptions/', $params);
+		return $this->Post('/subscriptions', $params);
 	}
 	
 	/**
