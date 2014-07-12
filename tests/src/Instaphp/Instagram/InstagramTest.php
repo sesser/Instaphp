@@ -24,13 +24,16 @@ class InstagramTest extends \PHPUnit_Framework_TestCase
 		'api_version' => 'v1',
 		'client_id' => TEST_CLIENT_ID,
 		'client_secret' => TEST_CLIENT_SECRET,
+		'access_token' => '',
 		'redirect_uri' => '',
 		'http_useragent' => 'Instaphp/Guzzle/cUrl v3 (+http://instaphp.com)',
 		'http_timeout' => 6,
 		'http_connect_timeout' => 2,
         'log_enabled' => true,
         'log_level' => \Monolog\Logger::DEBUG,
-        'log_path' => './instagram_test.log'
+        'log_path' => './instagram_test.log',
+        'client_ip' => '127.0.0.1',
+        'debug' => TRUE
 	];
 
 	/**
@@ -58,9 +61,8 @@ class InstagramTest extends \PHPUnit_Framework_TestCase
 	public function testSetAccessToken()
 	{
 		// Remove the following lines when you implement this test.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
+		$this->object->setAccessToken(TEST_ACCESS_TOKEN);
+		$this->assertEquals($this->object->getAccessToken(), TEST_ACCESS_TOKEN);
 	}
 
 }
