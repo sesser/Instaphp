@@ -30,10 +30,12 @@ namespace Instaphp\Instagram;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Subscriber\Log\LogSubscriber;
+use GuzzleHttp\Subscriber\Log\Formatter;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use GuzzleHttp\Event\BeforeEvent;
 use GuzzleHttp\Event\CompleteEvent;
+use GuzzleHttp\Event\ErrorEvent;
 use GuzzleHttp\Message\Response;
 use Instaphp\Http\Events\InstagramSignedAuthEvent;
 /**
@@ -96,10 +98,33 @@ class Instagram
                 'verify' => dirname(__DIR__) . '/cacert.pem'
             ]
         ]);
+        $emitter = $this->http->getEmitter();
 
-        $subscriber = new LogSubscriber($this->log);
-        $this->http->getEmitter()->attach($subscriber);
-        $this->http->getEmitter()->attach(new InstagramSignedAuthEvent($this->client_ip, $this->client_secret));
+        if (!empty($this->config['event.before']) && is_callable($this->config['event.before'])) {
+        	$emitter->on('before', function(BeforeEvent $e) use($config) {
+        		call_user_func_array($config['event.before'], [$e]);
+        	});
+        }
+
+        if (!empty($this->config['event.after']) && is_callable($this->config['event.after'])) {
+        	$emitter->on('complete', function(CompleteEvent $e) use ($config) {
+        		call_user_func_array($config['event.after'], [$e]);
+        	});
+        }
+
+        if (!empty($this->config['event.error']) && is_callable($this->config['event.error'])) {
+        	$emitter->on('error', function(ErrorEvent $e) use ($config) {
+        		$e->stopPropagation();
+        		call_user_func_array($config['event.error'], [$e]);
+        	});
+        }
+
+        if ($this->config['debug']) {
+        	$emitter->attach(new LogSubscriber($this->log, Formatter::DEBUG));
+        } else {
+        	$emitter->attach(new LogSubscriber($this->log));
+        }
+        $emitter->attach(new InstagramSignedAuthEvent($this->client_ip, $this->client_secret));
 	}
 
 	/**
@@ -261,6 +286,7 @@ class Instagram
 					throw new \Instaphp\Exceptions\OAuthParameterException($igresponse->meta['error_message'], $igresponse->meta['code']);
 					break;
 				case 'OAuthRateLimitException':
+				case 'OAuthRateLimitException';
 					throw new \Instaphp\Exceptions\OAuthRateLimitException($igresponse->meta['error_message'], $igresponse->meta['code']);
 					break;
 				case 'APINotFoundError':
@@ -286,6 +312,9 @@ class Instagram
 			case 503:
 			case 400: //-- 400 error slipped through?
 				throw new \Instaphp\Exceptions\HttpException($response->getReasonPhrase(), $response->getStatusCode());
+				break;
+			case 429:
+				throw new \Instaphp\Exceptions\OAuthRateLimitException($igresponse->meta['error_message'], 429);
 				break;
 			default: //-- no error then?
 				break;

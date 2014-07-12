@@ -14,10 +14,22 @@ class InstaphpTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected $object;
 	protected $config = [
+        'api_endpoint' => 'https://api.instagram.com/{version}',
+		'api_protocol' => 'https',
+		'api_host' => 'api.instagram.com',
+		'api_version' => 'v1',
 		'client_id' => TEST_CLIENT_ID,
 		'client_secret' => TEST_CLIENT_SECRET,
-		'redirect_uri' => 'http://localhost:3001/auth',
-        'log_path' => './instaphp_test.log'
+		'access_token' => '',
+		'redirect_uri' => '',
+		'http_useragent' => 'Instaphp/Guzzle/cUrl v3 (+http://instaphp.com)',
+		'http_timeout' => 6,
+		'http_connect_timeout' => 2,
+        'log_enabled' => true,
+        'log_level' => \Monolog\Logger::DEBUG,
+        'log_path' => './instagram_test.log',
+        'client_ip' => '127.0.0.1',
+        'debug' => TRUE
 	];
 
 	/**
@@ -26,6 +38,8 @@ class InstaphpTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected function setUp()
 	{
+		$this->config['access_token'] = '';
+		$this->config['client_ip'] = '127.0.0.1';
 		$this->object = new Instaphp($this->config);
         // print_r($this->object);
 	}
