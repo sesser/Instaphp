@@ -2,10 +2,11 @@
 
 This is version 2 of Instaphp. It's a complete rewrite from version 1 and is not backwards compatible. If you're using v1 and want to update to v2, you'll have to make a few changes. Some of the method names have changed and configuration is no longer an XML file. There are unit tests, but given the less than stellar reliability of Instagram's API, they are fairly useless.
 
-If you're using composer, you should need to worry about dependancies. If you're not, you will have to figure out the include chain. The new version relies on [Scurl][1], a simple HTTP utility. See the [Scurl README][2] for more information.
+If you're using composer, you shouldn't need to worry about dependancies. If you're not, you will have to figure out the include chain. The new version relies on [GuzzleHttp][3].
 
 [1]: https://github.com/sesser/Scurl
 [2]: https://github.com/sesser/Scurl/blob/master/README.md
+[3]: http://docs.guzzlephp.org/en/latest/
 
 It's not battle tested so I can't speak to it's reliability/speed/ease of use, but the unit test (generally) all pass. I will keep this in the development branch for a while until I think it's ready to move into master.
 
