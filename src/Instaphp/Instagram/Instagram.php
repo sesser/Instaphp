@@ -95,7 +95,8 @@ class Instagram
                 'timeout' => $this->config['http_timeout'],
                 'connect_timeout' => $this->config['http_connect_timeout'],
                 'headers' => [ 'User-Agent' => $this->config['http_useragent'] ],
-                'verify' => dirname(__DIR__) . '/cacert.pem'
+                'verify' => dirname(__DIR__) . '/cacert.pem',
+                'exceptions' => FALSE
             ]
         ]);
         $emitter = $this->http->getEmitter();
