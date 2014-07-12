@@ -119,11 +119,11 @@ class Subscriptions extends Instagram
 		foreach ($subs as $sub) {
 			switch ($sub['object']) {
 				case 'user':
-					$resposnes[] = $this->Get(sprintf('/users/%s/media/recent', $sub['object_id']), ["count" => 5, 'min_timestamp' => $sub['time']]);
+					$responses[] = $this->Get(sprintf('/users/%s/media/recent', $sub['object_id']), ["count" => 5, 'min_timestamp' => $sub['time']]);
 					break;
 				
 				case 'tag':
-					$resposnes[] = $this->Get(sprintf('/tags/%s/media/recent', $sub['object_id']), ['count' => 5]);
+					$responses[] = $this->Get(sprintf('/tags/%s/media/recent', $sub['object_id']), ['count' => 5]);
 					break;
 				
 				case 'location':
