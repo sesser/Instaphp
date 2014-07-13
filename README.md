@@ -12,6 +12,8 @@ It's not battle tested so I can't speak to it's reliability/speed/ease of use, b
 
 ## Usage ##
 
+Here's a basic example showing how to get 10 popular posts...
+
 ``` php
 <?php
 	
@@ -29,4 +31,25 @@ It's not battle tested so I can't speak to it's reliability/speed/ease of use, b
 			printf('<img src="%s">', $item['images']['low_resolution']['url']);
 		}
 	}
+?>
 ```
+### Configuration ###
+
+Configuration is now a simple `array` of key/value pairs. The absolute minimum required setting is `client_id`, but if you plan to allow users to login via OAuth, you'll need `client_secret` & `redirect_uri`. All the other settings are optional and/or have sensible defaults.
+
+Key|Default Value|Description
+:--|:-----------:|:----------------
+access_token|Empty|This is the access token for an authorized user. You obtain this from API via OAuth
+redirect_uri|Empty|The redirect URI you defined when setting up your Instagram client
+client_ip|Empty|The IP address of the client. This is used to sign POST & DELETE requests. It's not required, but without the signing, users are more limited in how many likes/comments they can post in a given hour
+scope|comments+relationships+likes|The scope of your client's capability
+log_enabled|TRUE|Enable logging
+log_level|DEBUG|Log level. See [Monolog Logger](https://github.com/Seldaek/monolog#log-levels)
+log_path|./instaphp.log|Where the log file lives
+http_useragent|Instaphp/2.0; cURL/{curl_version}; (+http://instaphp.com)|The user-agent string sent with all requests
+http_timeout|6|Timeout for requests to the API.
+http_connect_timeout|2|Timeout for http connect
+debug|FALSE|Debug mode?
+event.before|Empty|Callback called prior to sending the request to the API. Method takes a single parameter [BeforeEvent](http://docs.guzzlephp.org/en/latest/events.html#before)
+event.after|Empty|Callback called after a response is received from the API. Method takes a single parameter of [CompleteEvent](http://docs.guzzlephp.org/en/latest/events.html#complete)
+event.error|Empty|Callback called when an error response is received from the API. Method takes a single parameter of [ErrorEvent](http://docs.guzzlephp.org/en/latest/events.html#error).
