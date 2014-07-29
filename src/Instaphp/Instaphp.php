@@ -83,7 +83,8 @@ class Instaphp
 			'http_useragent' => $ua,
 			'http_timeout' => 6,
 			'http_connect_timeout' => 2,
-			'debug' => FALSE,
+            'verify' => true,
+			'debug' => false,
 			'event.before' => [],
 			'event.after' => [],
 			'event.error' => []
