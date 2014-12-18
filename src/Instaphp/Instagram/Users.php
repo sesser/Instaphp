@@ -91,7 +91,7 @@ class Users extends Instagram
 	 */
 	public function Info($user_id)
 	{
-		return $this->Get('/users/' . $user_id);
+		return $this->Get($this->formatPath('/users/%s', $user_id));
 	}
 
 	/**
@@ -115,7 +115,7 @@ class Users extends Instagram
 	 */
 	public function Recent($user_id, array $params = [])
 	{
-		return $this->Get(sprintf('/users/%s/media/recent', $user_id), $params);
+		return $this->Get($this->formatPath('/users/%s/media/recent', $user_id), $params);
 	}
 
 	/**
@@ -152,7 +152,7 @@ class Users extends Instagram
 	 */
 	public function Follows($user_id, array $params = [])
 	{
-		return $this->Get(sprintf('/users/%s/follows', $user_id), $params);
+		return $this->Get($this->formatPath('/users/%s/follows', $user_id), $params);
 	}
 
 	/**
@@ -163,7 +163,7 @@ class Users extends Instagram
 	 */
 	public function FollowedBy($user_id, array $params = [])
 	{
-		return $this->Get(sprintf('/users/%s/followed-by', $user_id), $params);
+		return $this->Get($this->formatPath('/users/%s/followed-by', $user_id), $params);
 	}
 
 	/**
@@ -190,7 +190,7 @@ class Users extends Instagram
 		if (empty($this->access_token))
 			throw new \Instaphp\Exceptions\OAuthParameterException("A valid access_token is requred to call this endpoint");
 
-		return $this->Get(sprintf('/users/%s/relationship', $user_id));
+		return $this->Get($this->formatPath('/users/%s/relationship', $user_id));
 	}
 
 	/**
@@ -271,6 +271,6 @@ class Users extends Instagram
 		if (empty($this->access_token))
 			throw new \Instaphp\Exceptions\OAuthParameterException("A valid access_token is requred to call this endpoint");
 
-		return $this->Post(sprintf('/users/%s/relationship', $user_id), ['action' => $action]);
+		return $this->Post($this->formatPath('/users/%s/relationship', $user_id), ['action' => $action]);
 	}
 }
