@@ -162,7 +162,13 @@ class Instaphp
 	 */
 	public function setAccessToken($access_token)
 	{
-		$this->Users->setAccessToken($access_token);
+		//also needs to update all the endpoints
+
+		foreach(static::$endpoints as $endpoint) {
+			$endpoint->setAccessToken($access_token);
+		}
+
+		$this->config['access_token'] = $access_token;
 	}
 
 	/**
