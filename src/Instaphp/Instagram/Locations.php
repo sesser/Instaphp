@@ -49,7 +49,7 @@ class Locations extends Instagram
 	 */
 	public function Info($location_id)
 	{
-		return $this->Get('/locations/' . $location_id);
+		return $this->Get($this->formatPath('/locations/%s', $location_id));
 	}
 	
 	/**
@@ -65,7 +65,7 @@ class Locations extends Instagram
 	 */
 	public function Recent($location_id, array $params = [])
 	{
-		return $this->Get(sprintf('/locations/%s/media/recent', $location_id), $params);
+		return $this->Get($this->formatPath('/locations/%s/media/recent', $location_id), $params);
 	}
 	
 	/**

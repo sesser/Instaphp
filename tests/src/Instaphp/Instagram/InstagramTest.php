@@ -33,7 +33,8 @@ class InstagramTest extends \PHPUnit_Framework_TestCase
         'log_level' => \Monolog\Logger::DEBUG,
         'log_path' => './instagram_test.log',
         'client_ip' => '127.0.0.1',
-        'debug' => TRUE
+        'debug' => TRUE,
+        'verify' => TRUE,
 	];
 
 	/**
