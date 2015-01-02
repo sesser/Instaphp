@@ -51,6 +51,14 @@ class TagsTest extends InstagramTest
 		$this->assertNotEmpty($res->data);
 	}
 
+    public function testInfoNonLatin()
+    {
+        $res = $this->object->Info('футбол');
+        $this->assertInstanceOf('\Instaphp\Instagram\Response', $res);
+		$this->assertNotEmpty($res->data);
+
+    }
+
 	/**
 	 * @covers Instaphp\Instagram\Tags::Recent
 	 */

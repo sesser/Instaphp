@@ -63,7 +63,7 @@ class Media extends Instagram
 	 */
 	public function Info($media_id, array $params = [])
 	{
-		return $this->Get('/media/' . $media_id, $params);
+		return $this->Get($this->formatPath('/media/%s', $media_id), $params);
 	}
 	
 	/**
@@ -95,7 +95,7 @@ class Media extends Instagram
 	{
 		if (empty($this->access_token))
 			throw new \Instaphp\Exceptions\OAuthParameterException("A valid access_token is required for this endpoint");
-		return $this->Post(sprintf('/media/%s/likes', $media_id));
+		return $this->Post($this->formatPath('/media/%s/likes', $media_id));
 	}
 	
 	/**
@@ -105,7 +105,7 @@ class Media extends Instagram
 	 */
 	public function Likes($media_id)
 	{
-		return $this->Get(sprintf('/media/%s/likes', $media_id));
+		return $this->Get($this->formatPath('/media/%s/likes', $media_id));
 	}
 	
 	/**
@@ -119,7 +119,7 @@ class Media extends Instagram
 		if (empty($this->access_token))
 			throw new \Instaphp\Exceptions\OAuthParameterException("A valid access_token is required for this endpoint");
 		
-		return $this->Delete(sprintf('/media/%s/likes', $media_id));
+		return $this->Delete($this->formatPath('/media/%s/likes', $media_id));
 	}
 	
 	/**
@@ -134,7 +134,7 @@ class Media extends Instagram
 		if (empty($this->access_token))
 			throw new \Instaphp\Exceptions\OAuthParameterException("A valid access_token is required for this endpoint");
 		
-		return $this->Post(sprintf('/media/%s/comments', $media_id), ['text' => $comment]);
+		return $this->Post($this->formatPath('/media/%s/comments', $media_id), ['text' => $comment]);
 	}
 	
 	/**
@@ -144,7 +144,7 @@ class Media extends Instagram
 	 */
 	public function Comments($media_id)
 	{
-		return $this->Get(sprintf('/media/%s/comments', $media_id));
+		return $this->Get($this->formatPath('/media/%s/comments', $media_id));
 	}
 	
 	/**
@@ -159,7 +159,7 @@ class Media extends Instagram
 		if (empty($this->access_token))
 			throw new \Instaphp\Exceptions\OAuthParameterException("A valid access_token is required for this endpoint");
 		
-		return $this->Delete(sprintf('/media/%s/comments/%s', $media_id, $comment_id));
+		return $this->Delete($this->formatPath('/media/%s/comments/%s', $media_id, $comment_id));
 	}
 }
 

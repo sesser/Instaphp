@@ -235,6 +235,11 @@ class Instagram
 			unset($params['client_id']);
 			$params['access_token'] = $this->access_token;
 		}
+
+		foreach ($params as $k => $v) {
+			$params[$k] = urlencode($v);
+		}
+
 		return $params;
 	}
 
@@ -255,6 +260,19 @@ class Instagram
 			$path = '/v1' . $path;
 
 		return $path;
+	}
+
+	/**
+	 * Works like sprintf, but urlencodes it's arguments
+	 * @param string $path Path (in sprintf format)
+	 * @param mixed... $args Arguments to be urlencoded and passed to sprintf
+	 * @return string
+	 */
+	protected function formatPath($path) {
+		$args = func_get_args();
+		$path = array_shift($args);
+		$args = array_map('urlencode', $args);
+		return vsprintf($path, $args);
 	}
 
 	/**
@@ -322,4 +340,5 @@ class Instagram
 		}
 		return $igresponse;
 	}
+
 }

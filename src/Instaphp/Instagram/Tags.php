@@ -47,7 +47,7 @@ class Tags extends Instagram
 	 */
 	public function Info($tag)
 	{
-		return $this->Get('/tags/'. $tag);
+		return $this->Get($this->formatPath('/tags/%s', $tag));
 	}
 	
 	/**
@@ -66,7 +66,7 @@ class Tags extends Instagram
 	 */
 	public function Recent($tag, array $params = [])
 	{
-		return $this->Get(sprintf('/tags/%s/media/recent', $tag), $params);
+		return $this->Get($this->formatPath('/tags/%s/media/recent', $tag), $params);
 	}
 	
 	/**
