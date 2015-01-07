@@ -39,5 +39,5 @@ namespace Instaphp\Exceptions;
  * @subpackage Exceptions
  * @version 2.0-dev
  */
-class HttpException extends Exception { }
+class HttpException extends InstagramException { }
 

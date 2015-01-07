@@ -28,6 +28,8 @@
 
 namespace Instaphp\Exceptions;
 
+use Instaphp\Instagram\Response;
+
 /**
  * InstagramException
  * 
@@ -40,5 +42,37 @@ namespace Instaphp\Exceptions;
  * @subpackage Exceptions
  * @version 2.0-dev
  */
-class InstagramException extends Exception { }
+class InstagramException extends Exception {
+
+
+    /**
+     * @var Response
+     */
+    protected $response;
+
+    public function __construct($message, $code = 1001, Response $response = null, $previous = NULL)
+    {
+        $this->setResponse($response);
+        parent::__construct($message, $code, $previous);
+    }
+
+    /**
+     * @return Response
+     */
+    public function getResponse()
+    {
+        return $this->response;
+    }
+
+    /**
+     * @param Response $response
+     */
+    public function setResponse(Response $response)
+    {
+        $this->response = $response;
+    }
+
+
+
+}
 
