@@ -104,8 +104,16 @@ class InstaphpTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testSetAccessToken()
 	{
-		$this->object->setAccessToken(TEST_ACCESS_TOKEN);
 		$this->assertEquals(TEST_ACCESS_TOKEN, $this->object->getAccessToken());
+		$this->assertEquals(TEST_ACCESS_TOKEN, $this->object->Users->getAccessToken());
+
+		$newAccessToken = '0123456789';
+
+		$this->object->setAccessToken($newAccessToken);
+		$this->assertEquals($newAccessToken, $this->object->getAccessToken());
+		$this->assertEquals($newAccessToken, $this->object->Users->getAccessToken());
+		$this->assertEquals($newAccessToken, $this->object->Tags->getAccessToken());
+
 	}
 
 	/**
