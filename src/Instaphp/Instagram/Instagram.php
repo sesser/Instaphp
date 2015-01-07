@@ -28,7 +28,7 @@
 
 namespace Instaphp\Instagram;
 
-use Guzzle\Http\Exception\RequestException;
+use GuzzleHttp\Exception\RequestException;
 use Instaphp\Exceptions\Exception as InstaphpException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Subscriber\Log\LogSubscriber;
@@ -321,7 +321,7 @@ class Instagram
 	 * @throws \Instaphp\Exceptions\APIInvalidParametersError
 	 * @throws \Instaphp\Exceptions\HttpException
 	 */
-	private function parseResponse(Response $response)
+	protected function parseResponse(Response $response)
 	{
 		if ($response == NULL)
 			throw new \Instaphp\Exceptions\Exception("Response object is NULL");
