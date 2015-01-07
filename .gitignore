@@ -3,3 +3,5 @@ nbproject/private
 vendor/*
 docs/*
 tmp/*
+composer.lock
+.DS_*
