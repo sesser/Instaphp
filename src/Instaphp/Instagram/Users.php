@@ -55,7 +55,7 @@ class Users extends Instagram
                     'client_id' => $this->config['client_id'],
                     'client_secret' => $this->config['client_secret'],
                     'redirect_uri' => $this->config['redirect_uri'],
-                    'grant_type' => 'authorization_code1',
+                    'grant_type' => 'authorization_code',
                     'code' => $code
                     ]
             ]);
