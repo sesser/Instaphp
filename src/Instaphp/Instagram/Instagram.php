@@ -42,8 +42,7 @@ use Instaphp\Http\Events\InstagramSignedAuthEvent;
  * The base Instagram API object.
  *
  * All APIs inherit from this base class. It provides helper methods for making
- * {@link \Instaphp\Utils\Http\Http HTTP} requests and handling errors returned
- * from API requests.
+ * HTTP requests and handling errors returned from API.
  *
  * @author Randy Sesser <randy@instaphp.com>
  * @license http://instaphp.mit-license.org MIT License
@@ -83,8 +82,6 @@ class Instagram
 	{
 		
 		$this->config = $config;
-		$this->log = new Logger('instaphp');
-		$this->log->pushHandler(new StreamHandler($this->config['log_path'], $this->config['log_level']));
 		$this->client_id = $this->config['client_id'];
 		$this->client_secret = $this->config['client_secret'];
         $this->access_token = $this->config['access_token'];
@@ -120,11 +117,16 @@ class Instagram
         	});
         }
 
-        if ($this->config['debug']) {
-        	$emitter->attach(new LogSubscriber($this->log, Formatter::DEBUG));
-        } else {
-        	$emitter->attach(new LogSubscriber($this->log));
-        }
+        if ($this->config['log_enabled']) {
+			$this->log = new Logger('instaphp');
+			$this->log->pushHandler(new StreamHandler($this->config['log_path'], $this->config['log_level']));
+	        if ($this->config['debug']) {
+	        	$emitter->attach(new LogSubscriber($this->log, Formatter::DEBUG));
+	        } else {
+	        	$emitter->attach(new LogSubscriber($this->log));
+	        }
+	    }
+	    
         $emitter->attach(new InstagramSignedAuthEvent($this->client_ip, $this->client_secret));
 	}
 
