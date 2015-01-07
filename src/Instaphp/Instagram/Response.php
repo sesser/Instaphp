@@ -93,14 +93,6 @@ class Response
             $this->headers[$header] = implode(',', array_values((array)$value));
 
 		$this->url = $response->getEffectiveUrl();
-/*        $url_parts = explode('?', $this->url);
-        if (isset($url_parts[1])) {
-            $query = explode('&', $url_parts[1]);
-            foreach ($query as $params) {
-                $kv = explode('=', $params);
-                $this->params[$kv[0]] = isset($kv[1]) ? $kv[1]:'';
-            }
-        }*/
 
 		// set the query params in $this->params
 		$query = parse_url($this->url, PHP_URL_QUERY);
