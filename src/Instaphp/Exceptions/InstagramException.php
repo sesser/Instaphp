@@ -67,7 +67,7 @@ class InstagramException extends Exception {
     /**
      * @param Response $response
      */
-    public function setResponse(Response $response)
+    public function setResponse(Response $response = null)
     {
         $this->response = $response;
     }
