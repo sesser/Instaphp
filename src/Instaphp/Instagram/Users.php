@@ -27,7 +27,11 @@
  */
 
 namespace Instaphp\Instagram;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Message\Request;
+use Instaphp\Exceptions\InstagramException;
+use Instaphp\Exceptions\InstaphpException;
+
 /**
  * Users API
  *
@@ -55,14 +59,21 @@ class Users extends Instagram
                     'code' => $code
                     ]
             ]);
-        } catch (GuzzleHttp\Exception\RequestException $re) {
-            printf('%s%s', $re->getRequest(), PHP_EOL);
-        }
+        } catch (RequestException $e) {
+			throw $e;
+		} catch (\Exception $e) {
+			// Wrap exception to conform to the Interface
+			throw new InstaphpException($e->getMessage(), $e->getCode(), $e);
+		}
 		if ($response->getStatusCode() == 200) {
 			$res = new Response($response);
 			$this->SetAccessToken($res->access_token);
 			$this->user = $res->user;
 			return true;
+		} else {
+			// This should throw an exception
+			$response = $this->parseResponse($response);
+			throw new InstagramException($response->getReasonPhrase(), $response->getStatusCode(), $response);
 		}
 		return false;
 	}

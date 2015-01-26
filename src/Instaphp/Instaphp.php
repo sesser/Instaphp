@@ -77,7 +77,7 @@ class Instaphp
 			'redirect_uri' => '',
 			'client_ip' => '',
 			'scope' => 'comments+relationships+likes',
-            'log_enabled' => true,
+            'log_enabled' => false,
             'log_level' => Logger::DEBUG,
             'log_path' => $logpath,
 			'http_useragent' => $ua,

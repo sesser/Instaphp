@@ -28,6 +28,8 @@
 
 namespace Instaphp\Instagram;
 
+use GuzzleHttp\Exception\RequestException;
+use Instaphp\Exceptions\Exception as InstaphpException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Subscriber\Log\LogSubscriber;
 use GuzzleHttp\Subscriber\Log\Formatter;
@@ -102,13 +104,21 @@ class Instagram
         	$emitter->on('before', function(BeforeEvent $e) use($config) {
         		call_user_func_array($config['event.before'], [$e]);
         	});
-        }
+        } elseif ($this->config['log_enabled']) {
+			$emitter->on('before', function(BeforeEvent $e) use($config) {
+				call_user_func_array([$this, 'onBefore'], [$e]);
+			});
+		}
 
         if (!empty($this->config['event.after']) && is_callable($this->config['event.after'])) {
         	$emitter->on('complete', function(CompleteEvent $e) use ($config) {
         		call_user_func_array($config['event.after'], [$e]);
         	});
-        }
+        } elseif ($this->config['log_enabled']) {
+			$emitter->on('complete', function(CompleteEvent $e) use($config) {
+				call_user_func_array([$this, 'onComplete'], [$e]);
+			});
+		}
 
         if (!empty($this->config['event.error']) && is_callable($this->config['event.error'])) {
         	$emitter->on('error', function(ErrorEvent $e) use ($config) {
@@ -169,6 +179,8 @@ class Instagram
 	 * @param string $path The path of the request
 	 * @param array $params Parameters to pass to the API
 	 * @param array $headers Additional headers to pass in the HTTP call
+	 * @throws RequestException
+	 * @throws InstaphpException
 	 * @return \Instaphp\Instagram\Response
 	 */
 	protected function get($path, array $params = [], array $headers = [])
@@ -180,7 +192,12 @@ class Instagram
 	            'query' => $query,
 	            'headers' => $headers
 	        ]);
-		} catch (\Exception $e) { }
+		} catch (RequestException $e) {
+			throw $e;
+		} catch (\Exception $e) {
+			// Wrap exception to conform to the Interface
+			throw new InstaphpException($e->getMessage(), $e->getCode(), $e);
+		}
 		return $this->parseResponse($response);
 	}
 
@@ -189,6 +206,8 @@ class Instagram
 	 * @param string $path The path of the request
 	 * @param array $params Parameters to pass to the API
 	 * @param array $headers Additional headers to pass in the HTTP call
+	 * @throws RequestException
+	 * @throws InstaphpException
 	 * @return \Instaphp\Instagram\Response
 	 */
 	protected function post($path, array $params = [], array $headers = [])
@@ -200,7 +219,12 @@ class Instagram
 	            'body' => $query,
 	            'headers' => $headers
 	        ]);
-		} catch (\Exception $e) { }
+		} catch (RequestException $e) {
+			throw $e;
+		} catch (\Exception $e) {
+			// Wrap exception to conform to the Interface
+			throw new InstaphpException($e->getMessage(), $e->getCode(), $e);
+		}
 		return $this->parseResponse($response);
 	}
 
@@ -209,6 +233,8 @@ class Instagram
 	 * @param string $path The path of the request
 	 * @param array $params Parameters to pass to the API
 	 * @param array $headers Additional headers to pass in the HTTP call
+	 * @throws RequestException
+	 * @throws InstaphpException
 	 * @return \Instaphp\Instagram\Response
 	 */
 	protected function delete($path, array $params = [], array $headers = [])
@@ -220,7 +246,12 @@ class Instagram
 	            'query' => $query,
 	            'headers' => $headers
 	        ]);
-		} catch (\Exception $e) { }
+		} catch (RequestException $e) {
+			throw $e;
+		} catch (\Exception $e) {
+			// Wrap exception to conform to the Interface
+			throw new InstaphpException($e->getMessage(), $e->getCode(), $e);
+		}
 		return $this->parseResponse($response);
 	}
 
@@ -292,7 +323,7 @@ class Instagram
 	 * @throws \Instaphp\Exceptions\APIInvalidParametersError
 	 * @throws \Instaphp\Exceptions\HttpException
 	 */
-	private function parseResponse(Response $response)
+	protected function parseResponse(Response $response)
 	{
 		if ($response == NULL)
 			throw new \Instaphp\Exceptions\Exception("Response object is NULL");
@@ -304,22 +335,20 @@ class Instagram
 			switch ($igresponse->meta['error_type'])
 			{
 				case 'OAuthParameterException':
-					throw new \Instaphp\Exceptions\OAuthParameterException($igresponse->meta['error_message'], $igresponse->meta['code']);
+					throw new \Instaphp\Exceptions\OAuthParameterException($igresponse->meta['error_message'], $igresponse->meta['code'], $igresponse);
 					break;
 				case 'OAuthRateLimitException':
-				case 'OAuthRateLimitException';
-					throw new \Instaphp\Exceptions\OAuthRateLimitException($igresponse->meta['error_message'], $igresponse->meta['code']);
+					throw new \Instaphp\Exceptions\OAuthRateLimitException($igresponse->meta['error_message'], $igresponse->meta['code'], $igresponse);
 					break;
 				case 'APINotFoundError':
-					throw new \Instaphp\Exceptions\APINotFoundError($igresponse->meta['error_message'], $igresponse->meta['code']);
+					throw new \Instaphp\Exceptions\APINotFoundError($igresponse->meta['error_message'], $igresponse->meta['code'], $igresponse);
 					break;
 				case 'APINotAllowedError':
-					throw new \Instaphp\Exceptions\APINotAllowedError($igresponse->meta['error_message'], $igresponse->meta['code']);
+					throw new \Instaphp\Exceptions\APINotAllowedError($igresponse->meta['error_message'], $igresponse->meta['code'], $igresponse);
 					break;
 				case 'APIInvalidParametersError':
-					throw new \Instaphp\Exceptions\APIInvalidParametersError($igresponse->meta['error_message'], $igresponse->meta['code']);
+					throw new \Instaphp\Exceptions\APIInvalidParametersError($igresponse->meta['error_message'], $igresponse->meta['code'], $igresponse);
 					break;
-
 				default:
 					break;
 			}
@@ -332,15 +361,33 @@ class Instagram
 			case 502:
 			case 503:
 			case 400: //-- 400 error slipped through?
-				throw new \Instaphp\Exceptions\HttpException($response->getReasonPhrase(), $response->getStatusCode());
+				throw new \Instaphp\Exceptions\HttpException($response->getReasonPhrase(), $response->getStatusCode(), $igresponse);
 				break;
 			case 429:
-				throw new \Instaphp\Exceptions\OAuthRateLimitException($igresponse->meta['error_message'], 429);
+				throw new \Instaphp\Exceptions\OAuthRateLimitException($igresponse->meta['error_message'], 429, $igresponse);
 				break;
 			default: //-- no error then?
 				break;
 		}
 		return $igresponse;
+	}
+
+	/**
+	 * @param BeforeEvent $e
+	 */
+	public function onBefore(BeforeEvent $e)
+	{
+		$request = $e->getRequest();
+		$this->log->debug(sprintf('Call URL: %s', $request->getUrl()));
+	}
+
+	/**
+	 * @param CompleteEvent $e
+	 */
+	public function onComplete(CompleteEvent $e)
+	{
+		$response = $e->getResponse();
+		$this->log->debug(sprintf('Response code %s: %s', $response->getStatusCode(), $response->getReasonPhrase()));
 	}
 
 }
