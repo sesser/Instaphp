@@ -44,7 +44,7 @@ access_token|Empty|This is the access token for an authorized user. You obtain t
 redirect_uri|Empty|The redirect URI you defined when setting up your Instagram client
 client_ip|Empty|The IP address of the client. This is used to sign POST & DELETE requests. It's not required, but without the signing, users are more limited in how many likes/comments they can post in a given hour
 scope|comments+relationships+likes|The scope of your client's capability
-log_enabled|TRUE|Enable logging
+log_enabled|FALSE|Enable logging
 log_level|DEBUG|Log level. See [Monolog Logger](https://github.com/Seldaek/monolog#log-levels)
 log_path|./instaphp.log|Where the log file lives
 http_useragent|Instaphp/2.0; cURL/{curl_version}; (+http://instaphp.com)|The user-agent string sent with all requests
