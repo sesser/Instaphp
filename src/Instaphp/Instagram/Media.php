@@ -65,6 +65,17 @@ class Media extends Instagram
 	{
 		return $this->Get($this->formatPath('/media/%s', $media_id), $params);
 	}
+
+	/**
+	 * Gets info about a particular media item by its shortcode
+	 * @param string $shortcode The shortcode to fetch
+	 * @param array $params Parameters to pass to API
+	 * @return Response
+	 */
+	public function Shortcode($shortcode, array $params = [])
+	{
+		return $this->Get($this->formatPath('/media/shortcode/%s', $media_id), $params);
+	}
 	
 	/**
 	 * Searches Instagram for media by location/distance. Currently supported
