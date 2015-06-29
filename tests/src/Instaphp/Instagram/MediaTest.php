@@ -146,7 +146,17 @@ class MediaTest extends InstagramTest
 		$res = $this->object->Uncomment(TEST_MEDIA_ID, static::$comment_id);
 		$this->assertInstanceOf('\Instaphp\Instagram\Response', $res);
 		$this->assertEquals(200, $res->meta['code']);
+	}
 
+	/**
+	 * @covers Instaphp\Instagram\Media::Shortcode
+	 */
+	public function testShortcode()
+	{
+		$res = $this->object->Shortcode(TEST_MEDIA_SHORTCODE);
+		$this->assertInstanceOf('\Instaphp\Instagram\Response', $res);
+		$this->assertEquals(200, $res->meta['code']);
+		$this->assertNotEmpty($res->data);
 	}
 
 }

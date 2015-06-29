@@ -34,4 +34,5 @@ define('TEST_ACCESS_TOKEN', '');
 define('TEST_CLIENT_ID', '');
 define('TEST_CLIENT_SECRET', '');
 define('TEST_MEDIA_ID', '');
+define('TEST_MEDIA_SHORTCODE', '');
 include_once dirname(__DIR__) . '/vendor/autoload.php';

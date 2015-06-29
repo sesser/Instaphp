@@ -286,11 +286,14 @@ class Instagram
 	{
 		//$base = 'https://api.instagram.com';
 
-        $path = sprintf('/%s/', $path);
-        $path = preg_replace('/[\/]{2,}/', '/', $path);
+		$path = sprintf('/%s/', $path);
+		$path = preg_replace('/[\/]{2,}/', '/', $path);
 
 		if ($add_version && !preg_match('/^\/v1/', $path))
 			$path = '/v1' . $path;
+
+		// Some endpoints don't respond with a trailing slash
+		$path = rtrim($path, '/');
 
 		return $path;
 	}
