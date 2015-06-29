@@ -343,6 +343,9 @@ class Instagram
 				case 'OAuthRateLimitException':
 					throw new \Instaphp\Exceptions\OAuthRateLimitException($igresponse->meta['error_message'], $igresponse->meta['code'], $igresponse);
 					break;
+				case 'OAuthAccessTokenException':
+					throw new \Instaphp\Exceptions\OAuthAccessTokenException($igresponse->meta['error_message'], $igresponse->meta['code'], $igresponse);
+					break;
 				case 'APINotFoundError':
 					throw new \Instaphp\Exceptions\APINotFoundError($igresponse->meta['error_message'], $igresponse->meta['code'], $igresponse);
 					break;
