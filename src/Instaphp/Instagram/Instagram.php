@@ -212,7 +212,7 @@ class Instagram
 	 */
 	protected function post($path, array $params = [], array $headers = [])
 	{
-        $query = $this->prepare($params);
+        $query = $this->prepare($params,false);
         $response = new Response(500);
         try {
 			$response = $this->http->post($this->buildPath($path), [
@@ -258,10 +258,11 @@ class Instagram
 	/**
 	 * Simply prepares the parameters being passed. Automatically set the client_id
 	 * unless there is an access_token, in which case it is added instead
-	 * @param array $params The list of parameters to perpare for a request
+	 * @param array $params The list of parameters to prepare for a request
+	 * @param bool $encode Whether the params should be urlencoded
 	 * @return array The prepared parameters
 	 */
-	private function prepare(array $params)
+	private function prepare(array $params, $encode = true)
 	{
 		$params['client_id'] = $this->client_id;
 		if (!empty($this->access_token)) {
@@ -269,8 +270,10 @@ class Instagram
 			$params['access_token'] = $this->access_token;
 		}
 
-		foreach ($params as $k => $v) {
-			$params[$k] = urlencode($v);
+		if ($encode) {
+			foreach ($params as $k => $v) {
+				$params[$k] = urlencode($v);
+			}
 		}
 
 		return $params;
