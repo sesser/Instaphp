@@ -74,7 +74,7 @@ class Media extends Instagram
 	 */
 	public function Shortcode($shortcode, array $params = [])
 	{
-		return $this->Get($this->formatPath('/media/shortcode/%s', $media_id), $params);
+		return $this->Get($this->formatPath('/media/shortcode/%s', $shortcode), $params);
 	}
 	
 	/**
