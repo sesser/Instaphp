@@ -13,8 +13,17 @@ class LocationsTest extends InstagramTest
 	 * @var Locations
 	 */
 	protected $object;
-	
+
+	/**
+	 * @deprecated
+	 * @var string
+	 */
 	protected $foursquarev2id = '4e239487d4c0d32591045a8e';
+
+	/**
+	 * @var string
+	 */
+	protected $facebookPlacesId = '165461756803348';
 	
 	protected $location_id = '3143441';
 	
@@ -54,7 +63,7 @@ class LocationsTest extends InstagramTest
 		$this->assertInstanceOf('\Instaphp\Instagram\Response', $res);
 		$this->assertNotEmpty($res->data);
 		$this->assertGreaterThan(0, count($res->data));
-		$this->assertEquals('Green Flash Brewing Company', $res->data['name']);
+		$this->assertEquals('Green Flash Brewing Co.', $res->data['name']);
 	}
 
 	/**
@@ -74,7 +83,7 @@ class LocationsTest extends InstagramTest
 	 */
 	public function testSearch()
 	{
-		$res = $this->object->Search(['count' => 10, 'foursquare_v2_id' => $this->foursquarev2id]);
+		$res = $this->object->Search(['count' => 10, 'facebook_places_id' => $this->facebookPlacesId]);
 		$this->assertInstanceOf('\Instaphp\Instagram\Response', $res);
 		$this->assertNotEmpty($res->data);
 		$res = $this->object->Search(['lat' => $this->lat, 'lng' => $this->lng]);

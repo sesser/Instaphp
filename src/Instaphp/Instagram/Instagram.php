@@ -138,6 +138,8 @@ class Instagram
 	    }
 	    
         $emitter->attach(new InstagramSignedAuthEvent($this->client_ip, $this->client_secret));
+
+
 	}
 
 	/**

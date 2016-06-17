@@ -49,28 +49,6 @@ class UsersTest extends InstagramTest
 		$this->assertEquals('bowkylion', $res->data['username']);
     }
 
-	/**
-	 * @covers Instaphp\Instagram\Users::Feed
-	 * @expectedException \Instaphp\Exceptions\OAuthParameterException
-	 */
-	public function testFeedException()
-	{
-		$res = $this->object->Feed(["count" => 1]);
-	}
-
-    /**
-     * @covers Instaphp\Instagram\Users::Feed
-     */
-    public function testFeed()
-    {
-		$this->object->SetAccessToken(TEST_ACCESS_TOKEN);
-		$res = $this->object->Feed(["count" => 5]);
-		$this->assertNotEmpty($res->data);
-		$this->assertEquals(200, $res->meta['code']);
-		$this->assertEquals(5, count($res->data));
-
-    }
-
     /**
      * @covers Instaphp\Instagram\Users::Recent
      */
@@ -89,6 +67,9 @@ class UsersTest extends InstagramTest
 	 */
 	public function testLikedException()
 	{
+        if(TEST_LIKES === false) {
+            $this->markTestSkipped('Likes not tested');
+        }
 		$res = $this->object->Liked();
 	}
 
@@ -97,6 +78,9 @@ class UsersTest extends InstagramTest
      */
     public function testLiked()
     {
+        if(TEST_LIKES === false) {
+            $this->markTestSkipped('Likes not tested');
+        }
 		$this->object->SetAccessToken(TEST_ACCESS_TOKEN);
 		$res = $this->object->Liked(["count" => 1]);
 		$this->assertNotEmpty($res->data);

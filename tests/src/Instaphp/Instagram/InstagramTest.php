@@ -24,7 +24,7 @@ class InstagramTest extends \PHPUnit_Framework_TestCase
 		'api_version' => 'v1',
 		'client_id' => TEST_CLIENT_ID,
 		'client_secret' => TEST_CLIENT_SECRET,
-		'access_token' => '',
+		'access_token' => TEST_ACCESS_TOKEN,
 		'redirect_uri' => '',
 		'http_useragent' => 'Instaphp/Guzzle/cUrl v3 (+http://instaphp.com)',
 		'http_timeout' => 6,
