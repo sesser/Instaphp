@@ -5,3 +5,8 @@ docs/*
 tmp/*
 composer.lock
 .DS_*
+/tests/bootstrap.private.php
+/tests/src/instagram_test.log
+/tests/instagram_test.log
+/instagram_test.log
+/tests/src/Instaphp/Instagram/instagram_test.log

@@ -45,6 +45,8 @@ namespace Instaphp\Instagram;
 class Media extends Instagram
 {
 	/**
+	 * @deprecated
+	 *
 	 * Gets current popular media
 	 * @param array $params Parameters to pass to API ('count' is the only known 
 	 *                      parameters supported)

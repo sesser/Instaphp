@@ -106,6 +106,7 @@ class Users extends Instagram
 	}
 
 	/**
+	 * @deprecated
 	 * Gets the currently authenticated user's feed
 	 * @param array $params Parameters to pass to the API
 	 * @return \Instaphp\Instagram\Response

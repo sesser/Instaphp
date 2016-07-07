@@ -35,4 +35,6 @@ define('TEST_CLIENT_ID', '');
 define('TEST_CLIENT_SECRET', '');
 define('TEST_MEDIA_ID', '');
 define('TEST_MEDIA_SHORTCODE', '');
+define('TEST_COMMENTS', false);
+define('TEST_LIKES', false);
 include_once dirname(__DIR__) . '/vendor/autoload.php';

@@ -41,12 +41,12 @@ class Response
 	/**
 	 * The HTTP header in the response that holds the rate limit for this request
 	 */
-	const RATE_LIMIT_HEADER = 'X-Ratelimit-Limit';
+	const RATE_LIMIT_HEADER = 'x-ratelimit-limit';
 
 	/**
 	 * The HTTP header in the response that holds the rate limit remaingin
 	 */
-	const RATE_LIMIT_REMAINING_HEADER = 'X-Ratelimit-Remaining';
+	const RATE_LIMIT_REMAINING_HEADER = 'x-ratelimit-remaining';
 
 	/** @var string The request url */
 	public $url = '';

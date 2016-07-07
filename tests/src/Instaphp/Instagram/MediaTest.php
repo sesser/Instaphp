@@ -39,20 +39,6 @@ class MediaTest extends InstagramTest
 	}
 
 	/**
-	 * @covers Instaphp\Instagram\Media::Popular
-	 */
-	public function testPopular()
-	{
-		$res = $this->object->Popular(['count' => 5]);
-		$this->assertInstanceOf('\Instaphp\Instagram\Response', $res);
-		$this->assertEquals(200, $res->meta['code']);
-		$this->assertNotEmpty($res->data);
-		$this->assertEquals(5, count($res->data));
-		$this->assertEquals(5000, $res->limit);
-		$this->assertLessThan($res->limit, $res->remaining);
-	}
-
-	/**
 	 * @covers Instaphp\Instagram\Media::Info
 	 */
 	public function testInfo()
@@ -80,6 +66,9 @@ class MediaTest extends InstagramTest
 	 */
 	public function testLike()
 	{
+		if(TEST_LIKES === false) {
+			$this->markTestSkipped('Likes not tested');
+		}
 		$this->object->SetAccessToken(TEST_ACCESS_TOKEN);
 		$res = $this->object->Like(TEST_MEDIA_ID);
 		$this->assertInstanceOf('\Instaphp\Instagram\Response', $res);
@@ -93,6 +82,9 @@ class MediaTest extends InstagramTest
 	 */
 	public function testLikes()
 	{
+		if(TEST_LIKES === false) {
+			$this->markTestSkipped('Likes not tested');
+		}
 		$res = $this->object->Likes(TEST_MEDIA_ID);
 		$this->assertInstanceOf('\Instaphp\Instagram\Response', $res);
 		$this->assertEquals(200, $res->meta['code']);
@@ -103,6 +95,9 @@ class MediaTest extends InstagramTest
 	 */
 	public function testUnlike()
 	{
+		if(TEST_LIKES === false) {
+			$this->markTestSkipped('Likes not tested');
+		}
 		$this->object->SetAccessToken(TEST_ACCESS_TOKEN);
 		$res = $this->object->Unlike(TEST_MEDIA_ID);
 		$this->assertInstanceOf('\Instaphp\Instagram\Response', $res);
@@ -116,6 +111,9 @@ class MediaTest extends InstagramTest
 	 */
 	public function testComment()
 	{
+		if(TEST_COMMENTS === false) {
+			$this->markTestSkipped('Comments not tested');
+		}
 		$this->object->SetAccessToken(TEST_ACCESS_TOKEN);
 		$res = $this->object->Comment(TEST_MEDIA_ID, 'Test comment');
 		$this->assertInstanceOf('\Instaphp\Instagram\Response', $res);
@@ -131,6 +129,9 @@ class MediaTest extends InstagramTest
 	 */
 	public function testComments()
 	{
+		if(TEST_COMMENTS === false) {
+			$this->markTestSkipped('Comments not tested');
+		}
 		$res = $this->object->Comments(TEST_MEDIA_ID);
 		$this->assertInstanceOf('\Instaphp\Instagram\Response', $res);
 		$this->assertEquals(200, $res->meta['code']);
@@ -142,9 +143,14 @@ class MediaTest extends InstagramTest
 	 */
 	public function testUncomment()
 	{
+		if(TEST_COMMENTS === false) {
+			$this->markTestSkipped('Comments not tested');
+		}
 		$this->object->SetAccessToken(TEST_ACCESS_TOKEN);
 		$res = $this->object->Uncomment(TEST_MEDIA_ID, static::$comment_id);
 		$this->assertInstanceOf('\Instaphp\Instagram\Response', $res);
+
+		$this->assertArrayHasKey('code', (array) $res->meta);
 		$this->assertEquals(200, $res->meta['code']);
 	}
 
