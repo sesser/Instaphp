@@ -122,8 +122,8 @@ class MediaTest extends InstagramTest
 		$this->assertEquals(200, $res->meta['code']);
 		$this->assertNotEmpty($res->data);
 		$this->assertNotEmpty($res->data['id']);
+		$this->assertSame('Test comment', $res->data['text']);
 		static::$comment_id = $res->data['id'];
-
 	}
 
 	/**
