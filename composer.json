@@ -13,7 +13,7 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "guzzlehttp/guzzle": "~5.2",
+        "guzzlehttp/guzzle": "~6.2",
         "guzzlehttp/log-subscriber": "~1",
         "monolog/monolog": "~1.8"
     },
