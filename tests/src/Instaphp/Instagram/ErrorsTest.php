@@ -6,7 +6,7 @@ include_once 'InstagramTest.php';
 use GuzzleHttp\Event\CompleteEvent;
 use GuzzleHttp\Stream\Stream;
 
-class ExceptionsTest extends InstagramTest
+class ErrorsTest extends InstagramTest
 {
     /**
      * @var Instagram
@@ -38,7 +38,7 @@ class ExceptionsTest extends InstagramTest
     }
 
     /**
-     * @covers \Instaphp\Exceptions\APIAgeGatedError
+     * @covers \Instaphp\Instagram\Instagram:parseResponse
      * @expectedException \Instaphp\Exceptions\APIAgeGatedError
      */
     public function testAPIAgeGatedError()
@@ -47,10 +47,19 @@ class ExceptionsTest extends InstagramTest
 
         $this->object = new Users($this->config);
 
-        $this->object->SetAccessToken(TEST_ACCESS_TOKEN);
         $res = $this->object->Recent(5830, ["count" => 5]);
-        $this->assertNotEmpty($res->data);
-        $this->assertEquals(200, $res->meta['code']);
-        $this->assertEquals(5, count($res->data));
+    }
+
+    /**
+     * @covers \Instaphp\Instagram\Instagram:parseResponse
+     * @expectedException \Instaphp\Exceptions\InvalidResponseFormatException
+     */
+    public function testHTMLPageNotFoundError()
+    {
+        $this->mockResponse(404, '<html><body>Page not found stub</body></html>', 'text/html');
+
+        $this->object = new Users($this->config);
+
+        $res = $this->object->Recent(5830, ["count" => 5]);
     }
 }
