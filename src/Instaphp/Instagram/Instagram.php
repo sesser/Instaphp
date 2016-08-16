@@ -360,6 +360,9 @@ class Instagram
 				case 'APIInvalidParametersError':
 					throw new \Instaphp\Exceptions\APIInvalidParametersError($igresponse->meta['error_message'], $igresponse->meta['code'], $igresponse);
 					break;
+				case 'APIAgeGatedError':
+					throw new \Instaphp\Exceptions\APIAgeGatedError($igresponse->meta['error_message'], $igresponse->meta['code'], $igresponse);
+					break;
 				default:
 					break;
 			}
