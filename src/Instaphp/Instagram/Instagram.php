@@ -28,6 +28,7 @@
 
 namespace Instaphp\Instagram;
 
+use GuzzleHttp\Exception\ParseException;
 use GuzzleHttp\Exception\RequestException;
 use Instaphp\Exceptions\Exception as InstaphpException;
 use GuzzleHttp\Client;
@@ -336,7 +337,11 @@ class Instagram
 		if ($response == NULL)
 			throw new \Instaphp\Exceptions\Exception("Response object is NULL");
 
-		$igresponse = new \Instaphp\Instagram\Response($response);
+        try {
+		    $igresponse = new \Instaphp\Instagram\Response($response);
+        } catch (ParseException $e) {
+            throw new \Instaphp\Exceptions\InvalidResponseFormatException($e->getMessage(), $e->getCode(), null, $e);
+        }
 
 		//-- First check if there's an API error from the Instagram response
 		if (isset($igresponse->meta['error_type'])) {
@@ -359,6 +364,9 @@ class Instagram
 					break;
 				case 'APIInvalidParametersError':
 					throw new \Instaphp\Exceptions\APIInvalidParametersError($igresponse->meta['error_message'], $igresponse->meta['code'], $igresponse);
+					break;
+				case 'APIAgeGatedError':
+					throw new \Instaphp\Exceptions\APIAgeGatedError($igresponse->meta['error_message'], $igresponse->meta['code'], $igresponse);
 					break;
 				default:
 					break;
