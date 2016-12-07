@@ -103,7 +103,7 @@ class Users extends Instagram
 	public function Info($user_id = "")
 	{
 		if($user_id === ""){
-			return $this->Self($params);
+			return $this->Self();
 		}else{
 			return $this->Get($this->formatPath('/users/%s', $user_id));
 		}
