@@ -197,4 +197,28 @@ class Instaphp
     {
         return $this->Users->getCurrentUser();
     }
+
+    /**
+     * @return string
+     */
+    public function getClientId()
+    {
+        return $this->config['client_id'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getClientSecret()
+    {
+        return $this->config['client_secret'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getRedirectUri()
+    {
+        return $this->config['redirect_uri'];
+    }
 }
