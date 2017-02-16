@@ -33,6 +33,7 @@ define('TEST_ROOT', dirname(__DIR__) . '/tests');
 define('TEST_ACCESS_TOKEN', '');
 define('TEST_CLIENT_ID', '');
 define('TEST_CLIENT_SECRET', '');
+define('TEST_REDIRECT_URI', 'http://test.com/redirect');
 define('TEST_MEDIA_ID', '');
 define('TEST_MEDIA_SHORTCODE', '');
 define('TEST_COMMENTS', false);

@@ -21,7 +21,7 @@ class InstaphpTest extends \PHPUnit_Framework_TestCase
 		'client_id' => TEST_CLIENT_ID,
 		'client_secret' => TEST_CLIENT_SECRET,
 		'access_token' => '',
-		'redirect_uri' => '',
+		'redirect_uri' => TEST_REDIRECT_URI,
 		'http_useragent' => 'Instaphp/Guzzle/cUrl v3 (+http://instaphp.com)',
 		'http_timeout' => 6,
 		'http_connect_timeout' => 2,
@@ -126,4 +126,33 @@ class InstaphpTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue($this->object->isAuthorized());
 	}
 
+    /**
+     * @covers Instaphp\Instaphp::getClientId
+     */
+    public function testGetClientId()
+    {
+        $id = $this->object->getClientId();
+
+        $this->assertEquals($id, TEST_CLIENT_ID);
+	}
+
+    /**
+     * @covers Instaphp\Instaphp::getClientSecret
+     */
+    public function testGetClientSecret()
+    {
+        $id = $this->object->getClientSecret();
+
+        $this->assertEquals($id, TEST_CLIENT_SECRET);
+    }
+
+    /**
+     * @covers Instaphp\Instaphp::getRedirectUri
+     */
+    public function testGetRedirectUri()
+    {
+        $id = $this->object->getRedirectUri();
+
+        $this->assertEquals($id, TEST_REDIRECT_URI);
+    }
 }
