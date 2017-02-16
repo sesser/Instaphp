@@ -100,9 +100,26 @@ class Users extends Instagram
 	 * @param string $user_id A valid user_id
 	 * @return \Instaphp\Instagram\Response
 	 */
-	public function Info($user_id)
+	public function Info($user_id = "")
 	{
-		return $this->Get($this->formatPath('/users/%s', $user_id));
+		if($user_id === ""){
+			return $this->Self();
+		}else{
+			return $this->Get($this->formatPath('/users/%s', $user_id));
+		}
+	}
+
+	/**
+	 * Gets the currently authenticated user's information
+	 * @param array $params Parameters to pass to the API
+	 * @return \Instaphp\Instagram\Response
+	 * @throws \Instaphp\Exceptions\OAuthParameterException
+	 */
+	public function Self(array $params = [])
+	{
+		if (empty($this->access_token))
+			throw new \Instaphp\Exceptions\OAuthParameterException("A valid access_token is required to call this endpoint");
+		return $this->Get('/users/self/', $params);
 	}
 
 	/**
@@ -116,7 +133,7 @@ class Users extends Instagram
 	{
 		if (empty($this->access_token))
 			throw new \Instaphp\Exceptions\OAuthParameterException("A valid access_token is required to call this endpoint");
-		return $this->Get('/users/self/feed', $params);
+		return $this->Recent('', $params);
 	}
 
 	/**
@@ -125,9 +142,13 @@ class Users extends Instagram
 	 * @param array $params Parameters to pass to the API. Valid parameters are 'count', 'max_timestamp', 'min_timestamp', 'min_id', and 'max_id'
 	 * @return \Instaphp\Instagram\Response
 	 */
-	public function Recent($user_id, array $params = [])
+	public function Recent($user_id = "", array $params = [])
 	{
-		return $this->Get($this->formatPath('/users/%s/media/recent', $user_id), $params);
+		if($user_id === ""){
+			return $this->Get('/users/self/media/recent', $params);
+		}else{
+			return $this->Get($this->formatPath('/users/%s/media/recent', $user_id), $params);
+		}
 	}
 
 	/**
