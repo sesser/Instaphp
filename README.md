@@ -1,3 +1,9 @@
+## Deprecation on the Horizon ##
+
+It seemed inevitable that the Instagram API would go by way of the graph API and that day is finally upon us. Behold the next best thing since sliced tofu; [Instagram Graph API](https://developers.facebook.com/products/instagram/).
+
+As such, this library will go by way of the circular bin. I have little interest (and even less energy) to keep this going. The old API will cease to exist in July 2018.
+
 ## Instaphp V2 ##
 
 This is version 2 of Instaphp. It's a complete rewrite from version 1 and is not backwards compatible. If you're using v1 and want to update to v2, you'll have to make a few changes. Some of the method names have changed and configuration is no longer an XML file. There are unit tests, but given the less than stellar reliability of Instagram's API, they are fairly useless.
