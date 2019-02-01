@@ -1,3 +1,6 @@
+# DEAD #
+This project is dead... 
+
 ## Instaphp V2 ##
 
 This is version 2 of Instaphp. It's a complete rewrite from version 1 and is not backwards compatible. If you're using v1 and want to update to v2, you'll have to make a few changes. Some of the method names have changed and configuration is no longer an XML file. There are unit tests, but given the less than stellar reliability of Instagram's API, they are fairly useless.
