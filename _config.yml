@@ -1,0 +1,8 @@
+title: Instaphp
+description: A PHP framework for accessing Instagram's API
+google_analytics: UA-21707494-1
+show_downloads: true
+theme: jekyll-theme-minimal
+
+gems:
+  - jekyll-mentions
